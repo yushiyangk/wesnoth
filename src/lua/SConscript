@@ -2,8 +2,8 @@
 Import("env")
 lua_sources = Split("""
 ../lua_jailbreak_exception.cpp
-lapi.c                                               
-lcode.c                                             
+lapi.cpp
+lcode.cpp
 ldebug.cpp
 ldo.cpp
 ldump.cpp
