@@ -66,7 +66,7 @@ t_string_base::walker::walker(const t_string_base& string) :
 	}
 }
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(ANDROID)   // ___AP___
 /*
  * From the IRC log of 23.07.2010
  * 07:52 <silene> Upth: what did it break?

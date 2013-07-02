@@ -34,6 +34,12 @@
 
 #include <sys/stat.h> // for setting the permissions of the preferences file
 
+#ifdef ANDROID // ___AP___
+extern "C" {
+	void SDL_ANDROID_getScreenSize(int *, int *);
+}
+#endif
+
 static lg::log_domain log_config("config");
 #define ERR_CFG LOG_STREAM(err , log_config)
 
@@ -42,7 +48,7 @@ static lg::log_domain log_filesystem("filesystem");
 
 namespace {
 
-bool color_cursors = false;
+bool color_cursors = true;
 
 bool no_preferences_save = false;
 
@@ -212,7 +218,15 @@ std::pair<int,int> resolution()
 		//res.second &= ~3;
 		return res;
 	} else {
+#ifdef ANDROID // ___AP___
+		int sdlw, sdlh;
+		SDL_ANDROID_getScreenSize(&sdlw, &sdlh);
+		std::pair<int,int> res(std::max(sdlw, min_allowed_width()),
+		                       std::max(sdlh, min_allowed_height()));
+		return res;
+#else
 		return std::pair<int,int>(1024,768);
+#endif
 	}
 }
 
@@ -382,7 +396,7 @@ void set_UI_volume(int vol)
 
 bool turn_bell()
 {
-	return get("turn_bell", true);
+	return get("turn_bell", false); // ___AP___
 }
 
 bool set_turn_bell(bool ison)
@@ -406,7 +420,7 @@ bool set_turn_bell(bool ison)
 
 bool UI_sound_on()
 {
-	return get("UI_sound", true);
+	return get("UI_sound", false); // ___AP___
 }
 
 bool set_UI_sound(bool ison)
@@ -430,12 +444,12 @@ bool set_UI_sound(bool ison)
 
 bool message_bell()
 {
-	return get("message_bell", true);
+	return get("message_bell", false); // ___AP___
 }
 
 bool sound_on()
 {
-	return get("sound", true);
+	return get("sound", false); // ___AP___
 }
 
 bool set_sound(bool ison) {
@@ -458,7 +472,7 @@ bool set_sound(bool ison) {
 
 bool music_on()
 {
-	return get("music", true);
+	return get("music", false); // ___AP___
 }
 
 bool set_music(bool ison) {
@@ -705,6 +719,7 @@ bool use_color_cursors()
 
 void _set_color_cursors(bool value)
 {
+	value = true; // ___AP___
 	preferences::set("color_cursors", value);
 	color_cursors = value;
 }

@@ -298,10 +298,18 @@ void pump()
 		}
 	}
 	std::vector<SDL_Event>::iterator ev_end = events.end();
+	int draw_processed = 0;
+
 	for(ev_it = events.begin(); ev_it != ev_end; ++ev_it){
 		SDL_Event &event = *ev_it;
-		switch(event.type) {
+		// ___AP___
+		if (event.type == DRAW_EVENT) {
+			if (draw_processed)
+				continue;
+			draw_processed = 1;
+		}
 
+		switch(event.type) {
 			case SDL_ACTIVEEVENT: {
 				SDL_ActiveEvent& ae = reinterpret_cast<SDL_ActiveEvent&>(event);
 				if((ae.state & SDL_APPMOUSEFOCUS) != 0 || (ae.state & SDL_APPINPUTFOCUS) != 0) {

@@ -351,6 +351,7 @@ void ttitle_screen::pre_show(CVideo& video, twindow& window)
 	/***** Set the logo *****/
 	tprogress_bar* logo =
 			find_widget<tprogress_bar>(&window, "logo", false, false);
+
 	if(logo) {
 		/*
 		 * A 'singleton' value, since the progress bar only needs to progress

@@ -158,6 +158,7 @@ void parser::parse_element()
 			error(_("Unterminated [element] tag"));
 		// Add the element
 		current_element = &(elements.top().cfg->add_child(elname));
+
 		elements.push(element(current_element, elname, tok_->get_start_line(), tok_->get_file()));
 		if (validator_){
 			validator_->open_tag(elname,tok_->get_start_line(),
@@ -187,6 +188,7 @@ void parser::parse_element()
 									 tok_->get_file());
 			}
 		}
+
 		elements.push(element(current_element, elname, tok_->get_start_line(), tok_->get_file()));
 		break;
 
@@ -212,6 +214,7 @@ void parser::parse_element()
 			validator_->validate(*el.cfg,el.name,el.start_line,el.file);
 			validator_->close_tag();
 		}
+
 		elements.pop();
 		break;
 	default:
@@ -321,10 +324,12 @@ void parser::parse_variable()
 	}
 
 	finish:
-	if (buffer.translatable())
-		cfg[*curvar] = t_string(buffer);
-	else
+	if (buffer.translatable()) {
+		t_string tmp = t_string(buffer);
+		cfg[*curvar] = tmp;
+	} else {
 		cfg[*curvar] = buffer.value();
+	}
 	if(validator_){
 		validator_->validate_key (cfg,*curvar,buffer.value(),
 								  tok_->get_start_line (),

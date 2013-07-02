@@ -337,8 +337,13 @@ static void init_locale() {
 	#if defined _WIN32 || defined __APPLE__
 	    setlocale(LC_ALL, "English");
 	#else
-		std::setlocale(LC_ALL, "C");
-		std::setlocale(LC_MESSAGES, "");
+		#if defined ANDROID
+			setlocale(LC_ALL, "C");
+			setlocale(LC_MESSAGES, "");
+		#else
+			std::setlocale(LC_ALL, "C");
+			std::setlocale(LC_MESSAGES, "");
+		#endif
 	#endif
 	const std::string& intl_dir = get_intl_dir();
 	bindtextdomain (PACKAGE, intl_dir.c_str());
@@ -589,11 +594,14 @@ void init_custom_malloc();
 }
 #endif
 
-
+#ifdef ANDROID
+int SDL_main(int argc, char** argv)
+#else
 #ifdef __native_client__
 int wesnoth_main(int argc, char** argv)
 #else
 int main(int argc, char** argv)
+#endif
 #endif
 {
 

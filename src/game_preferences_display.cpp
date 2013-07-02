@@ -110,7 +110,12 @@ private:
 	            scroll_slider_, chat_lines_slider_,
 	  buffer_size_slider_, idle_anim_slider_, autosavemax_slider_, advanced_slider_;
 	gui::list_slider<double> turbo_slider_;
-	gui::button fullscreen_button_, turbo_button_, show_ai_moves_button_,
+	gui::button
+// ___AP___
+#ifndef ANDROID
+	        fullscreen_button_, show_color_cursors_button_, 
+#endif
+			turbo_button_, show_ai_moves_button_,
 			interrupt_when_ally_sighted_button_,
 			show_grid_button_, save_replays_button_, delete_saves_button_,
 			show_lobby_joins_button1_,
@@ -123,7 +128,7 @@ private:
 			friends_remove_button_, show_floating_labels_button_,
 			turn_dialog_button_, whiteboard_on_start_button_,
 			hide_whiteboard_button_, turn_bell_button_, show_team_colors_button_,
-			show_color_cursors_button_, show_haloing_button_, video_mode_button_,
+			show_haloing_button_, video_mode_button_,
 			theme_button_, hotkeys_button_,
 			advanced_button_, sound_button_,
 			music_button_, chat_timestamp_button_,
@@ -168,8 +173,11 @@ preferences_dialog::preferences_dialog(display& disp, const config& game_cfg)
 	  advanced_slider_(disp.video()),
 	  turbo_slider_(disp.video()),
 
-
+// ___AP___
+#ifndef ANDROID
 	  fullscreen_button_(disp.video(), _("Full screen"), gui::button::TYPE_CHECK),
+	  show_color_cursors_button_(disp.video(), _("Show color cursors"), gui::button::TYPE_CHECK),
+#endif
 	  turbo_button_(disp.video(), _("Accelerated speed"), gui::button::TYPE_CHECK),
 	  show_ai_moves_button_(disp.video(), _("Skip AI moves"), gui::button::TYPE_CHECK),
 	  interrupt_when_ally_sighted_button_(disp.video(), _("Interrupt move when an ally is sighted"), gui::button::TYPE_CHECK),
@@ -194,7 +202,6 @@ preferences_dialog::preferences_dialog(display& disp, const config& game_cfg)
 	  hide_whiteboard_button_(disp.video(), _("Hide allies’ plans by default"), gui::button::TYPE_CHECK),
 	  turn_bell_button_(disp.video(), _("Turn bell"), gui::button::TYPE_CHECK),
 	  show_team_colors_button_(disp.video(), _("Show team colors"), gui::button::TYPE_CHECK),
-	  show_color_cursors_button_(disp.video(), _("Show color cursors"), gui::button::TYPE_CHECK),
 	  show_haloing_button_(disp.video(), _("Show haloing effects"), gui::button::TYPE_CHECK),
 	  video_mode_button_(disp.video(), _("Change Resolution")),
 	  theme_button_(disp.video(), _("Theme")),
@@ -311,8 +318,11 @@ preferences_dialog::preferences_dialog(display& disp, const config& game_cfg)
 	chat_timestamp_button_.set_check(chat_timestamping());
 	chat_timestamp_button_.set_help_string(_("Add a timestamp to chat messages"));
 
+// ___AP___
+#ifndef ANDROID
 	fullscreen_button_.set_check(fullscreen());
 	fullscreen_button_.set_help_string(_("Choose whether the game should run full screen or in a window"));
+#endif
 
 	turbo_button_.set_check(turbo());
 	turbo_button_.set_help_string(_("Make units move and fight faster"));
@@ -419,8 +429,11 @@ preferences_dialog::preferences_dialog(display& disp, const config& game_cfg)
 	show_team_colors_button_.set_check(show_side_colors());
 	show_team_colors_button_.set_help_string(_("Show a colored circle around the base of each unit to show which side it is on"));
 
+// ___AP___
+#ifndef ANDROID
 	show_color_cursors_button_.set_check(use_color_cursors());
 	show_color_cursors_button_.set_help_string(_("Use colored mouse cursors (may be slower)"));
+#endif
 
 	show_haloing_button_.set_check(show_haloes());
 	show_haloing_button_.set_help_string(_("Use graphical special effects (may be slower)"));
@@ -445,7 +458,10 @@ handler_vector preferences_dialog::handler_members()
 	h.push_back(&autosavemax_slider_);
 	h.push_back(&buffer_size_slider_);
 	h.push_back(&advanced_slider_);
+// ___AP___
+#ifndef ANDROID
 	h.push_back(&fullscreen_button_);
+#endif
 	h.push_back(&turbo_button_);
 	h.push_back(&idle_anim_button_);
 	h.push_back(&standing_anim_button_);
@@ -475,7 +491,10 @@ handler_vector preferences_dialog::handler_members()
 	h.push_back(&turn_bell_button_);
 	h.push_back(&UI_sound_button_);
 	h.push_back(&show_team_colors_button_);
+// ___AP___
+#ifndef ANDROID
 	h.push_back(&show_color_cursors_button_);
+#endif
 	h.push_back(&show_haloing_button_);
 	h.push_back(&video_mode_button_);
 	h.push_back(&theme_button_);
@@ -558,9 +577,12 @@ void preferences_dialog::update_location(SDL_Rect const &rect)
 
 	// Display tab
 	ypos = rect.y + top_border;
+// ___AP___
+#ifndef ANDROID
 	fullscreen_button_.set_location(rect.x, ypos);
-
 	ypos += item_interline; show_color_cursors_button_.set_location(rect.x, ypos);
+#endif
+
 	ypos += item_interline; show_floating_labels_button_.set_location(rect.x, ypos);
 	ypos += item_interline; show_haloing_button_.set_location(rect.x, ypos);
 	ypos += item_interline; show_team_colors_button_.set_location(rect.x, ypos);
@@ -770,12 +792,15 @@ void preferences_dialog::process_event()
 		if (theme_button_.pressed())
 			show_theme_dialog(disp_);
 			parent->clear_buttons();
+// ___AP___
+#ifndef ANDROID
 		if (fullscreen_button_.pressed())
 			throw video_mode_change_exception(fullscreen_button_.checked()
 											? video_mode_change_exception::MAKE_FULLSCREEN
 											: video_mode_change_exception::MAKE_WINDOWED);
 		if (show_color_cursors_button_.pressed())
 			set_color_cursors(show_color_cursors_button_.checked());
+#endif
 		if (show_haloing_button_.pressed())
 			set_show_haloes(show_haloing_button_.checked());
 		if (show_team_colors_button_.pressed())
@@ -1152,9 +1177,12 @@ void preferences_dialog::set_selection(int index)
 
 	const bool hide_display = tab_ != DISPLAY_TAB;
 	show_floating_labels_button_.hide(hide_display);
-	show_color_cursors_button_.hide(hide_display);
 	show_haloing_button_.hide(hide_display);
+// ___AP___
+#ifndef ANDROID
+	show_color_cursors_button_.hide(hide_display);
 	fullscreen_button_.hide(hide_display);
+#endif
 	idle_anim_button_.hide(hide_display);
 	idle_anim_slider_label_.hide(hide_display);
 	idle_anim_slider_label_.enable(idle_anim());

@@ -31,7 +31,7 @@ public:
 	{
 	public:
 		walker(const t_string_base& string);
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(ANDROID)   // ___AP___
 		/*
 		 * Work around a compiler bug in MSVC 9 see definition for more
 		 * information.

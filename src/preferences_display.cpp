@@ -51,7 +51,7 @@ display_manager::display_manager(display* d)
 	set_turbo_speed(turbo_speed());
 	set_fullscreen(fullscreen());
 	set_scroll_to_action(scroll_to_action());
-	set_color_cursors(preferences::get("color_cursors", false));
+	set_color_cursors(preferences::get("color_cursors", true)); // ___AP___
 }
 
 display_manager::~display_manager()
@@ -75,10 +75,11 @@ bool detect_video_settings(CVideo& video, std::pair<int,int>& resolution, int& b
 
 	typedef std::pair<int, int> res_t;
 	std::vector<res_t> res_list;
-	res_list.push_back(res_t(1024, 768));
-	res_list.push_back(res_t(1024, 600));
-	res_list.push_back(res_t(800, 600));
+	// ___AP___ reversed order
 	res_list.push_back(res_t(800, 480));
+	res_list.push_back(res_t(800, 600));
+	res_list.push_back(res_t(1024, 600));
+	res_list.push_back(res_t(1024, 768));
 
 	bpp = video.modePossible(resolution.first, resolution.second,
 		DefaultBPP, video_flags, true);
@@ -124,7 +125,7 @@ void set_fullscreen(CVideo& video, const bool ison)
 				gui2::show_transient_message(video,"",_("The video mode could not be changed. Your window manager must be set to 16 bits per pixel to run the game in windowed mode. Your display must support 1024x768x16 to run the game full screen."));
 			}
 			// We reinit color cursors, because SDL on Mac seems to forget the SDL_Cursor
-			set_color_cursors(preferences::get("color_cursors", false));
+			set_color_cursors(preferences::get("color_cursors", true)); // ___AP___
 		}
 	}
 }

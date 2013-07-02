@@ -954,9 +954,12 @@ bool game_controller::play_multiplayer()
 
 			if(dlg.get_retval() == gui2::twindow::OK) {
 				res = dlg.get_choice();
+//___AP___ removed "start local server" option
+#ifdef ANDROID
+				if (res >= 2) res += 1;
+#endif
 			} else {
 				return false;
-
 			}
 
 			if (res == 2 && preferences::mp_server_warning_disabled() < 2)
