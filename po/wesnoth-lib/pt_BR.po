@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Battle for Wesnoth 0.9.5-CVS\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-03-16 23:25+0100\n"
+"POT-Creation-Date: 2013-05-05 11:23+0200\n"
 "PO-Revision-Date: 2013-03-10 03:55-0300\n"
 "Last-Translator: Gilberto dos Santos Alves <gsavix@gmail.com>\n"
 "Language-Team: Portuguese/Brazil\n"
@@ -846,7 +846,6 @@ msgstr "Vila Pantanosa"
 #. [terrain_type]: id=mermen-village
 #: data/core/terrain.cfg:1492
 #, fuzzy
-#| msgid "Swamp Merfolk Village"
 msgid "Merfolk Village"
 msgstr "Vila Aquática"
 
@@ -1114,8 +1113,8 @@ msgstr "Fora do Mapa"
 msgid "Experimental Fake Map Edge"
 msgstr "Fronteira de Mapa Falsa e Experimental"
 
-#. [toggle_button]: id=shroud
 #. [terrain_type]: id=shroud
+#. [toggle_button]: id=shroud
 #: data/core/terrain.cfg:2066 data/gui/default/window/mp_create_game.cfg:479
 msgid "Shroud"
 msgstr "Escuridão"
@@ -1146,10 +1145,10 @@ msgid "Unwalkable"
 msgstr "Impassável"
 
 #. #-#-#-#-#  wesnoth-lib.wml.pot (PACKAGE VERSION)  #-#-#-#-#
-#. [button]: id=click_dismiss
 #. [button]: id=cancel
 #. [button]: id=ok
 #. [button]: id=close_window
+#. [button]: id=click_dismiss
 #: data/gui/default/widget/window_default.cfg:140
 #: data/gui/default/window/chat_log.cfg:121
 #: data/gui/default/window/gamestate_inspector.cfg:339
@@ -1353,9 +1352,9 @@ msgstr "Último"
 msgid "Previous"
 msgstr "Anterior"
 
+#. [button]: id=next_tod
 #. [button]: id=next_tip
 #. [button]: id=next_page
-#. [button]: id=next_tod
 #: data/gui/default/window/chat_log.cfg:89
 #: data/gui/default/window/editor_settings.cfg:79
 #: data/gui/default/window/editor_settings.cfg:80
@@ -1380,8 +1379,8 @@ msgstr "Escolha o jogo para caregar"
 msgid "Filter"
 msgstr "Filtro"
 
-#. [label]: id=name
 #. [label]: id=filename
+#. [label]: id=name
 #: data/gui/default/window/data_manage.cfg:163
 #: data/gui/default/window/game_load.cfg:263
 #: data/gui/default/window/mp_server_list.cfg:104
@@ -1637,8 +1636,8 @@ msgstr "Rota de execução"
 
 #. #-#-#-#-#  wesnoth-lib.wml.pot (PACKAGE VERSION)  #-#-#-#-#
 #. [grid]
-#. [button]: id=quit
 #. [button]: id=cancel
+#. [button]: id=quit
 #: data/gui/default/window/formula_debugger.cfg:234
 #: data/gui/default/window/lobby_main.cfg:660
 #: data/gui/default/window/title_screen.cfg:232 src/hotkeys.cpp:883
@@ -1767,8 +1766,8 @@ msgstr "Conteúdo"
 msgid "Inspection window"
 msgstr "Janela de inspeção"
 
-#. [label]: id=unit_type
 #. [label]: id=typename
+#. [label]: id=unit_type
 #: data/gui/default/window/gamestate_inspector.cfg:153
 #: data/gui/default/window/unit_create.cfg:131
 msgid "Type"
@@ -1779,8 +1778,8 @@ msgstr "Tipo"
 msgid "Variable"
 msgstr "Variável"
 
-#. [label]
 #. [grid]
+#. [label]
 #: data/gui/default/window/language_selection.cfg:41
 #: data/gui/default/window/title_screen.cfg:229
 msgid "Language"
@@ -2134,8 +2133,8 @@ msgstr "Era:"
 msgid "Default"
 msgstr "padrão"
 
-#. [button]: id=password
 #. [label]: id=title
+#. [button]: id=password
 #: data/gui/default/window/mp_create_game.cfg:226
 #: data/gui/default/window/mp_create_game_set_password.cfg:42
 msgid "Set Password"
@@ -2216,8 +2215,8 @@ msgid "Password Reminder"
 msgstr "Lembrete de Senha"
 
 #. #-#-#-#-#  wesnoth-lib.wml.pot (PACKAGE VERSION)  #-#-#-#-#
-#. [grid]
 #. [label]
+#. [grid]
 #: data/gui/default/window/mp_method_selection.cfg:39
 #: data/gui/default/window/title_screen.cfg:225
 #: src/gui/dialogs/game_load.cpp:301
@@ -3119,7 +3118,7 @@ msgstr "Carregar Jogo..."
 #: src/gui/dialogs/network_transmission.cpp:54
 #: src/gui/dialogs/network_transmission.cpp:56 src/hotkeys.cpp:1186
 msgid "unit_byte^B"
-msgstr "unit_byte^B"
+msgstr "B"
 
 #: src/gui/dialogs/title_screen.cpp:297
 msgid "Version "
@@ -3366,21 +3365,18 @@ msgstr "Pular Animação"
 #. TRANSLATORS: whiteboard menu entry: toggle planning mode
 #: src/hotkeys.cpp:115
 #, fuzzy
-#| msgid "Toggle Planning Mode"
 msgid "whiteboard^Planning Mode"
 msgstr "Habilitar/Desabilitar Modo de Planejamento"
 
 #. TRANSLATORS: whiteboard menu entry: execute planned action
 #: src/hotkeys.cpp:117
 #, fuzzy
-#| msgid "Execute All Actions"
 msgid "whiteboard^Execute Action"
 msgstr "Executar todas as ações"
 
 #. TRANSLATORS: whiteboard menu entry: execute all planned actions
 #: src/hotkeys.cpp:119
 #, fuzzy
-#| msgid "Execute All Actions"
 msgid "whiteboard^Execute All Actions"
 msgstr "Executar todas as ações"
 
@@ -3392,21 +3388,18 @@ msgstr "quadro branco Ação Deletar"
 #. TRANSLATORS: whiteboard menu entry: move planned action up queue
 #: src/hotkeys.cpp:123
 #, fuzzy
-#| msgid "Move Action Up Queue"
 msgid "whiteboard^Move Action Up"
 msgstr "Mover Ação para cima da Fila"
 
 #. TRANSLATORS: whiteboard menu entry: move planned action down queue
 #: src/hotkeys.cpp:125
 #, fuzzy
-#| msgid "Move Action Down Queue"
 msgid "whiteboard^Move Action Down"
 msgstr "Mover Ação para Baixo da Fila"
 
 #. TRANSLATORS: whiteboard menu entry: plan as though the chosen unit were dead
 #: src/hotkeys.cpp:127
 #, fuzzy
-#| msgid "Suppose Dead"
 msgid "whiteboard^Suppose Dead"
 msgstr "Supor Morte"
 

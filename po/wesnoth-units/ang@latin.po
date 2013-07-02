@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ang@latin\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-03-16 23:04+0100\n"
-"PO-Revision-Date: 2012-06-07 23:30-0500\n"
+"POT-Creation-Date: 2013-05-05 11:23+0200\n"
+"PO-Revision-Date: 2012-10-17 20:00-0500\n"
 "Last-Translator: Steven Panek (Espreon) <Majora700@gmail.com>\n"
 "Language-Team: Old English <http://wiki.wesnoth.org/OldEnglishTranslation>\n"
 "Language: ang@latin\n"
@@ -267,8 +267,6 @@ msgid ""
 "than would be expected."
 msgstr ""
 
-# Espreon sayeth: "I'm not sure about this one... My sources say that 'stormsæ' should be used for 'stormy sea', so... blargh"
-# --changed to "cieles hrið" = tempest of chill
 #. [attack]: type=cold
 #: data/campaigns/The_Hammer_of_Thursagan/units/Dwarvish_Rune_Lord.cfg:44
 #: data/core/units/undead/Necro_Ancient_Lich.cfg:60
@@ -416,8 +414,8 @@ msgid ""
 "protects them well against weapons that could slip between their scales."
 msgstr ""
 
-#. [attack]: type=blade
 #. [attack]: type=pierce
+#. [attack]: type=blade
 #: data/core/units/drakes/Arbiter.cfg:40 data/core/units/drakes/Arbiter.cfg:49
 #: data/core/units/drakes/Warden.cfg:41 data/core/units/drakes/Warden.cfg:50
 #: data/core/units/humans/Loyalist_Halberdier.cfg:41
@@ -554,7 +552,6 @@ msgstr ""
 msgid "ram"
 msgstr ""
 
-# As discussed, literally meaning "Three-pronged," and better than a calque of þreoteð.
 #. [attack]: type=pierce
 #. [attack]: type=blade
 #: data/core/units/drakes/Enforcer.cfg:65
@@ -918,7 +915,6 @@ msgstr "Dƿeorgisc Þunra"
 msgid "Dwarvish Thunderguard"
 msgstr ""
 
-# The "ulf" in "Ulfserker" means "wolf" in Old Norse, and "serker" is "serca" in Old English... thus "Ƿulfserca".
 #. [unit_type]: id=Dwarvish Ulfserker, race=dwarf
 #: data/core/units/dwarves/Ulfserker.cfg:4
 msgid "Dwarvish Ulfserker"
@@ -3173,9 +3169,9 @@ msgstr ""
 msgid "Wolf"
 msgstr "Ƿulf"
 
-#. [unit_type]: id=Great Wolf, race=wolf
-#. [unit_type]: id=Direwolf, race=wolf
 #. [unit_type]: id=Wolf, race=wolf
+#. [unit_type]: id=Direwolf, race=wolf
+#. [unit_type]: id=Great Wolf, race=wolf
 #: data/core/units/monsters/Wolf.cfg:34
 #: data/core/units/monsters/Wolf_Dire.cfg:18
 #: data/core/units/monsters/Wolf_Great.cfg:18
@@ -3197,7 +3193,6 @@ msgstr "Atolƿulf"
 msgid "Great Wolf"
 msgstr "Great Ƿulf"
 
-# Just a phonetic repselling of "Yeti".
 #. [unit_type]: id=Yeti, race=monster
 #: data/core/units/monsters/Yeti.cfg:4
 msgid "Yeti"
@@ -3776,7 +3771,6 @@ msgid ""
 "of combat can waken them, though, making them far more formidable."
 msgstr ""
 
-# Note: a compound of "æt" and "hrine", so don't change the "th" to thorn.
 #. [attack]: type=impact
 #. [attack]: type=arcane
 #: data/core/units/undead/Corpse_Soulless.cfg:26

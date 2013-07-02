@@ -33,6 +33,9 @@
 #include "serialization/parser.hpp"
 #include "wesconfig.h"
 
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/exception/info.hpp>
+
 #include <cerrno>
 #include <deque>
 #include <sstream>
@@ -761,8 +764,9 @@ static int process_queue(void* shard_num)
 			std::istringstream stream(buffer);
 			try {
 				read_gz(received_data->config_buf, stream);
-			} catch(config::error &e)
-			{
+			} catch(boost::iostreams::gzip_error&) {
+				received_data->config_error = "Malformed compressed data";
+			} catch(config::error &e) {
 				received_data->config_error = e.message;
 			}
 		}
@@ -913,9 +917,10 @@ TCPsocket get_received_data(TCPsocket sock, config& cfg, network::bandwidth_in_p
 		// throw the error in parent thread
 		std::string error = (*itor)->config_error;
 		buffer* buf = *itor;
+		TCPsocket err_sock = (*itor)->sock;
 		received_data_queue.erase(itor);
 		delete buf;
-		throw config::error(error);
+		throw config::error(error) << network::tcpsocket_info(err_sock);
 	} else {
 		cfg.swap((*itor)->config_buf);
 		const TCPsocket res = (*itor)->sock;

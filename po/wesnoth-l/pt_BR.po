@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-03-16 23:25+0100\n"
+"POT-Creation-Date: 2013-05-05 11:23+0200\n"
 "PO-Revision-Date: 2011-05-09 11:39-0300\n"
 "Last-Translator: Diego Inácio Goergen <thegoergen@gmail.com>\n"
 "Language-Team: none\n"
@@ -485,14 +485,14 @@ msgstr ""
 msgid "Civil Disobedience"
 msgstr "Desobediência Civil"
 
-#. [side]: type=Bandit, id=Baldras
-#. [side]: type=Rogue, id=Hans
 #. [side]: type=Highwayman, id=Baldras
-#. [side]: type=Shadow Lord, id=Helicrom
-#. [side]
-#. [side]: type=Bandit_Peasant, id=Baldras
-#. [side]: type=General, id=Lord Maddock
+#. [side]: type=Bandit, id=Baldras
 #. [side]: type=Highwayman_Peasant, id=Relana
+#. [side]: type=Rogue, id=Hans
+#. [side]: type=Bandit_Peasant, id=Baldras
+#. [side]
+#. [side]: type=General, id=Lord Maddock
+#. [side]: type=Shadow Lord, id=Helicrom
 #: data/campaigns/Liberty/scenarios/02_Civil_Disobedience.cfg:36
 #: data/campaigns/Liberty/scenarios/02_Civil_Disobedience.cfg:68
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:32
@@ -515,13 +515,13 @@ msgstr "Rebeldes"
 msgid "Tarwen"
 msgstr "Tarwen"
 
-#. [side]: type=Master Bowman, id=Quentin
-#. [side]
-#. [side]: type=General, id=Dommel
-#. [side]: type=Cavalier, id=Tarwen
-#. [side]: type=General, id=Kestrel
 #. [side]: type=Royal Guard, id=Archarel
 #. [side]: type=Iron Mauler, id=Linneus
+#. [side]: type=Master Bowman, id=Quentin
+#. [side]
+#. [side]: type=Cavalier, id=Tarwen
+#. [side]: type=General, id=Kestrel
+#. [side]: type=General, id=Dommel
 #: data/campaigns/Liberty/scenarios/02_Civil_Disobedience.cfg:50
 #: data/campaigns/Liberty/scenarios/04_Unlawful_Orders.cfg:86
 #: data/campaigns/Liberty/scenarios/05_Hide_and_Seek.cfg:55
@@ -680,11 +680,11 @@ msgstr "Relana"
 msgid "Urk Delek"
 msgstr "Urk Delek"
 
+#. [side]: type=Orcish Warrior, id=Urk Delek
+#. [side]: type=Saurian Oracle, id=Thhsthss
 #. [side]: type=Necromancer, id=Mal-Jarrof
 #. [side]: type=Necromancer, id=Mal-Jerod
 #. [side]: type=Lich, id=Sel-Mana
-#. [side]: type=Orcish Warrior, id=Urk Delek
-#. [side]: type=Saurian Oracle, id=Thhsthss
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:92
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:114
 #: data/campaigns/Liberty/scenarios/06_The_Grey_Woods.cfg:107
@@ -1711,7 +1711,7 @@ msgstr "Pitcher"
 #. [message]: speaker=Pitcher
 #: data/campaigns/Liberty/scenarios/07_The_Hunters.cfg:172
 msgid "whisper^<i>Baldras!</i>"
-msgstr "whisper^<i>Baldras!</i>"
+msgstr "<i>Baldras!</i>"
 
 #. [message]: speaker=Harper
 #: data/campaigns/Liberty/scenarios/07_The_Hunters.cfg:176
@@ -1873,10 +1873,6 @@ msgstr "Glória"
 #. [part]
 #: data/campaigns/Liberty/scenarios/08_Glory.cfg:25
 #, fuzzy
-#| msgid ""
-#| "In the Year of Wesnoth 161 the newly crowned king sought to make safe "
-#| "once and for all the wildlands that separated the human cities "
-#| "surrounding Weldyn and the coastal regions of Elensefar."
 msgid ""
 "In the Year of Wesnoth 161, the newly crowned king sought to tame the "
 "wildlands that separated the human cities surrounding Weldyn and the coastal "
@@ -2786,10 +2782,6 @@ msgstr "Mestre Caçador"
 #. [unit_type]: id=Huntsman_Peasant
 #: data/campaigns/Liberty/units/Villagers.cfg:228
 #, fuzzy
-#| msgid ""
-#| "Huntsmen have spent their lives in the backwoods and swamps of their "
-#| "wilderness homes. They can bullseye wamprats and track anything that "
-#| "moves in their territory."
 msgid ""
 "Huntsmen have spent their lives in the backwoods and swamps of their "
 "wilderness homes. They can bullseye ferocious swamp rats and track anything "

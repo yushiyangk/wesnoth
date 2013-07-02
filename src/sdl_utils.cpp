@@ -599,7 +599,7 @@ surface scale_surface_sharp(const surface& surf, int w, int h, bool optimize)
 	}
 
 #ifdef PANDORA
-	scale_surface_down(dst);
+	scale_surface_down(dst, src, w, h);
 #else
 	{
 		const_surface_lock src_lock(src);
@@ -1452,6 +1452,11 @@ surface cut_surface(const surface &surf, SDL_Rect const &r)
 		return NULL;
 
 	surface res = create_compatible_surface(surf, r.w, r.h);
+
+	if(res == NULL) {
+		std::cerr << "Could not create a new surface in cut_surface()\n";
+		return NULL;
+	}
 
 	size_t sbpp = surf->format->BytesPerPixel;
 	size_t spitch = surf->pitch;
