@@ -53,7 +53,7 @@ void environment::register_request_info(const std::string& request_name)
 
 class environment_loader;
 
-class server_connexion
+class server_core
 {
 public:
 	std::size_t threads() const;
@@ -74,7 +74,7 @@ class environment_loader
 public:
 	void load(const config& cfg);
 private:
-	void load_server_connexion(const config& cfg);
+	void load_server_core(const config& cfg);
 };
 
 class database_connexion{};

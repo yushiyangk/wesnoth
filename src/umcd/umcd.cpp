@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 			environment serverinfo(cfg);
 			typedef boost::function<boost::shared_ptr<umcd_protocol> (umcd_protocol::io_service_type&)> umcd_protocol_factory;
 			server_mt<umcd_protocol, umcd_protocol_factory> addon_server(
-				server_connexion(),
+				server_core(),
 				boost::bind(&make_umcd_protocol, _1, boost::cref(serverinfo))
 			);
 

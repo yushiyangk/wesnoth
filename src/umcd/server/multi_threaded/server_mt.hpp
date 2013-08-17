@@ -33,7 +33,7 @@ private:
 	typedef basic_server<Protocol, ProtocolFactory> base;
 
 public:
-	explicit server_mt(const server_connexion& server_config, typename base::protocol_factory_type protocol_factory);
+	explicit server_mt(const server_core& server_config, typename base::protocol_factory_type protocol_factory);
 	void run();
 
 private:
@@ -41,7 +41,7 @@ private:
 };
 
 template <class Protocol, class ProtocolFactory>
-server_mt<Protocol, ProtocolFactory>::server_mt(const server_connexion& server_config, typename base::protocol_factory_type protocol_factory)
+server_mt<Protocol, ProtocolFactory>::server_mt(const server_core& server_config, typename base::protocol_factory_type protocol_factory)
 : base(server_config, protocol_factory)
 {
 	thread_pool_size_ = server_config.threads();
