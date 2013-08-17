@@ -1061,6 +1061,15 @@ set(umcd_SRC
 add_library(umcd-lib ${LIBRARY_TYPE} EXCLUDE_FROM_ALL ${umcd_lib_SRC})
 
 add_executable(umcd ${umcd_SRC})
+
+# OTL have strange macro that trigger this error.
+if(CMAKE_COMPILER_IS_GNUCXX)
+	set_target_properties(umcd-lib umcd
+		PROPERTIES COMPILE_FLAGS
+		"-Wno-useless-cast"
+	)
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
 target_link_libraries(umcd
 	umcd-lib
 	wesnoth-core
