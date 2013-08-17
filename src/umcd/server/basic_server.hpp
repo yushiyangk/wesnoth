@@ -21,6 +21,7 @@
 #ifndef SERVER_BASIC_SERVER_HPP
 #define SERVER_BASIC_SERVER_HPP
 
+#include "umcd/environment.hpp"
 #include "umcd/boost/thread/workaround.hpp"
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
@@ -38,7 +39,7 @@ public:
 	typedef ProtocolFactory protocol_factory_type;
 
 public:
-	explicit basic_server(const config& cfg, protocol_factory_type protocol_factory);
+	explicit basic_server(const server_connexion& server_config, protocol_factory_type protocol_factory);
 	void run();
 	boost::asio::io_service& get_io_service();
 
@@ -56,7 +57,7 @@ protected:
 };
 
 template <class Protocol, class ProtocolFactory>
-basic_server<Protocol, ProtocolFactory>::basic_server(const config &cfg, protocol_factory_type protocol_factory)
+basic_server<Protocol, ProtocolFactory>::basic_server(const server_connexion& server_config, protocol_factory_type protocol_factory)
 : io_service_()
 , acceptor_(io_service_)
 , protocol_factory_(protocol_factory)
@@ -66,7 +67,7 @@ basic_server<Protocol, ProtocolFactory>::basic_server(const config &cfg, protoco
 	using namespace boost::asio::ip;
 
 	// Find an endpoint on the port specified, if none found, throw a runtime_error exception.
-	std::string port = cfg["port"];
+	std::string port = server_config.port();
 	tcp::resolver resolver(io_service_);
 	tcp::resolver::query query(port, tcp::resolver::query::address_configured);
 	tcp::resolver::iterator endpoint_iter = resolver.resolve(query);

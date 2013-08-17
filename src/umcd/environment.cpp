@@ -16,6 +16,8 @@
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/actions/request_umc_upload_action.hpp"
 
+#include "config.hpp"
+
 environment::environment(const config& server_config)
 : server_config_(server_config)
 {
@@ -26,4 +28,39 @@ environment::environment(const config& server_config)
 boost::shared_ptr<request_info> environment::get_request_info(const std::string& request_name) const
 {
 	return action_factory_.make_product(request_name);
+}
+
+std::size_t server_connexion::threads_ = 0;
+std::string server_connexion::port_ = "10250";
+
+std::size_t server_connexion::threads() const
+{
+	return threads_;
+}
+
+const std::string& server_connexion::port() const
+{
+	return port_;
+}
+
+void server_connexion::set_threads(std::size_t server_threads)
+{
+	threads_ = server_threads;
+}
+
+void server_connexion::set_port(const std::string& server_port)
+{
+	port_ = server_port;
+}
+
+void environment_loader::load(const config& cfg)
+{
+	load_server_connexion(cfg.child("server_core"));
+}
+
+void environment_loader::load_server_connexion(const config& cfg)
+{
+	server_connexion sc;
+	sc.set_port(cfg["port"]);
+	sc.set_threads(cfg["threads"]);
 }

@@ -88,10 +88,13 @@ int main(int argc, char *argv[])
 				std::cerr<<e.var_info<<std::endl; // print out the variable that caused the error
 			}
 
+			environment_loader env_loader;
+			env_loader.load(cfg);
+
 			environment serverinfo(cfg);
 			typedef boost::function<boost::shared_ptr<umcd_protocol> (umcd_protocol::io_service_type&)> umcd_protocol_factory;
 			server_mt<umcd_protocol, umcd_protocol_factory> addon_server(
-				cfg.child("server_core"),
+				server_connexion(),
 				boost::bind(&make_umcd_protocol, _1, boost::cref(serverinfo))
 			);
 

@@ -18,10 +18,11 @@
 #include <boost/noncopyable.hpp>
 #include <string>
 
-#include "config.hpp"
 #include "umcd/request_info.hpp"
 #include "umcd/server/generic_factory.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
+
+class config;
 
 class environment : private boost::noncopyable
 {
@@ -49,5 +50,35 @@ void environment::register_request_info(const std::string& request_name)
 			make_request_info<Action, validator_type>(server_config_, request_name)
 	 );
 }
+
+class environment_loader;
+
+class server_connexion
+{
+public:
+	std::size_t threads() const;
+	const std::string& port() const;
+
+private:
+	friend class environment_loader;
+
+	void set_threads(std::size_t server_threads);
+	void set_port(const std::string& server_port);
+
+	static std::size_t threads_;
+	static std::string port_;
+};
+
+class environment_loader
+{
+public:
+	void load(const config& cfg);
+private:
+	void load_server_connexion(const config& cfg);
+};
+
+class database_connexion{};
+class server_info{};
+class logging_info{};
 
 #endif // UMCD_environment_HPP
