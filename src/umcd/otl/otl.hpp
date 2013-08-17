@@ -18,7 +18,11 @@
 // You must install unixODBC: sudo apt-get install unixodbc-dev
 
 #define OTL_ODBC
-#define OTL_ODBC_UNIX
+
+// Use ODBC_UNIX if we are on Unix.
+#if defined(unix) || defined(__unix) || defined(__unix__)
+	#define OTL_ODBC_UNIX
+#endif
 // Enable the use of the STL
 #define OTL_STL
 
