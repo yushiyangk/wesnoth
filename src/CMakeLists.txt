@@ -1029,6 +1029,34 @@ target_link_libraries(sql2cpp
 	${Boost_PROGRAM_OPTIONS_LIBRARY}
 )
 
+# Creates the headers from the SQL schema.
+# Since the list of generated header files can change in the future they are
+# not listed specifically, instead a dummy stamp file, namded sql.stamp, is
+# generated.
+# The output is written to ${CMAKE_CURRENT_BINARY_DIR}, this directory is
+# looked at in order to find include files.
+add_custom_command(
+	OUTPUT
+		${CMAKE_CURRENT_BINARY_DIR}/sql.stamp
+	COMMAND
+		${EXECUTABLE_OUTPUT_PATH}/sql2cpp
+			-h ${CMAKE_SOURCE_DIR}/data/umcd/license_header.txt
+			-s ${CMAKE_SOURCE_DIR}/data/umcd/database/create_database.sql
+			-d ${CMAKE_CURRENT_BINARY_DIR}
+	COMMAND
+		${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/sql.stamp
+	DEPENDS
+		sql2cpp
+		${CMAKE_SOURCE_DIR}/data/umcd/database/create_database.sql
+		${CMAKE_SOURCE_DIR}/data/umcd/license.txt
+	COMMENT
+		"Generating SQL schema based headers."
+)
+
+# Targets depending on the generated headers from the SQL schema should add
+# this target as dependency.
+add_custom_target(sql_headers DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/sql.stamp)
+
 # UMCD core.
 
 set(wesnoth-schema_validator-dependencies_SRC
@@ -1059,6 +1087,8 @@ set(umcd_SRC
 )
 
 add_library(umcd-lib ${LIBRARY_TYPE} EXCLUDE_FROM_ALL ${umcd_lib_SRC})
+
+add_dependencies(umcd-lib sql_headers)
 
 add_executable(umcd ${umcd_SRC})
 target_link_libraries(umcd
