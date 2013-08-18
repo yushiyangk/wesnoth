@@ -12,33 +12,23 @@
 	See the COPYING file for more details.
 */
 
-#ifndef UMCD_SEVERITY_LEVEL_HPP
-#define UMCD_SEVERITY_LEVEL_HPP
-
-#include <map>
-#include <string>
+#include "umcd/logger/severity_level.hpp"
 
 namespace umcd{
-
-struct severity
-{
-	enum level
-	{
-		trace,
-		debug,
-		info,
-		warning,
-		error,
-		fatal,
-		num_severity_level
-	};
-
-	// Init map "textual representation of the severity level" to "severity level enum".
-	static void init_severity_str2enum();
-
-	static const char* enum2str[];
-	static std::map<std::string, severity::level> str2enum;
+const char* severity::enum2str[] = {
+	"trace",
+	"debug",
+	"info",
+	"warning",
+	"error",
+	"fatal"
 };
-} // namespace umcd
 
-#endif // UMCD_SEVERITY_LEVEL_HPP
+std::map<std::string, severity::level> severity::str2enum;
+
+void severity::init_severity_str2enum()
+{
+	for(int sev=0; sev < num_severity_level; ++sev)
+		str2enum[enum2str[sev]] = static_cast<level>(sev);
+}
+} // namespace umcd

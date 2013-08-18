@@ -20,7 +20,6 @@
 #include <ostream>
 #include <iostream>
 #include <sstream>
-#include <map>
 
 #include "umcd/env/logging_info.hpp"
 #include "umcd/logger/severity_level.hpp"
@@ -44,8 +43,6 @@ struct log_stream;
 
 class logger : boost::noncopyable
 {
-	static const char* severity_level_name[];
-
 	typedef std::vector<detail::log_line> cache_type;
 	typedef boost::shared_ptr<cache_type> cache_ptr;
 
@@ -58,10 +55,6 @@ class logger : boost::noncopyable
 	void set_files_output(const logging_info::file_list& files);
 
 public:
-	static std::map<std::string, severity::level> severity_str2enum;
-
-	// Init map "textual representation of the severity level" to "severity level enum".
-	static void init_severity_str2enum();
 	logger();
 	void add_line(const detail::log_line_cache& line);
 	void run_once();

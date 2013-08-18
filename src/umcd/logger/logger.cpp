@@ -21,17 +21,6 @@
 
 namespace umcd{
 
-const char* logger::severity_level_name[] = {
-	"trace",
-	"debug",
-	"info",
-	"warning",
-	"error",
-	"fatal"
-};
-
-std::map<std::string, severity::level> logger::severity_str2enum;
-
 void logger::default_logging_output()
 {
 	int sev;
@@ -56,7 +45,7 @@ logger::cache_ptr logger::make_new_cache()
 
 std::string logger::make_header(severity::level sev) const
 {
-	return std::string("[") + severity_level_name[sev] + "] ";
+	return std::string("[") + severity::enum2str[sev] + "] ";
 }
 
 void logger::set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<detail::log_stream>& stream)
@@ -78,12 +67,6 @@ void logger::set_files_output(const logging_info::file_list& files)
 	{
 		set_log_output(files[i].second, boost::make_shared<detail::file_log_stream>(files[i].first));
 	}
-}
-
-void logger::init_severity_str2enum()
-{
-	for(int sev=0; sev < severity::num_severity_level; ++sev)
-		severity_str2enum[severity_level_name[sev]] = static_cast<severity::level>(sev);
 }
 
 logger::logger()
