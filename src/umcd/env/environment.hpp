@@ -21,7 +21,6 @@
 #include "umcd/server/generic_factory.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "umcd/request_info.hpp"
-#include "umcd/env/logging_info.hpp"
 
 class config;
 
@@ -51,59 +50,5 @@ void environment::register_request_info(const std::string& request_name)
 			make_request_info<Action, validator_type>(server_info_, request_name)
 	 );
 }
-
-class environment_loader;
-
-class server_core
-{
-public:
-	std::size_t threads() const;
-	const std::string& port() const;
-
-protected:
-	friend class environment_loader;
-
-	void set_threads(std::size_t server_threads);
-	void set_port(const std::string& server_port);
-
-private:
-	static std::size_t threads_;
-	static std::string port_;
-};
-
-class database_connexion
-{
-public:
-	const std::string& dsn() const;
-	const std::string& user() const;
-	const std::string& password() const;
-
-protected:
-	friend class environment_loader;
-
-	void set_dsn(const std::string& dsn);
-	void set_user(const std::string& user);
-	void set_password(const std::string& password);
-
-private:
-	static std::string dsn_;
-	static std::string user_;
-	static std::string password_;
-};
-
-class environment_loader
-{
-public:
-	void load(const config& cfg);
-
-private:
-	void load_server_core(const config& cfg);
-	void load_database_connexion(const config& cfg);
-	void load_server_info(const config& cfg);
-	void load_logging_info(const config& cfg);
-
-	logging_info::severity_list make_severity_list(const std::string& levels);
-	logging_info::file_list make_file_list(const config& cfg);
-};
 
 #endif // UMCD_ENVIRONMENT_HPP

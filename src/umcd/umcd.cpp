@@ -30,6 +30,7 @@
 #include "umcd/daemon.hpp"
 #include "umcd/otl/otl.hpp"
 #include "umcd/env/environment.hpp"
+#include "umcd/env/environment_loader.hpp"
 
 static void load_config_data(const config& cfg)
 {
