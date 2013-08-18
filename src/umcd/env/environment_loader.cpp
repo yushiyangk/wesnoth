@@ -17,29 +17,6 @@
 
 #include <boost/algorithm/string.hpp>
 
-std::size_t server_core::threads_;
-std::string server_core::port_;
-
-std::size_t server_core::threads() const
-{
-	return threads_;
-}
-
-const std::string& server_core::port() const
-{
-	return port_;
-}
-
-void server_core::set_threads(std::size_t server_threads)
-{
-	threads_ = server_threads;
-}
-
-void server_core::set_port(const std::string& server_port)
-{
-	port_ = server_port;
-}
-
 std::string database_connexion::dsn_;
 std::string database_connexion::user_;
 std::string database_connexion::password_;

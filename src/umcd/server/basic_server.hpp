@@ -22,7 +22,7 @@
 #define SERVER_BASIC_SERVER_HPP
 
 #include "umcd/env/environment.hpp"
-#include "umcd/env/environment_loader.hpp"
+#include "umcd/env/server_core.hpp"
 #include "umcd/logger/asio_logger.hpp"
 
 #include <boost/asio.hpp>

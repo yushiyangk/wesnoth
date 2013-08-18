@@ -16,29 +16,13 @@
 #define UMCD_ENVIRONMENT_LOADER_HPP
 
 #include "umcd/env/logging_info.hpp"
+#include "umcd/env/server_core.hpp"
 #include "umcd/env/server_info.hpp"
 #include "umcd/logger/logger.hpp"
 #include <string>
 
 class config;
 class environment_loader;
-
-class server_core
-{
-public:
-	std::size_t threads() const;
-	const std::string& port() const;
-
-protected:
-	friend class environment_loader;
-
-	void set_threads(std::size_t server_threads);
-	void set_port(const std::string& server_port);
-
-private:
-	static std::size_t threads_;
-	static std::string port_;
-};
 
 class database_connexion
 {

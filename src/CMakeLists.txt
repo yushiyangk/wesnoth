@@ -1082,6 +1082,7 @@ set(umcd_lib_SRC
 	umcd/env/environment_loader.cpp
 	umcd/env/server_info.cpp
 	umcd/env/logging_info.cpp
+	umcd/env/server_core.cpp
 	umcd/actions/request_license_action.cpp
 	umcd/actions/request_umc_upload_action.cpp
 	umcd/protocol/wml/umcd_protocol.cpp
