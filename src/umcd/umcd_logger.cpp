@@ -23,6 +23,8 @@ const char* umcd_logger::severity_level_name[] = {
 	"fatal"
 };
 
+std::map<std::string, severity_level> umcd_logger::severity_str2enum;
+
 log_line_cache::log_line_cache(umcd_logger& logger, severity_level severity)
 : logger_(logger)
 , enabled_(logger.get_current_severity() <= severity)

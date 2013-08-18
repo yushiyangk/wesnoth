@@ -21,6 +21,7 @@
 #include "umcd/server/generic_factory.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "umcd/request_info.hpp"
+#include "umcd/logging_info.hpp"
 
 class config;
 
@@ -99,8 +100,10 @@ private:
 	void load_server_core(const config& cfg);
 	void load_database_connexion(const config& cfg);
 	void load_server_info(const config& cfg);
-};
+	void load_logging_info(const config& cfg);
 
-class logging_info{};
+	logging_info::severity_list make_severity_list(const std::string& levels);
+	logging_info::file_list make_file_list(const config& cfg);
+};
 
 #endif // UMCD_ENVIRONMENT_HPP

@@ -33,7 +33,6 @@
 
 static void load_config_data(const config& cfg)
 {
-	asio_logger::get().load_config(cfg.child("logging"));
 	umcd_protocol::load_config(cfg.child("protocol"));
 }
 
@@ -53,6 +52,7 @@ int main(int argc, char *argv[])
 			// (Because the game_config::path must be initialized to validate).
 			options.validate(cfg);
 
+			asio_logger::get().load(logging_info());
 			load_config_data(cfg);
 
 			if(options.is_daemon())
@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
 			otl_connect db;
 			try
 			{
-				database_connexion db_connexion;
-				db.rlogon(boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_connexion.user() % db_connexion.password() % db_connexion.dsn()).c_str());
+				database_connexion db_info;
+				db.rlogon(boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str());
 			}
 			catch(otl_exception& e)
 			{
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 				std::cerr<<e.sqlstate<<std::endl; // print out SQLSTATE message
 				std::cerr<<e.var_info<<std::endl; // print out the variable that caused the error
 			}
-			
+
 			server_info info;
 			environment env(info);
 			typedef boost::function<boost::shared_ptr<umcd_protocol> (umcd_protocol::io_service_type&)> umcd_protocol_factory;

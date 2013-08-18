@@ -25,6 +25,8 @@
 #include <map>
 
 #include "config.hpp"
+#include "umcd/logging_info.hpp"
+#include "umcd/severity_level.hpp"
 
 #include "umcd/boost/thread/workaround.hpp"
 #include "umcd/boost/thread/lock_guard.hpp"
@@ -34,19 +36,8 @@
 #include <boost/make_shared.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-
-enum severity_level {
-	trace,
-	debug,
-	info,
-	warning,
-	error,
-	fatal,
-	nb_severity_level
-};
 
 class umcd_logger;
 struct log_line;
@@ -57,7 +48,6 @@ private:
 	friend struct log_line;
 
 public:
-
 	log_line_cache(umcd_logger& logger, severity_level severity);
 	~log_line_cache();
 
@@ -167,44 +157,42 @@ class umcd_logger : boost::noncopyable
 		return std::string("[") + severity_level_name[sev] + "] ";
 	}
 
-	void set_log_output(const std::string& levels_list, const boost::shared_ptr<log_stream>& stream)
+	void set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<log_stream>& stream)
 	{
-		std::vector<std::string> levels_to_stream;
-		boost::algorithm::split(levels_to_stream, levels_list, boost::algorithm::is_any_of(" ,"));
-		for(std::size_t i = 0; i < levels_to_stream.size(); ++i)
+		for(std::size_t i = 0; i < sev_list.size(); ++i)
 		{
-			set_output(level_str2enum_[levels_to_stream[i]], stream);
+			set_output(sev_list[i], stream);
 		}
 	}
 
-	void set_standard_output(const config& log_cfg, const std::string& stream_name, const std::ostream& stream)
+	void set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream)
 	{
-		if(log_cfg.has_child(stream_name))
-		{
-			std::string log_to_stream = log_cfg.child(stream_name)["level"].str();
-			set_log_output(log_to_stream, boost::make_shared<standard_log_stream>(stream));
-		}
+		set_log_output(sev_list, boost::make_shared<standard_log_stream>(stream));
 	}
 
-	void set_files_output(const config& log_cfg)
+	void set_files_output(const logging_info::file_list& files)
 	{
-		config::const_child_itors frange = log_cfg.child_range("file");
-		for(;frange.first != frange.second; ++(frange.first))
+		for(std::size_t i=0; i < files.size(); ++i)
 		{
-			const config& file_detail = *(frange.first);
-			set_log_output(file_detail["level"].str(), boost::make_shared<file_log_stream>(file_detail["filename"].str()));
+			set_log_output(files[i].second, boost::make_shared<file_log_stream>(files[i].first));
 		}
 	}
 
 public:
+	static std::map<std::string, severity_level> severity_str2enum;
+
+	// Init map "textual representation of the severity level" to "severity level enum".
+	static void init_severity_str2enum()
+	{
+		for(int sev=0; sev < nb_severity_level; ++sev)
+			severity_str2enum[severity_level_name[sev]] = static_cast<severity_level>(sev);
+	}
+
 	umcd_logger()
 	: current_sev_lvl_(trace)
 	, cache_(boost::make_shared<cache_type>())
 	{
 		default_logging_output();
-		// Init map "textual representation of the severity level" to "severity level enum".
-		for(int sev=0; sev < nb_severity_level; ++sev)
-			level_str2enum_[severity_level_name[sev]] = static_cast<severity_level>(sev);
 	}
 
 	void add_line(const log_line_cache& line)
@@ -232,17 +220,13 @@ public:
 		}
 	}
 
-	void load_config(const config& log_cfg)
+	void load(const logging_info& log_info)
 	{
-		// Set the severity level.
-		if(log_cfg.has_attribute("log_if_greater_or_equal"))
-		{
-			set_severity(level_str2enum_[log_cfg["log_if_greater_or_equal"].str()]);
-		}
+		set_severity(log_info.lower_limit());
 
-		set_standard_output(log_cfg, "cout", std::cout);
-		set_standard_output(log_cfg, "cerr", std::cerr);
-		set_files_output(log_cfg);
+		set_standard_output(log_info.to_cout(), std::cout);
+		set_standard_output(log_info.to_cerr(), std::cerr);
+		set_files_output(log_info.to_files());
 	}
 
 	void set_severity(severity_level level)
@@ -270,7 +254,6 @@ private:
 	boost::array<boost::shared_ptr<log_stream>, nb_severity_level> logging_output_;
 	boost::mutex cache_access_;
 	boost::shared_ptr<cache_type> cache_;
-	std::map<std::string, severity_level> level_str2enum_;
 };
 
 class asio_logger
