@@ -22,7 +22,7 @@ The license is not shipped with the Wesnoth client because this server can be re
 #include <boost/shared_ptr.hpp>
 #include "config.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
-#include "umcd/server_info.hpp"
+#include "umcd/env/server_info.hpp"
 
 class request_license_action : public basic_umcd_action
 {

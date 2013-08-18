@@ -12,7 +12,7 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/logging_info.hpp"
+#include "umcd/env/logging_info.hpp"
 
 umcd::severity_level logging_info::lower_limit_;
 logging_info::severity_list logging_info::cout_;

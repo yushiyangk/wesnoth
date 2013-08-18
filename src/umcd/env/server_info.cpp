@@ -12,7 +12,7 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/server_info.hpp"
+#include "umcd/env/server_info.hpp"
 #include "game_config.hpp"
 
 std::string server_info::wesnoth_dir_;

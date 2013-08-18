@@ -22,7 +22,7 @@
 #include <sstream>
 #include <map>
 
-#include "umcd/logging_info.hpp"
+#include "umcd/env/logging_info.hpp"
 #include "umcd/logger/severity_level.hpp"
 #include "umcd/logger/detail/log_line_cache.hpp"
 

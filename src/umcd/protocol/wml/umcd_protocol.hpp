@@ -22,7 +22,7 @@
 	 
 #include "wml_exception.hpp"
 
-#include "umcd/environment.hpp"
+#include "umcd/env/environment.hpp"
 #include "umcd/wml_request.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include "umcd/wml_reply.hpp"

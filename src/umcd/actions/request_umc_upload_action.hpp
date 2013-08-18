@@ -18,7 +18,7 @@
 #include <boost/shared_ptr.hpp>
 #include "config.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
-#include "umcd/server_info.hpp"
+#include "umcd/env/server_info.hpp"
 
 class request_umc_upload_action 
 : public basic_umcd_action

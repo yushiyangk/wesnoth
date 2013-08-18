@@ -29,7 +29,7 @@
 #include "umcd/logger/asio_logger.hpp"
 #include "umcd/daemon.hpp"
 #include "umcd/otl/otl.hpp"
-#include "umcd/environment.hpp"
+#include "umcd/env/environment.hpp"
 
 static void load_config_data(const config& cfg)
 {

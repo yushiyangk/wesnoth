@@ -21,7 +21,7 @@
 #include "umcd/server/generic_factory.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "umcd/request_info.hpp"
-#include "umcd/logging_info.hpp"
+#include "umcd/env/logging_info.hpp"
 
 class config;
 

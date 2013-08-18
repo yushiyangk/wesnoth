@@ -12,7 +12,7 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/environment.hpp"
+#include "umcd/env/environment.hpp"
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/actions/request_umc_upload_action.hpp"
 #include "umcd/logger/logger.hpp"

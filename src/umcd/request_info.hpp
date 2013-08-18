@@ -19,7 +19,7 @@
 #include "serialization/schema_validator.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "filesystem.hpp"
-#include "umcd/server_info.hpp"
+#include "umcd/env/server_info.hpp"
 
 class request_info
 {
