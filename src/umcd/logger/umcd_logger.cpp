@@ -14,22 +14,7 @@
 
 #include "umcd/logger/umcd_logger.hpp"
 
-log_line_cache::log_line_cache(umcd_logger& logger, severity_level severity)
-: logger_(logger)
-, enabled_(logger.get_current_severity() <= severity)
-, severity_(severity)
-, line_(boost::make_shared<std::stringstream>())
-{}
-
-log_line_cache::~log_line_cache()
-{
-	if(enabled_)
-	{
-		logger_.add_line(*this);
-	}
-}
-
-log_line::log_line(const log_line_cache& cache_line)
+log_line::log_line(const umcd::detail::log_line_cache& cache_line)
 : severity(cache_line.severity_)
 , data(cache_line.line_->str())
 , time(boost::posix_time::second_clock::universal_time())
@@ -125,7 +110,7 @@ umcd_logger::umcd_logger()
 	default_logging_output();
 }
 
-void umcd_logger::add_line(const log_line_cache& line)
+void umcd_logger::add_line(const umcd::detail::log_line_cache& line)
 {
 	lock_guard<boost::mutex> guard(cache_access_);
 	cache_->push_back(log_line(line));
@@ -174,9 +159,9 @@ void umcd_logger::set_output(severity_level sev, const boost::shared_ptr<log_str
 	logging_output_[sev] = stream;
 }
 
-log_line_cache umcd_logger::get_logger(severity_level level)
+umcd::detail::log_line_cache umcd_logger::get_logger(severity_level level)
 {
-	return log_line_cache(*this, level);
+	return umcd::detail::log_line_cache(*this, level);
 }
 
 asio_logger::asio_logger()

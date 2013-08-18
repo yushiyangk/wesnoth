@@ -27,6 +27,7 @@
 #include "config.hpp"
 #include "umcd/logging_info.hpp"
 #include "umcd/logger/severity_level.hpp"
+#include "umcd/logger/detail/log_line_cache.hpp"
 
 #include "umcd/boost/thread/workaround.hpp"
 #include "umcd/boost/thread/lock_guard.hpp"
@@ -39,42 +40,13 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
-class umcd_logger;
-struct log_line;
-
-class log_line_cache
-{
-private:
-	friend struct log_line;
-
-public:
-	log_line_cache(umcd_logger& logger, severity_level severity);
-	~log_line_cache();
-
-	template <class Streamable>
-	log_line_cache& operator<<(const Streamable& log)
-	{
-		if(enabled_)
-		{
-			 *line_ << log;
-		}
-		return *this;
-	}
-
-private:
-	umcd_logger& logger_;
-	bool enabled_;
-	severity_level severity_;
-	boost::shared_ptr<std::stringstream> line_;
-};
-
 struct log_line
 {
 	severity_level severity;
 	std::string data;
 	boost::posix_time::ptime time;
 
-	log_line(const log_line_cache& cache_line);
+	log_line(const umcd::detail::log_line_cache& cache_line);
 };
 
 class log_stream
@@ -126,13 +98,13 @@ public:
 	// Init map "textual representation of the severity level" to "severity level enum".
 	static void init_severity_str2enum();
 	umcd_logger();
-	void add_line(const log_line_cache& line);
+	void add_line(const umcd::detail::log_line_cache& line);
 	void run_once();
 	void load(const logging_info& log_info);
 	void set_severity(severity_level level);
 	severity_level get_current_severity() const;
 	void set_output(severity_level sev, const boost::shared_ptr<log_stream>& stream);
-	log_line_cache get_logger(severity_level level);
+	umcd::detail::log_line_cache get_logger(severity_level level);
 private:
 	severity_level current_sev_lvl_;
 	boost::array<boost::shared_ptr<log_stream>, nb_severity_level> logging_output_;
