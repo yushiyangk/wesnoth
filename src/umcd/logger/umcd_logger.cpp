@@ -13,12 +13,7 @@
 */
 
 #include "umcd/logger/umcd_logger.hpp"
-
-log_line::log_line(const umcd::detail::log_line_cache& cache_line)
-: severity(cache_line.severity_)
-, data(cache_line.line_->str())
-, time(boost::posix_time::second_clock::universal_time())
-{}
+#include "umcd/logger/detail/log_line.hpp"
 
 standard_log_stream::standard_log_stream(const std::ostream& log_stream)
 : stream_(boost::make_shared<std::ostream>(log_stream.rdbuf()))
@@ -113,7 +108,7 @@ umcd_logger::umcd_logger()
 void umcd_logger::add_line(const umcd::detail::log_line_cache& line)
 {
 	lock_guard<boost::mutex> guard(cache_access_);
-	cache_->push_back(log_line(line));
+	cache_->push_back(umcd::detail::log_line(line));
 }
 
 void umcd_logger::run_once()
@@ -127,7 +122,7 @@ void umcd_logger::run_once()
 
 	for(std::size_t i=0; i < old_cache->size(); ++i)
 	{
-		const log_line& line = (*old_cache)[i];
+		const umcd::detail::log_line& line = (*old_cache)[i];
 		*log_streams[line.severity] << make_header(line.severity) 
 			<< boost::posix_time::to_simple_string(line.time) << ": "
 			<< line.data

@@ -40,14 +40,11 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
-struct log_line
-{
-	severity_level severity;
-	std::string data;
-	boost::posix_time::ptime time;
+namespace umcd{
+namespace detail{
+struct log_line;
 
-	log_line(const umcd::detail::log_line_cache& cache_line);
-};
+}} // namespace umcd::detail
 
 class log_stream
 {
@@ -81,7 +78,7 @@ class umcd_logger : boost::noncopyable
 {
 	static const char* severity_level_name[];
 
-	typedef std::vector<log_line> cache_type;
+	typedef std::vector<umcd::detail::log_line> cache_type;
 	typedef boost::shared_ptr<cache_type> cache_ptr;
 
 	void default_logging_output();

@@ -12,47 +12,28 @@
 	See the COPYING file for more details.
 */
 
-#ifndef UMCD_DETAIL_LOG_LINE_CACHE_HPP
-#define UMCD_DETAIL_LOG_LINE_CACHE_HPP
+#ifndef UMCD_DETAIL_LOG_LINE_HPP
+#define UMCD_DETAIL_LOG_LINE_HPP
 
 #include "umcd/logger/severity_level.hpp"
 
-#include <boost/shared_ptr.hpp>
-#include <sstream>
-
-class umcd_logger;
+#include <string>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace umcd{
 namespace detail{
 
-struct log_line;
+struct log_line_cache;
 
-class log_line_cache
+struct log_line
 {
-private:
-	friend struct log_line;
+	severity_level severity;
+	std::string data;
+	boost::posix_time::ptime time;
 
-public:
-	log_line_cache(umcd_logger& logger, severity_level severity);
-	~log_line_cache();
-
-	template <class Streamable>
-	log_line_cache& operator<<(const Streamable& log)
-	{
-		if(enabled_)
-		{
-			 *line_ << log;
-		}
-		return *this;
-	}
-
-private:
-	umcd_logger& logger_;
-	bool enabled_;
-	severity_level severity_;
-	boost::shared_ptr<std::stringstream> line_;
+	log_line(const log_line_cache& cache_line);
 };
 
 }} // namespace umcd::detail
 
-#endif // UMCD_DETAIL_LOG_LINE_CACHE_HPP
+#endif // UMCD_DETAIL_LOG_LINE_HPP

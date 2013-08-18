@@ -12,27 +12,16 @@
 	See the COPYING file for more details.
 */
 
+#include "umcd/logger/detail/log_line.hpp"
 #include "umcd/logger/detail/log_line_cache.hpp"
-#include "umcd/logger/umcd_logger.hpp"
-
-#include <boost/make_shared.hpp>
 
 namespace umcd{
 namespace detail{
 
-log_line_cache::log_line_cache(umcd_logger& logger, severity_level severity)
-: logger_(logger)
-, enabled_(logger.get_current_severity() <= severity)
-, severity_(severity)
-, line_(boost::make_shared<std::stringstream>())
+log_line::log_line(const log_line_cache& cache_line)
+: severity(cache_line.severity_)
+, data(cache_line.line_->str())
+, time(boost::posix_time::second_clock::universal_time())
 {}
-
-log_line_cache::~log_line_cache()
-{
-	if(enabled_)
-	{
-		logger_.add_line(*this);
-	}
-}
 
 }} // namespace umcd::detail
