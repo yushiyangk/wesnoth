@@ -18,33 +18,37 @@
 #include <boost/system/error_code.hpp>
 #include <boost/array.hpp>
 
-enum umcd_error
+namespace umcd{
+enum error
 {
 	invalid_packet,
 	request_header_too_large,
-	num_umcd_error
+	num_error
 };
+} // namespace umcd
 
 namespace boost{
 namespace system{
 
 template<>
-struct is_error_condition_enum<umcd_error>
+struct is_error_condition_enum<umcd::error>
 {
 	static const bool value = true;
 };
 }} // namespace boost::system
 
-class umcd_error_category : public boost::system::error_category
+namespace umcd{
+class error_category : public boost::system::error_category
 {
-	static boost::array<std::string, num_umcd_error> error_messages;
+	static boost::array<std::string, num_error> error_messages;
 public:
-	umcd_error_category(){}
+	error_category(){}
 	const char* name() const;
 	std::string message(int ev) const;
 };
+} // namespace umcd
 
-boost::system::error_condition make_error_condition(umcd_error e);
+boost::system::error_condition make_error_condition(umcd::error e);
 const boost::system::error_category& umcd_category();
 
 #endif // UMCD_ERROR_HPP

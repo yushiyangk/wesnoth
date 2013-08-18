@@ -26,10 +26,10 @@ class environment_loader;
 class logging_info
 {
 public:
-	typedef std::vector<umcd::severity_level> severity_list;
+	typedef std::vector<umcd::severity::level> severity_list;
 	typedef std::vector<std::pair<std::string, severity_list> > file_list;
 
-	umcd::severity_level lower_limit() const;
+	umcd::severity::level lower_limit() const;
 	const severity_list& to_cout() const;
 	const severity_list& to_cerr() const;
 	const file_list& to_files() const;
@@ -37,13 +37,13 @@ public:
 protected:
 	friend class environment_loader;
 
-	void set_lower_limit(umcd::severity_level lvl);
+	void set_lower_limit(umcd::severity::level lvl);
 	void set_to_cout(const severity_list& to_cout);
 	void set_to_cerr(const severity_list& to_cerr);
 	void set_to_files(const file_list& to_files);
 
 private:
-	static umcd::severity_level lower_limit_;
+	static umcd::severity::level lower_limit_;
 	static severity_list cout_;
 	static severity_list cerr_;
 	static file_list files_;

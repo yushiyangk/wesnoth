@@ -20,10 +20,10 @@
 namespace umcd{
 namespace detail{
 
-log_line_cache::log_line_cache(logger& logger, severity_level severity)
+log_line_cache::log_line_cache(logger& logger, severity::level severity_level)
 : logger_(logger)
-, enabled_(logger.get_current_severity() <= severity)
-, severity_(severity)
+, enabled_(logger.get_current_severity() <= severity_level)
+, severity_(severity_level)
 , line_(boost::make_shared<std::stringstream>())
 {}
 

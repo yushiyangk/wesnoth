@@ -17,16 +17,20 @@
 
 namespace umcd{
 
-enum severity_level {
-	trace,
-	debug,
-	info,
-	warning,
-	error,
-	fatal,
-	nb_severity_level
+class severity
+{
+public:
+	enum level
+	{
+		trace,
+		debug,
+		info,
+		warning,
+		error,
+		fatal,
+		num_severity_level
+	};
 };
-
 } // namespace umcd
 
 #endif // UMCD_SEVERITY_LEVEL_HPP

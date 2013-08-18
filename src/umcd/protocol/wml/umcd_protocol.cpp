@@ -18,7 +18,7 @@
 
 #include "umcd/protocol/wml/umcd_protocol.hpp"
 #include "umcd/special_packet.hpp"
-#include "umcd/umcd_error.hpp"
+#include "umcd/error.hpp"
 #include "umcd/env/server_info.hpp"
 #include "umcd/env/protocol_info.hpp"
 
@@ -83,14 +83,14 @@ void umcd_protocol::async_send_error(const boost::system::error_condition& error
 void umcd_protocol::async_send_invalid_packet(const std::string &where, const std::exception& e)
 {
 	UMCD_LOG_IP(error, socket_) << " -- invalid request at " << where << " (" << e.what() << ")";
-	async_send_error(make_error_condition(invalid_packet));
+	async_send_error(make_error_condition(umcd::invalid_packet));
 }
 
 void umcd_protocol::async_send_invalid_packet(const std::string &where, const twml_exception& e)
 {
 	UMCD_LOG_IP(error, socket_) << " -- invalid request at " << where 
 										<< " (user message=" << e.user_message << " ; dev message=" << e.dev_message << ")";
-	async_send_error(make_error_condition(invalid_packet));
+	async_send_error(make_error_condition(umcd::invalid_packet));
 }
 
 void umcd_protocol::read_request_body(const boost::system::error_code& error, std::size_t)
@@ -104,7 +104,7 @@ void umcd_protocol::read_request_body(const boost::system::error_code& error, st
 			UMCD_LOG_IP(debug, socket_) << " -- Request of size: " << payload_size_;
 			if(payload_size_ > REQUEST_HEADER_MAX_SIZE)
 			{
-				async_send_error(make_error_condition(request_header_too_large));
+				async_send_error(make_error_condition(umcd::request_header_too_large));
 			}
 			else
 			{

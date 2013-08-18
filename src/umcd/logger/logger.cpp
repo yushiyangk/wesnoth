@@ -30,18 +30,18 @@ const char* logger::severity_level_name[] = {
 	"fatal"
 };
 
-std::map<std::string, severity_level> logger::severity_str2enum;
+std::map<std::string, severity::level> logger::severity_str2enum;
 
 void logger::default_logging_output()
 {
 	int sev;
-	for(sev=0; sev <= warning; ++sev)
+	for(sev=0; sev <= severity::warning; ++sev)
 	{
-		set_output(static_cast<severity_level>(sev), boost::make_shared<detail::standard_log_stream>(std::cout));
+		set_output(static_cast<severity::level>(sev), boost::make_shared<detail::standard_log_stream>(std::cout));
 	}
-	for(; sev < nb_severity_level; ++sev)
+	for(; sev < severity::num_severity_level; ++sev)
 	{
-		set_output(static_cast<severity_level>(sev), boost::make_shared<detail::standard_log_stream>(std::cerr));
+		set_output(static_cast<severity::level>(sev), boost::make_shared<detail::standard_log_stream>(std::cerr));
 	}
 }
 
@@ -54,7 +54,7 @@ logger::cache_ptr logger::make_new_cache()
 	return old_cache;
 }
 
-std::string logger::make_header(severity_level sev) const
+std::string logger::make_header(severity::level sev) const
 {
 	return std::string("[") + severity_level_name[sev] + "] ";
 }
@@ -82,12 +82,12 @@ void logger::set_files_output(const logging_info::file_list& files)
 
 void logger::init_severity_str2enum()
 {
-	for(int sev=0; sev < nb_severity_level; ++sev)
-		severity_str2enum[severity_level_name[sev]] = static_cast<severity_level>(sev);
+	for(int sev=0; sev < severity::num_severity_level; ++sev)
+		severity_str2enum[severity_level_name[sev]] = static_cast<severity::level>(sev);
 }
 
 logger::logger()
-: current_sev_lvl_(trace)
+: current_sev_lvl_(severity::trace)
 , cache_(boost::make_shared<cache_type>())
 {
 	default_logging_output();
@@ -102,8 +102,8 @@ void logger::add_line(const umcd::detail::log_line_cache& line)
 void logger::run_once()
 {
 	cache_ptr old_cache = make_new_cache();
-	boost::array<boost::shared_ptr<std::ostream>, nb_severity_level> log_streams;
-	for(std::size_t i=0; i < nb_severity_level; ++i)
+	boost::array<boost::shared_ptr<std::ostream>, severity::num_severity_level> log_streams;
+	for(std::size_t i=0; i < severity::num_severity_level; ++i)
 	{
 		log_streams[i] = logging_output_[i]->stream();
 	}
@@ -111,7 +111,7 @@ void logger::run_once()
 	for(std::size_t i=0; i < old_cache->size(); ++i)
 	{
 		const umcd::detail::log_line& line = (*old_cache)[i];
-		*log_streams[line.severity] << make_header(line.severity) 
+		*log_streams[line.severity_level] << make_header(line.severity_level) 
 			<< boost::posix_time::to_simple_string(line.time) << ": "
 			<< line.data
 			<< "\n";
@@ -127,22 +127,22 @@ void logger::load(const logging_info& log_info)
 	set_files_output(log_info.to_files());
 }
 
-void logger::set_severity(severity_level level)
+void logger::set_severity(severity::level level)
 {
 	current_sev_lvl_ = level;
 }
 
-severity_level logger::get_current_severity() const
+severity::level logger::get_current_severity() const
 {
 	return current_sev_lvl_;
 }
 
-void logger::set_output(severity_level sev, const boost::shared_ptr<detail::log_stream>& stream)
+void logger::set_output(severity::level sev, const boost::shared_ptr<detail::log_stream>& stream)
 {
 	logging_output_[sev] = stream;
 }
 
-detail::log_line_cache logger::get_logger(severity_level level)
+detail::log_line_cache logger::get_logger(severity::level level)
 {
 	return detail::log_line_cache(*this, level);
 }

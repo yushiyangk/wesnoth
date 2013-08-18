@@ -52,13 +52,13 @@ class logger : boost::noncopyable
 	void default_logging_output();
 	// Returns the old cache.
 	cache_ptr make_new_cache();
-	std::string make_header(severity_level sev) const;
+	std::string make_header(severity::level sev) const;
 	void set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<detail::log_stream>& stream);
 	void set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream);
 	void set_files_output(const logging_info::file_list& files);
 
 public:
-	static std::map<std::string, severity_level> severity_str2enum;
+	static std::map<std::string, severity::level> severity_str2enum;
 
 	// Init map "textual representation of the severity level" to "severity level enum".
 	static void init_severity_str2enum();
@@ -66,13 +66,13 @@ public:
 	void add_line(const detail::log_line_cache& line);
 	void run_once();
 	void load(const logging_info& log_info);
-	void set_severity(severity_level level);
-	severity_level get_current_severity() const;
-	void set_output(severity_level sev, const boost::shared_ptr<detail::log_stream>& stream);
-	detail::log_line_cache get_logger(severity_level level);
+	void set_severity(severity::level level);
+	severity::level get_current_severity() const;
+	void set_output(severity::level sev, const boost::shared_ptr<detail::log_stream>& stream);
+	detail::log_line_cache get_logger(severity::level level);
 private:
-	severity_level current_sev_lvl_;
-	boost::array<boost::shared_ptr<detail::log_stream>, nb_severity_level> logging_output_;
+	severity::level current_sev_lvl_;
+	boost::array<boost::shared_ptr<detail::log_stream>, severity::num_severity_level> logging_output_;
 	boost::mutex cache_access_;
 	boost::shared_ptr<cache_type> cache_;
 };

@@ -19,7 +19,7 @@ namespace umcd{
 namespace detail{
 
 log_line::log_line(const log_line_cache& cache_line)
-: severity(cache_line.severity_)
+: severity_level(cache_line.severity_)
 , data(cache_line.line_->str())
 , time(boost::posix_time::second_clock::universal_time())
 {}

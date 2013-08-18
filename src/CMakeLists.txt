@@ -1077,7 +1077,7 @@ set(umcd_lib_SRC
 	umcd/logger/detail/log_line_cache.cpp
 	umcd/logger/detail/log_line.cpp
 	umcd/logger/detail/log_stream.cpp
-	umcd/umcd_error.cpp
+	umcd/error.cpp
 	umcd/env/environment.cpp
 	umcd/env/environment_loader.cpp
 	umcd/env/server_info.cpp
