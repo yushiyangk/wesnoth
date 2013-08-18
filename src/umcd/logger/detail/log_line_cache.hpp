@@ -20,7 +20,7 @@
 #include <boost/shared_ptr.hpp>
 #include <sstream>
 
-class umcd_logger;
+class logger;
 
 namespace umcd{
 namespace detail{
@@ -33,7 +33,7 @@ private:
 	friend struct log_line;
 
 public:
-	log_line_cache(umcd_logger& logger, severity_level severity);
+	log_line_cache(logger& logger, severity_level severity);
 	~log_line_cache();
 
 	template <class Streamable>
@@ -47,7 +47,7 @@ public:
 	}
 
 private:
-	umcd_logger& logger_;
+	logger& logger_;
 	bool enabled_;
 	severity_level severity_;
 	boost::shared_ptr<std::stringstream> line_;

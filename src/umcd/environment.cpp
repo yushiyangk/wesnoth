@@ -15,7 +15,7 @@
 #include "umcd/environment.hpp"
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/actions/request_umc_upload_action.hpp"
-#include "umcd/logger/umcd_logger.hpp"
+#include "umcd/logger/logger.hpp"
 
 #include "config.hpp"
 
@@ -126,7 +126,7 @@ logging_info::severity_list environment_loader::make_severity_list(const std::st
 	boost::algorithm::split(levels_to_stream, levels, boost::algorithm::is_any_of(" ,"));
 	for(std::size_t i = 0; i < levels_to_stream.size(); ++i)
 	{
-		sev_list.push_back(umcd_logger::severity_str2enum[levels_to_stream[i]]);
+		sev_list.push_back(logger::severity_str2enum[levels_to_stream[i]]);
 	}
 	return sev_list;
 }
@@ -145,10 +145,10 @@ logging_info::file_list environment_loader::make_file_list(const config& cfg)
 
 void environment_loader::load_logging_info(const config& cfg)
 {
-	umcd_logger::init_severity_str2enum();
+	logger::init_severity_str2enum();
 	logging_info li;
 	// Set the severity level.
-	li.set_lower_limit(umcd_logger::severity_str2enum[cfg["log_if_greater_or_equal"].str()]);
+	li.set_lower_limit(logger::severity_str2enum[cfg["log_if_greater_or_equal"].str()]);
 	if(cfg.has_child("cout"))
 		li.set_to_cout(make_severity_list(cfg.child("cout")["level"]));
 	if(cfg.has_child("cerr"))

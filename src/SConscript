@@ -551,7 +551,7 @@ libumcd_sources = Split("""
     umcd/wml_reply.cpp
     umcd/wml_request.cpp
     umcd/request_info.cpp
-    umcd/umcd_logger.cpp
+    umcd/logger.cpp
     umcd/umcd_error.cpp
     umcd/environment.cpp
     umcd/actions/request_license_action.cpp

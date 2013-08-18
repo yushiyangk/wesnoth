@@ -12,28 +12,13 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/logger/umcd_logger.hpp"
+#include "umcd/logger/logger.hpp"
 #include "umcd/logger/detail/log_line.hpp"
+#include "umcd/logger/detail/log_stream.hpp"
 
-standard_log_stream::standard_log_stream(const std::ostream& log_stream)
-: stream_(boost::make_shared<std::ostream>(log_stream.rdbuf()))
-{}
+#include <boost/make_shared.hpp>
 
-boost::shared_ptr<std::ostream> standard_log_stream::stream()
-{
-	return stream_;
-}
-
-file_log_stream::file_log_stream(const std::string& filename)
-: filename_(filename)
-{}
-
-boost::shared_ptr<std::ostream> file_log_stream::stream()
-{
-	return boost::make_shared<std::ofstream>(filename_.c_str(), std::ios_base::app);
-}
-
-const char* umcd_logger::severity_level_name[] = {
+const char* logger::severity_level_name[] = {
 	"trace",
 	"debug",
 	"info",
@@ -42,23 +27,23 @@ const char* umcd_logger::severity_level_name[] = {
 	"fatal"
 };
 
-std::map<std::string, severity_level> umcd_logger::severity_str2enum;
+std::map<std::string, severity_level> logger::severity_str2enum;
 
-void umcd_logger::default_logging_output()
+void logger::default_logging_output()
 {
 	int sev;
 	for(sev=0; sev <= warning; ++sev)
 	{
-		set_output(static_cast<severity_level>(sev), boost::make_shared<standard_log_stream>(std::cout));
+		set_output(static_cast<severity_level>(sev), boost::make_shared<umcd::detail::standard_log_stream>(std::cout));
 	}
 	for(; sev < nb_severity_level; ++sev)
 	{
-		set_output(static_cast<severity_level>(sev), boost::make_shared<standard_log_stream>(std::cerr));
+		set_output(static_cast<severity_level>(sev), boost::make_shared<umcd::detail::standard_log_stream>(std::cerr));
 	}
 }
 
 // Returns the old cache.
-umcd_logger::cache_ptr umcd_logger::make_new_cache()
+logger::cache_ptr logger::make_new_cache()
 {
 	cache_ptr old_cache = cache_;
 	lock_guard<boost::mutex> guard(cache_access_);
@@ -66,12 +51,12 @@ umcd_logger::cache_ptr umcd_logger::make_new_cache()
 	return old_cache;
 }
 
-std::string umcd_logger::make_header(severity_level sev) const
+std::string logger::make_header(severity_level sev) const
 {
 	return std::string("[") + severity_level_name[sev] + "] ";
 }
 
-void umcd_logger::set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<log_stream>& stream)
+void logger::set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<umcd::detail::log_stream>& stream)
 {
 	for(std::size_t i = 0; i < sev_list.size(); ++i)
 	{
@@ -79,39 +64,39 @@ void umcd_logger::set_log_output(const logging_info::severity_list& sev_list, co
 	}
 }
 
-void umcd_logger::set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream)
+void logger::set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream)
 {
-	set_log_output(sev_list, boost::make_shared<standard_log_stream>(stream));
+	set_log_output(sev_list, boost::make_shared<umcd::detail::standard_log_stream>(stream));
 }
 
-void umcd_logger::set_files_output(const logging_info::file_list& files)
+void logger::set_files_output(const logging_info::file_list& files)
 {
 	for(std::size_t i=0; i < files.size(); ++i)
 	{
-		set_log_output(files[i].second, boost::make_shared<file_log_stream>(files[i].first));
+		set_log_output(files[i].second, boost::make_shared<umcd::detail::file_log_stream>(files[i].first));
 	}
 }
 
-void umcd_logger::init_severity_str2enum()
+void logger::init_severity_str2enum()
 {
 	for(int sev=0; sev < nb_severity_level; ++sev)
 		severity_str2enum[severity_level_name[sev]] = static_cast<severity_level>(sev);
 }
 
-umcd_logger::umcd_logger()
+logger::logger()
 : current_sev_lvl_(trace)
 , cache_(boost::make_shared<cache_type>())
 {
 	default_logging_output();
 }
 
-void umcd_logger::add_line(const umcd::detail::log_line_cache& line)
+void logger::add_line(const umcd::detail::log_line_cache& line)
 {
 	lock_guard<boost::mutex> guard(cache_access_);
 	cache_->push_back(umcd::detail::log_line(line));
 }
 
-void umcd_logger::run_once()
+void logger::run_once()
 {
 	cache_ptr old_cache = make_new_cache();
 	boost::array<boost::shared_ptr<std::ostream>, nb_severity_level> log_streams;
@@ -130,7 +115,7 @@ void umcd_logger::run_once()
 	}
 }
 
-void umcd_logger::load(const logging_info& log_info)
+void logger::load(const logging_info& log_info)
 {
 	set_severity(log_info.lower_limit());
 
@@ -139,22 +124,22 @@ void umcd_logger::load(const logging_info& log_info)
 	set_files_output(log_info.to_files());
 }
 
-void umcd_logger::set_severity(severity_level level)
+void logger::set_severity(severity_level level)
 {
 	current_sev_lvl_ = level;
 }
 
-severity_level umcd_logger::get_current_severity() const
+severity_level logger::get_current_severity() const
 {
 	return current_sev_lvl_;
 }
 
-void umcd_logger::set_output(severity_level sev, const boost::shared_ptr<log_stream>& stream)
+void logger::set_output(severity_level sev, const boost::shared_ptr<umcd::detail::log_stream>& stream)
 {
 	logging_output_[sev] = stream;
 }
 
-umcd::detail::log_line_cache umcd_logger::get_logger(severity_level level)
+umcd::detail::log_line_cache logger::get_logger(severity_level level)
 {
 	return umcd::detail::log_line_cache(*this, level);
 }
@@ -182,7 +167,7 @@ asio_logger& asio_logger::get_asio_log()
 	return lg;
 }
 
-umcd_logger& asio_logger::get()
+logger& asio_logger::get()
 {
 	return get_asio_log().logger_;
 }

@@ -24,7 +24,7 @@
 
 #include "umcd/environment.hpp"
 #include "umcd/wml_request.hpp"
-#include "umcd/logger/umcd_logger.hpp"
+#include "umcd/logger/logger.hpp"
 #include "umcd/wml_reply.hpp"
 #include "umcd/request_info.hpp"
 

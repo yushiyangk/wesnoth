@@ -14,12 +14,10 @@
 
 // NOTE: Please use the Boost.Log when the supported Boost version will be >= 1.54.
 
-#ifndef UMCD_LOGGER_HPP
-#define UMCD_LOGGER_HPP
+#ifndef logger_HPP
+#define logger_HPP
 
 #include <ostream>
-#include <fstream>
-#include <ios>
 #include <iostream>
 #include <sstream>
 #include <map>
@@ -43,38 +41,11 @@
 namespace umcd{
 namespace detail{
 struct log_line;
+struct log_stream;
 
 }} // namespace umcd::detail
 
-class log_stream
-{
-public:
-	virtual ~log_stream() {}
-	virtual boost::shared_ptr<std::ostream> stream() = 0;
-};
-
-class standard_log_stream : public log_stream
-{
-public:
-	standard_log_stream(const std::ostream& log_stream);
-	virtual boost::shared_ptr<std::ostream> stream();
-
-private:
-	boost::shared_ptr<std::ostream> stream_;
-};
-
-class file_log_stream : public log_stream
-{
-public:
-	file_log_stream(const std::string& filename);
-	virtual boost::shared_ptr<std::ostream> stream();
-
-private:
-	std::string filename_;
-};
-
-
-class umcd_logger : boost::noncopyable
+class logger : boost::noncopyable
 {
 	static const char* severity_level_name[];
 
@@ -85,7 +56,7 @@ class umcd_logger : boost::noncopyable
 	// Returns the old cache.
 	cache_ptr make_new_cache();
 	std::string make_header(severity_level sev) const;
-	void set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<log_stream>& stream);
+	void set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<umcd::detail::log_stream>& stream);
 	void set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream);
 	void set_files_output(const logging_info::file_list& files);
 
@@ -94,17 +65,17 @@ public:
 
 	// Init map "textual representation of the severity level" to "severity level enum".
 	static void init_severity_str2enum();
-	umcd_logger();
+	logger();
 	void add_line(const umcd::detail::log_line_cache& line);
 	void run_once();
 	void load(const logging_info& log_info);
 	void set_severity(severity_level level);
 	severity_level get_current_severity() const;
-	void set_output(severity_level sev, const boost::shared_ptr<log_stream>& stream);
+	void set_output(severity_level sev, const boost::shared_ptr<umcd::detail::log_stream>& stream);
 	umcd::detail::log_line_cache get_logger(severity_level level);
 private:
 	severity_level current_sev_lvl_;
-	boost::array<boost::shared_ptr<log_stream>, nb_severity_level> logging_output_;
+	boost::array<boost::shared_ptr<umcd::detail::log_stream>, nb_severity_level> logging_output_;
 	boost::mutex cache_access_;
 	boost::shared_ptr<cache_type> cache_;
 };
@@ -120,12 +91,12 @@ class asio_logger
 
 public:
 	static asio_logger& get_asio_log();
-	static umcd_logger& get();
+	static logger& get();
 	void run(boost::asio::io_service& io_service_, boost::posix_time::time_duration timing);
 	void stop();
 
 private:
-	umcd_logger logger_;
+	logger logger_;
 	bool running_;
 	boost::shared_ptr<boost::asio::deadline_timer> timer;
 };
@@ -138,4 +109,4 @@ private:
 #define UMCD_LOG_FUNCTION_TRACER() (UMCD_LOG(trace) << CURRENT_FUNCTION_STRING)
 #define RUN_ONCE_LOGGER() (asio_logger::get().run_once());
 
-#endif // UMCD_LOGGER_HPP
+#endif // logger_HPP
