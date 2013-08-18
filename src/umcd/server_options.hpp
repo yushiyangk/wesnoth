@@ -51,18 +51,18 @@ public:
 	config read_config() const;
 
 	/**
-	@return The Wesnoth directory if available in cfg.
-	*/
-	boost::optional<std::string> wesnoth_dir(const config& cfg) const;
-
-	/**
 	@throw if the config file is incomplete or wrong.
-	@pre game_config::path initialized.
+	@pre The wesnoth_dir entry is available (this is checked in read_config).
 	*/
 	void validate(const config& cfg) const;
 
 private:
 	std::string add_trailing_slash(const std::string& dir) const;
+	
+	/**
+	@return The Wesnoth directory if available in cfg.
+	*/
+	boost::optional<std::string> wesnoth_dir(const config& cfg) const;
 
 	std::string header_;
 	std::string version_;

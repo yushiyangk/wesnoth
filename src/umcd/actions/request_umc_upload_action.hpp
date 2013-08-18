@@ -18,6 +18,7 @@
 #include <boost/shared_ptr.hpp>
 #include "config.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
+#include "umcd/server_info.hpp"
 
 class request_umc_upload_action 
 : public basic_umcd_action
@@ -25,14 +26,14 @@ class request_umc_upload_action
 public:
 	typedef basic_umcd_action base;
 
-	request_umc_upload_action(const config& server_config);
+	request_umc_upload_action(const server_info& info);
 	const config& get_info(const config& metadata);
 
 	virtual void execute(boost::shared_ptr<umcd_protocol> p);
 	virtual boost::shared_ptr<base> clone() const;
 
 private:
-	const config& server_config_;
+	server_info server_info_;
 	boost::shared_ptr<umcd_protocol> protocol_;
 };
 

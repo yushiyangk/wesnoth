@@ -47,7 +47,7 @@ public:
 	static void load_config(const config& protocol_cfg);
 
 	// This constructor is only called once in main, so the factory will be created once as well.
-	umcd_protocol(io_service_type& io_service, const environment& serverinfo);
+	umcd_protocol(io_service_type& io_service, const environment& env);
 
 	void handle_request();
 	// Precondition: handle_request has been called and connection has been initialized.

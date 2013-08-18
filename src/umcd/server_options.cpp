@@ -89,9 +89,9 @@ bool server_options::is_daemon() const
 boost::optional<std::string> server_options::wesnoth_dir(const config& cfg) const
 {
 	boost::optional<std::string> wesdir;
-	if(cfg.has_child("server_core") && cfg.child("server_core").has_attribute("wesnoth_dir"))
+	if(cfg.has_child("server_info") && cfg.child("server_info").has_attribute("wesnoth_dir"))
 	{
-		wesdir = add_trailing_slash(cfg.child("server_core")["wesnoth_dir"]);
+		wesdir = add_trailing_slash(cfg.child("server_info")["wesnoth_dir"]);
 	}
 	return wesdir;
 }
@@ -105,18 +105,11 @@ std::string server_options::add_trailing_slash(const std::string& dir) const
 
 void server_options::validate(const config& cfg) const
 {
-	boost::optional<std::string> wesdir = wesnoth_dir(cfg);
-	if(wesdir)
-	{
-		std::string validation_filename = *wesdir + get_umcd_config_file_schema();
-		config dummy;
-		schema_validation::schema_validator validator(validation_filename);
-		::read(dummy, cfg.to_string(), &validator);
-	}
-	else
-	{
-		throw po::validation_error(po::validation_error::at_least_one_value_required, "wesnoth_dir");
-	}
+	std::string wesdir = *wesnoth_dir(cfg);
+	std::string validation_filename = wesdir + get_umcd_config_file_schema();
+	config dummy;
+	schema_validation::schema_validator validator(validation_filename);
+	::read(dummy, cfg.to_string(), &validator);
 }
 
 config server_options::read_config() const
@@ -128,6 +121,9 @@ config server_options::read_config() const
 		if(!cfgfile)
 			throw po::reading_file(config_file_name_.c_str());
 		::read(cfg, cfgfile);
+		boost::optional<std::string> wesdir = wesnoth_dir(cfg);
+		if(!wesdir)
+			throw po::validation_error(po::validation_error::at_least_one_value_required, "wesnoth_dir");
 	}
 	return cfg;
 }

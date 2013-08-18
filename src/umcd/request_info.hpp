@@ -19,6 +19,7 @@
 #include "serialization/schema_validator.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "filesystem.hpp"
+#include "umcd/server_info.hpp"
 
 class request_info
 {
@@ -39,12 +40,12 @@ private:
 };
 
 template <class Action, class Validator>
-boost::shared_ptr<request_info> make_request_info(const config& server_conf, const std::string& request_name)
+boost::shared_ptr<request_info> make_request_info(const server_info& info, const std::string& request_name)
 {
 	return boost::make_shared<request_info>(
-		boost::make_shared<Action>(server_conf),
+		boost::make_shared<Action>(info),
 		boost::make_shared<Validator>(
-			server_conf.child("server_core")["wesnoth_dir"].str() + get_umcd_protocol_schema_dir() + "/" + request_name+".cfg"));
+			info.wesnoth_dir() + get_umcd_protocol_schema_dir() + "/" + request_name+".cfg"));
 }
 
 #endif // UMCD_REQUEST_INFO_HPP

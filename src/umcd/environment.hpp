@@ -12,15 +12,15 @@
 	See the COPYING file for more details.
 */
 
-#ifndef UMCD_environment_HPP
-#define UMCD_environment_HPP
+#ifndef UMCD_ENVIRONMENT_HPP
+#define UMCD_ENVIRONMENT_HPP
 
 #include <boost/noncopyable.hpp>
 #include <string>
 
-#include "umcd/request_info.hpp"
 #include "umcd/server/generic_factory.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
+#include "umcd/request_info.hpp"
 
 class config;
 
@@ -33,12 +33,12 @@ class environment : private boost::noncopyable
 	void register_request_info(const std::string& request_name);
 
 public:
-	environment(const config& server_config);
+	environment(const server_info& info);
 
 	boost::shared_ptr<request_info> get_request_info(const std::string& request_name) const;
 
 private:
-	config server_config_;
+	server_info server_info_;
 	action_factory_type action_factory_;
 };
 
@@ -47,7 +47,7 @@ void environment::register_request_info(const std::string& request_name)
 {
 	 action_factory_.register_product(
 			request_name, 
-			make_request_info<Action, validator_type>(server_config_, request_name)
+			make_request_info<Action, validator_type>(server_info_, request_name)
 	 );
 }
 
@@ -59,26 +59,48 @@ public:
 	std::size_t threads() const;
 	const std::string& port() const;
 
-private:
+protected:
 	friend class environment_loader;
 
 	void set_threads(std::size_t server_threads);
 	void set_port(const std::string& server_port);
 
+private:
 	static std::size_t threads_;
 	static std::string port_;
+};
+
+class database_connexion
+{
+public:
+	const std::string& dsn() const;
+	const std::string& user() const;
+	const std::string& password() const;
+
+protected:
+	friend class environment_loader;
+
+	void set_dsn(const std::string& dsn);
+	void set_user(const std::string& user);
+	void set_password(const std::string& password);
+
+private:
+	static std::string dsn_;
+	static std::string user_;
+	static std::string password_;
 };
 
 class environment_loader
 {
 public:
 	void load(const config& cfg);
+
 private:
 	void load_server_core(const config& cfg);
+	void load_database_connexion(const config& cfg);
+	void load_server_info(const config& cfg);
 };
 
-class database_connexion{};
-class server_info{};
 class logging_info{};
 
-#endif // UMCD_environment_HPP
+#endif // UMCD_ENVIRONMENT_HPP

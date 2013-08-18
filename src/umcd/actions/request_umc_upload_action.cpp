@@ -17,8 +17,8 @@
 #include "filesystem.hpp"
 #include "umcd/protocol/wml/umcd_protocol.hpp"
 
-request_umc_upload_action::request_umc_upload_action(const config& server_config)
-: server_config_(server_config)
+request_umc_upload_action::request_umc_upload_action(const server_info& info)
+: server_info_(info)
 {}
 
 const config& request_umc_upload_action::get_info(const config& metadata)

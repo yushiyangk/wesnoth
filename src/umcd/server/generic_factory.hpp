@@ -16,9 +16,10 @@
 #define SERVER_GENERIC_FACTORY_HPP
 
 #include <string>
-#include <memory>
+#include <map>
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
+#include <boost/shared_ptr.hpp>
 
 class product_not_found : public std::logic_error
 {

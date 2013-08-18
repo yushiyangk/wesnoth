@@ -24,8 +24,8 @@ std::size_t umcd_protocol::REQUEST_HEADER_MAX_SIZE = 8192;
 
 #define FUNCTION_TRACER() UMCD_LOG_IP_FUNCTION_TRACER(socket_)
 
-umcd_protocol::umcd_protocol(io_service_type& io_service, const environment& serverinfo)
-: environment_(serverinfo)
+umcd_protocol::umcd_protocol(io_service_type& io_service, const environment& env)
+: environment_(env)
 , socket_(io_service)
 {
 }
