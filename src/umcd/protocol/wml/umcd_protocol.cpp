@@ -19,6 +19,8 @@
 #include "umcd/protocol/wml/umcd_protocol.hpp"
 #include "umcd/special_packet.hpp"
 #include "umcd/umcd_error.hpp"
+#include "umcd/env/server_info.hpp"
+#include "umcd/env/protocol_info.hpp"
 
 std::size_t umcd_protocol::REQUEST_HEADER_MAX_SIZE = 8192;
 
@@ -40,9 +42,9 @@ config& umcd_protocol::get_metadata()
 	return request_.get_metadata();
 }
 
-void umcd_protocol::load_config(const config& protocol_cfg)
+void umcd_protocol::load(const protocol_info& proto_info)
 {
-	REQUEST_HEADER_MAX_SIZE = protocol_cfg["max_header_size"];
+	REQUEST_HEADER_MAX_SIZE = proto_info.header_max_size();
 }
 
 umcd_protocol::socket_type& umcd_protocol::socket()

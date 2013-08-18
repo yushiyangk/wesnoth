@@ -32,11 +32,7 @@
 #include "umcd/env/environment.hpp"
 #include "umcd/env/environment_loader.hpp"
 #include "umcd/env/database_info.hpp"
-
-static void load_config_data(const config& cfg)
-{
-	umcd_protocol::load_config(cfg.child("protocol"));
-}
+#include "umcd/env/protocol_info.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -55,7 +51,7 @@ int main(int argc, char *argv[])
 			options.validate(cfg);
 
 			umcd::asio_logger::get().load(logging_info());
-			load_config_data(cfg);
+			umcd_protocol::load(protocol_info());
 
 			if(options.is_daemon())
 			{

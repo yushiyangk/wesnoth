@@ -29,6 +29,7 @@
 #include "umcd/request_info.hpp"
 
 class wml_request;
+class protocol_info;
 
 class umcd_protocol : 
 		public boost::enable_shared_from_this<umcd_protocol>
@@ -44,7 +45,7 @@ private:
 	typedef boost::shared_ptr<request_info> info_ptr;
 
 public:
-	static void load_config(const config& protocol_cfg);
+	static void load(const protocol_info& proto_info);
 
 	// This constructor is only called once in main, so the factory will be created once as well.
 	umcd_protocol(io_service_type& io_service, const environment& env);
