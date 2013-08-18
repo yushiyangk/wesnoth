@@ -12,7 +12,7 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/umcd_logger.hpp"
+#include "umcd/logger/umcd_logger.hpp"
 
 log_line_cache::log_line_cache(umcd_logger& logger, severity_level severity)
 : logger_(logger)

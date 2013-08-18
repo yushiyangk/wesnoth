@@ -26,7 +26,7 @@
 #include "umcd/server_options.hpp"
 #include "umcd/server/multi_threaded/server_mt.hpp"
 #include "umcd/protocol/wml/umcd_protocol.hpp"
-#include "umcd/umcd_logger.hpp"
+#include "umcd/logger/umcd_logger.hpp"
 #include "umcd/daemon.hpp"
 #include "umcd/otl/otl.hpp"
 #include "umcd/environment.hpp"

@@ -15,7 +15,7 @@
 #include "umcd/environment.hpp"
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/actions/request_umc_upload_action.hpp"
-#include "umcd/umcd_logger.hpp"
+#include "umcd/logger/umcd_logger.hpp"
 
 #include "config.hpp"
 

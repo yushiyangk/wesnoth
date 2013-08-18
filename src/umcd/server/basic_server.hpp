@@ -28,7 +28,7 @@
 #include <boost/make_shared.hpp>
 #include <boost/current_function.hpp>
 
-#include "umcd/umcd_logger.hpp"
+#include "umcd/logger/umcd_logger.hpp"
 
 template <class Protocol, class ProtocolFactory>
 class basic_server : boost::noncopyable

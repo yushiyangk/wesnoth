@@ -26,7 +26,7 @@
 
 #include "config.hpp"
 #include "umcd/logging_info.hpp"
-#include "umcd/severity_level.hpp"
+#include "umcd/logger/severity_level.hpp"
 
 #include "umcd/boost/thread/workaround.hpp"
 #include "umcd/boost/thread/lock_guard.hpp"

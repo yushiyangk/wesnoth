@@ -15,7 +15,7 @@
 #ifndef UMCD_LOGGING_INFO_HPP
 #define UMCD_LOGGING_INFO_HPP
 
-#include "umcd/severity_level.hpp"
+#include "umcd/logger/severity_level.hpp"
 
 #include <string>
 #include <vector>

@@ -1072,7 +1072,7 @@ set(umcd_lib_SRC
 	umcd/wml_reply.cpp
 	umcd/wml_request.cpp
 	umcd/request_info.cpp
-	umcd/umcd_logger.cpp
+	umcd/logger/umcd_logger.cpp
 	umcd/umcd_error.cpp
 	umcd/environment.cpp
 	umcd/server_info.cpp

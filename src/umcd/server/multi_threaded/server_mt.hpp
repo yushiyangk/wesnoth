@@ -24,7 +24,6 @@
 #include "umcd/server/basic_server.hpp"
 #include "umcd/boost/thread/workaround.hpp"
 #include <boost/thread/thread.hpp>
-#include "umcd/umcd_logger.hpp"
 
 template <class Protocol, class ProtocolFactory>
 class server_mt : public basic_server<Protocol, ProtocolFactory>
