@@ -43,20 +43,20 @@ namespace detail{
 struct log_line;
 struct log_stream;
 
-}} // namespace umcd::detail
+} // namespace detail
 
 class logger : boost::noncopyable
 {
 	static const char* severity_level_name[];
 
-	typedef std::vector<umcd::detail::log_line> cache_type;
+	typedef std::vector<detail::log_line> cache_type;
 	typedef boost::shared_ptr<cache_type> cache_ptr;
 
 	void default_logging_output();
 	// Returns the old cache.
 	cache_ptr make_new_cache();
 	std::string make_header(severity_level sev) const;
-	void set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<umcd::detail::log_stream>& stream);
+	void set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<detail::log_stream>& stream);
 	void set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream);
 	void set_files_output(const logging_info::file_list& files);
 
@@ -66,16 +66,16 @@ public:
 	// Init map "textual representation of the severity level" to "severity level enum".
 	static void init_severity_str2enum();
 	logger();
-	void add_line(const umcd::detail::log_line_cache& line);
+	void add_line(const detail::log_line_cache& line);
 	void run_once();
 	void load(const logging_info& log_info);
 	void set_severity(severity_level level);
 	severity_level get_current_severity() const;
-	void set_output(severity_level sev, const boost::shared_ptr<umcd::detail::log_stream>& stream);
-	umcd::detail::log_line_cache get_logger(severity_level level);
+	void set_output(severity_level sev, const boost::shared_ptr<detail::log_stream>& stream);
+	detail::log_line_cache get_logger(severity_level level);
 private:
 	severity_level current_sev_lvl_;
-	boost::array<boost::shared_ptr<umcd::detail::log_stream>, nb_severity_level> logging_output_;
+	boost::array<boost::shared_ptr<detail::log_stream>, nb_severity_level> logging_output_;
 	boost::mutex cache_access_;
 	boost::shared_ptr<cache_type> cache_;
 };
@@ -101,12 +101,14 @@ private:
 	boost::shared_ptr<boost::asio::deadline_timer> timer;
 };
 
+} // namespace umcd
+
 #define CURRENT_FUNCTION_STRING "in " << BOOST_CURRENT_FUNCTION
 
-#define UMCD_LOG(severity) (asio_logger::get().get_logger(severity))
-#define UMCD_LOG_IP(severity, socket) ((asio_logger::get().get_logger(severity)) << socket.remote_endpoint())
+#define UMCD_LOG(severity) (umcd::asio_logger::get().get_logger(severity))
+#define UMCD_LOG_IP(severity, socket) ((umcd::asio_logger::get().get_logger(severity)) << socket.remote_endpoint())
 #define UMCD_LOG_IP_FUNCTION_TRACER(socket) (UMCD_LOG_IP(trace, socket) << CURRENT_FUNCTION_STRING)
 #define UMCD_LOG_FUNCTION_TRACER() (UMCD_LOG(trace) << CURRENT_FUNCTION_STRING)
-#define RUN_ONCE_LOGGER() (asio_logger::get().run_once());
+#define RUN_ONCE_LOGGER() (umcd::asio_logger::get().run_once());
 
 #endif // logger_HPP

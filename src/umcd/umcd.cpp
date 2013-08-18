@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 			// (Because the game_config::path must be initialized to validate).
 			options.validate(cfg);
 
-			asio_logger::get().load(logging_info());
+			umcd::asio_logger::get().load(logging_info());
 			load_config_data(cfg);
 
 			if(options.is_daemon())
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 			);
 
 			// Start logger.
-			asio_logger::get_asio_log().run(addon_server.get_io_service(), boost::posix_time::milliseconds(500));
+			umcd::asio_logger::get_asio_log().run(addon_server.get_io_service(), boost::posix_time::milliseconds(500));
 
 			addon_server.run();
 		}

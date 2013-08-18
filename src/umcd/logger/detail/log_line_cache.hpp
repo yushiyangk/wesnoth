@@ -20,9 +20,10 @@
 #include <boost/shared_ptr.hpp>
 #include <sstream>
 
+namespace umcd{
+
 class logger;
 
-namespace umcd{
 namespace detail{
 
 struct log_line;

@@ -18,6 +18,8 @@
 
 #include <boost/make_shared.hpp>
 
+namespace umcd{
+
 const char* logger::severity_level_name[] = {
 	"trace",
 	"debug",
@@ -34,11 +36,11 @@ void logger::default_logging_output()
 	int sev;
 	for(sev=0; sev <= warning; ++sev)
 	{
-		set_output(static_cast<severity_level>(sev), boost::make_shared<umcd::detail::standard_log_stream>(std::cout));
+		set_output(static_cast<severity_level>(sev), boost::make_shared<detail::standard_log_stream>(std::cout));
 	}
 	for(; sev < nb_severity_level; ++sev)
 	{
-		set_output(static_cast<severity_level>(sev), boost::make_shared<umcd::detail::standard_log_stream>(std::cerr));
+		set_output(static_cast<severity_level>(sev), boost::make_shared<detail::standard_log_stream>(std::cerr));
 	}
 }
 
@@ -56,7 +58,7 @@ std::string logger::make_header(severity_level sev) const
 	return std::string("[") + severity_level_name[sev] + "] ";
 }
 
-void logger::set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<umcd::detail::log_stream>& stream)
+void logger::set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<detail::log_stream>& stream)
 {
 	for(std::size_t i = 0; i < sev_list.size(); ++i)
 	{
@@ -66,14 +68,14 @@ void logger::set_log_output(const logging_info::severity_list& sev_list, const b
 
 void logger::set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream)
 {
-	set_log_output(sev_list, boost::make_shared<umcd::detail::standard_log_stream>(stream));
+	set_log_output(sev_list, boost::make_shared<detail::standard_log_stream>(stream));
 }
 
 void logger::set_files_output(const logging_info::file_list& files)
 {
 	for(std::size_t i=0; i < files.size(); ++i)
 	{
-		set_log_output(files[i].second, boost::make_shared<umcd::detail::file_log_stream>(files[i].first));
+		set_log_output(files[i].second, boost::make_shared<detail::file_log_stream>(files[i].first));
 	}
 }
 
@@ -134,14 +136,14 @@ severity_level logger::get_current_severity() const
 	return current_sev_lvl_;
 }
 
-void logger::set_output(severity_level sev, const boost::shared_ptr<umcd::detail::log_stream>& stream)
+void logger::set_output(severity_level sev, const boost::shared_ptr<detail::log_stream>& stream)
 {
 	logging_output_[sev] = stream;
 }
 
-umcd::detail::log_line_cache logger::get_logger(severity_level level)
+detail::log_line_cache logger::get_logger(severity_level level)
 {
-	return umcd::detail::log_line_cache(*this, level);
+	return detail::log_line_cache(*this, level);
 }
 
 asio_logger::asio_logger()
@@ -185,3 +187,5 @@ void asio_logger::stop()
 	running_ = false;
 	timer->cancel();
 }
+
+} // namespace umcd
