@@ -14,28 +14,25 @@
 
 // NOTE: Please use the Boost.Log when the supported Boost version will be >= 1.54.
 
-#ifndef logger_HPP
-#define logger_HPP
+#ifndef UMCD_LOGGER_HPP
+#define UMCD_LOGGER_HPP
 
 #include <ostream>
 #include <iostream>
 #include <sstream>
 #include <map>
 
-#include "config.hpp"
 #include "umcd/logging_info.hpp"
 #include "umcd/logger/severity_level.hpp"
 #include "umcd/logger/detail/log_line_cache.hpp"
 
 #include "umcd/boost/thread/workaround.hpp"
-#include "umcd/boost/thread/lock_guard.hpp"
 #include <boost/thread/mutex.hpp>
 #include <boost/array.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
 namespace umcd{
@@ -80,35 +77,6 @@ private:
 	boost::shared_ptr<cache_type> cache_;
 };
 
-class asio_logger
-{
-	asio_logger();
-
-	/**
-	@param local_timer is necessary if the sequence [run, stop, run] occurs too fast.
-	*/
-	void run_impl(boost::shared_ptr<boost::asio::deadline_timer> local_timer, const boost::system::error_code& error);
-
-public:
-	static asio_logger& get_asio_log();
-	static logger& get();
-	void run(boost::asio::io_service& io_service_, boost::posix_time::time_duration timing);
-	void stop();
-
-private:
-	logger logger_;
-	bool running_;
-	boost::shared_ptr<boost::asio::deadline_timer> timer;
-};
-
 } // namespace umcd
 
-#define CURRENT_FUNCTION_STRING "in " << BOOST_CURRENT_FUNCTION
-
-#define UMCD_LOG(severity) (umcd::asio_logger::get().get_logger(severity))
-#define UMCD_LOG_IP(severity, socket) ((umcd::asio_logger::get().get_logger(severity)) << socket.remote_endpoint())
-#define UMCD_LOG_IP_FUNCTION_TRACER(socket) (UMCD_LOG_IP(trace, socket) << CURRENT_FUNCTION_STRING)
-#define UMCD_LOG_FUNCTION_TRACER() (UMCD_LOG(trace) << CURRENT_FUNCTION_STRING)
-#define RUN_ONCE_LOGGER() (umcd::asio_logger::get().run_once());
-
-#endif // logger_HPP
+#endif // UMCD_LOGGER_HPP

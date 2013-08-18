@@ -14,12 +14,12 @@
 
 #include "umcd/logging_info.hpp"
 
-severity_level logging_info::lower_limit_;
+umcd::severity_level logging_info::lower_limit_;
 logging_info::severity_list logging_info::cout_;
 logging_info::severity_list logging_info::cerr_;
 logging_info::file_list logging_info::files_;
 
-severity_level logging_info::lower_limit() const
+umcd::severity_level logging_info::lower_limit() const
 {
 	return lower_limit_;
 }
@@ -39,7 +39,7 @@ const logging_info::file_list& logging_info::to_files() const
 	return files_;
 }
 
-void logging_info::set_lower_limit(severity_level lower_limit)
+void logging_info::set_lower_limit(umcd::severity_level lower_limit)
 {
 	lower_limit_ = lower_limit;
 }

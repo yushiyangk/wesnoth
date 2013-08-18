@@ -1073,6 +1073,7 @@ set(umcd_lib_SRC
 	umcd/wml_request.cpp
 	umcd/request_info.cpp
 	umcd/logger/logger.cpp
+	umcd/logger/asio_logger.cpp
 	umcd/logger/detail/log_line_cache.cpp
 	umcd/logger/detail/log_line.cpp
 	umcd/logger/detail/log_stream.cpp

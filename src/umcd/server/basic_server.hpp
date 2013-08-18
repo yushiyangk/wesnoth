@@ -22,13 +22,12 @@
 #define SERVER_BASIC_SERVER_HPP
 
 #include "umcd/environment.hpp"
-#include "umcd/boost/thread/workaround.hpp"
+#include "umcd/logger/asio_logger.hpp"
+
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/current_function.hpp>
-
-#include "umcd/logger/logger.hpp"
 
 template <class Protocol, class ProtocolFactory>
 class basic_server : boost::noncopyable

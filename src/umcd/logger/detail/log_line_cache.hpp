@@ -21,11 +21,9 @@
 #include <sstream>
 
 namespace umcd{
-
 class logger;
 
 namespace detail{
-
 struct log_line;
 
 class log_line_cache

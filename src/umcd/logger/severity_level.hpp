@@ -15,6 +15,8 @@
 #ifndef UMCD_SEVERITY_LEVEL_HPP
 #define UMCD_SEVERITY_LEVEL_HPP
 
+namespace umcd{
+
 enum severity_level {
 	trace,
 	debug,
@@ -24,5 +26,7 @@ enum severity_level {
 	fatal,
 	nb_severity_level
 };
+
+} // namespace umcd
 
 #endif // UMCD_SEVERITY_LEVEL_HPP

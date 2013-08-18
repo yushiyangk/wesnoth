@@ -15,6 +15,7 @@
 #include "umcd/logger/logger.hpp"
 #include "umcd/logger/detail/log_line.hpp"
 #include "umcd/logger/detail/log_stream.hpp"
+#include "umcd/boost/thread/lock_guard.hpp"
 
 #include <boost/make_shared.hpp>
 
@@ -144,48 +145,6 @@ void logger::set_output(severity_level sev, const boost::shared_ptr<detail::log_
 detail::log_line_cache logger::get_logger(severity_level level)
 {
 	return detail::log_line_cache(*this, level);
-}
-
-asio_logger::asio_logger()
-: running_(false)
-{}
-
-/**
-@param local_timer is necessary if the sequence [run, stop, run] occurs too fast.
-*/
-void asio_logger::run_impl(boost::shared_ptr<boost::asio::deadline_timer> local_timer, const boost::system::error_code& error)
-{
-	get().run_once();
-	if(running_ && !error)
-	{
-		timer->async_wait(boost::bind(&asio_logger::run_impl, this,
-			local_timer, boost::asio::placeholders::error));
-	}
-}
-
-asio_logger& asio_logger::get_asio_log()
-{
-	static asio_logger lg;
-	return lg;
-}
-
-logger& asio_logger::get()
-{
-	return get_asio_log().logger_;
-}
-
-void asio_logger::run(boost::asio::io_service& io_service_, boost::posix_time::time_duration timing)
-{
-	running_ = true;
-	timer = boost::make_shared<boost::asio::deadline_timer>(boost::ref(io_service_), timing);
-	timer->async_wait(boost::bind(&asio_logger::run_impl, this,
-			timer, boost::asio::placeholders::error));
-}
-
-void asio_logger::stop()
-{
-	running_ = false;
-	timer->cancel();
 }
 
 } // namespace umcd
