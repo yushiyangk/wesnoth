@@ -12,27 +12,31 @@
 	See the COPYING file for more details.
 */
 
-#ifndef UMCD_ENVIRONMENT_LOADER_HPP
-#define UMCD_ENVIRONMENT_LOADER_HPP
+#ifndef UMCD_DATABASE_INFO_HPP
+#define UMCD_DATABASE_INFO_HPP
 
-#include "umcd/logger/logger.hpp"
 #include <string>
 
-class config;
+class environment_loader;
 
-class environment_loader
+class database_info
 {
 public:
-	void load(const config& cfg);
+	const std::string& dsn() const;
+	const std::string& user() const;
+	const std::string& password() const;
+
+protected:
+	friend class environment_loader;
+
+	void set_dsn(const std::string& dsn);
+	void set_user(const std::string& user);
+	void set_password(const std::string& password);
 
 private:
-	void load_server_core(const config& cfg);
-	void load_database_info(const config& cfg);
-	void load_server_info(const config& cfg);
-	void load_logging_info(const config& cfg);
-
-	logging_info::severity_list make_severity_list(const std::string& levels);
-	logging_info::file_list make_file_list(const config& cfg);
+	static std::string dsn_;
+	static std::string user_;
+	static std::string password_;
 };
 
-#endif // UMCD_ENVIRONMENT_LOADER_HPP
+#endif // UMCD_DATABASE_INFO_HPP

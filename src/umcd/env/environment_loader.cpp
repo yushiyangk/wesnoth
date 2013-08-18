@@ -13,48 +13,18 @@
 */
 
 #include "umcd/env/environment_loader.hpp"
+#include "umcd/env/logging_info.hpp"
+#include "umcd/env/server_core.hpp"
+#include "umcd/env/server_info.hpp"
+#include "umcd/env/database_info.hpp"
 #include "config.hpp"
 
 #include <boost/algorithm/string.hpp>
 
-std::string database_connexion::dsn_;
-std::string database_connexion::user_;
-std::string database_connexion::password_;
-
-const std::string& database_connexion::dsn() const
-{
-	return dsn_;
-}
-
-const std::string& database_connexion::user() const
-{
-	return user_;
-}
-
-const std::string& database_connexion::password() const
-{
-	return password_;
-}
-
-void database_connexion::set_dsn(const std::string& dsn)
-{
-	dsn_ = dsn;
-}
-
-void database_connexion::set_user(const std::string& user)
-{
-	user_ = user;
-}
-
-void database_connexion::set_password(const std::string& password)
-{
-	password_ = password;
-}
-
 void environment_loader::load(const config& cfg)
 {
 	load_server_core(cfg.child("server_core"));
-	load_database_connexion(cfg.child("database"));
+	load_database_info(cfg.child("database"));
 	load_server_info(cfg.child("server_info"));
 	load_logging_info(cfg.child("logging"));
 }
@@ -66,9 +36,9 @@ void environment_loader::load_server_core(const config& cfg)
 	sc.set_threads(cfg["threads"]);
 }
 
-void environment_loader::load_database_connexion(const config& cfg)
+void environment_loader::load_database_info(const config& cfg)
 {
-	database_connexion dc;
+	database_info dc;
 	dc.set_dsn(cfg["dsn"]);
 	dc.set_user(cfg["user"]);
 	dc.set_password(cfg["password"]);

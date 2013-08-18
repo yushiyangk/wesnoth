@@ -31,6 +31,7 @@
 #include "umcd/otl/otl.hpp"
 #include "umcd/env/environment.hpp"
 #include "umcd/env/environment_loader.hpp"
+#include "umcd/env/database_info.hpp"
 
 static void load_config_data(const config& cfg)
 {
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
 			otl_connect db;
 			try
 			{
-				database_connexion db_info;
+				database_info db_info;
 				db.rlogon(boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str());
 			}
 			catch(otl_exception& e)
