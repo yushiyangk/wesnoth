@@ -17,6 +17,8 @@
 
 #include <string>
 
+namespace umcd{
+
 class environment_loader;
 
 class database_info
@@ -38,5 +40,7 @@ private:
 	static std::string user_;
 	static std::string password_;
 };
+
+} // namespace umcd
 
 #endif // UMCD_DATABASE_INFO_HPP

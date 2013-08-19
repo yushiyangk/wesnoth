@@ -39,7 +39,7 @@ public:
 	typedef ProtocolFactory protocol_factory_type;
 
 public:
-	explicit basic_server(const server_core& server_config, protocol_factory_type protocol_factory);
+	explicit basic_server(const umcd::server_core& server_config, protocol_factory_type protocol_factory);
 	void run();
 	boost::asio::io_service& get_io_service();
 
@@ -57,7 +57,7 @@ protected:
 };
 
 template <class Protocol, class ProtocolFactory>
-basic_server<Protocol, ProtocolFactory>::basic_server(const server_core& server_config, protocol_factory_type protocol_factory)
+basic_server<Protocol, ProtocolFactory>::basic_server(const umcd::server_core& server_config, protocol_factory_type protocol_factory)
 : io_service_()
 , acceptor_(io_service_)
 , protocol_factory_(protocol_factory)

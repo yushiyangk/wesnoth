@@ -18,6 +18,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 
+namespace umcd{
+
 wml_request::wml_request(){}
 
 config& wml_request::get_metadata() 
@@ -56,3 +58,5 @@ std::string peek_request_name(std::istream& raw_data_stream)
 
 	return request_name;
 }
+
+} // namespace umcd

@@ -15,6 +15,7 @@
 #include "umcd/env/server_info.hpp"
 #include "game_config.hpp"
 
+namespace umcd{
 std::string server_info::wesnoth_dir_;
 
 const std::string& server_info::wesnoth_dir() const
@@ -27,3 +28,5 @@ void server_info::set_wesnoth_dir(const std::string& wesnoth_dir)
 	wesnoth_dir_ = wesnoth_dir;
 	game_config::path = wesnoth_dir_;
 }
+
+} // namespace umcd

@@ -15,10 +15,12 @@
 #ifndef UMCD_ENVIRONMENT_LOADER_HPP
 #define UMCD_ENVIRONMENT_LOADER_HPP
 
-#include "umcd/logger/logger.hpp"
+#include "umcd/env/logging_info.hpp"
 #include <string>
 
 class config;
+
+namespace umcd{
 
 class environment_loader
 {
@@ -35,4 +37,5 @@ private:
 	logging_info::file_list make_file_list(const config& cfg);
 };
 
+} // namespace umcd
 #endif // UMCD_ENVIRONMENT_LOADER_HPP

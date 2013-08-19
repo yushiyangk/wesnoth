@@ -14,6 +14,7 @@
 
 #include "umcd/env/server_core.hpp"
 
+namespace umcd{
 std::size_t server_core::threads_;
 std::string server_core::port_;
 
@@ -36,3 +37,5 @@ void server_core::set_port(const std::string& server_port)
 {
 	port_ = server_port;
 }
+
+} // namespace umcd

@@ -24,17 +24,20 @@ The license is not shipped with the Wesnoth client because this server can be re
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "umcd/env/server_info.hpp"
 
+namespace umcd{
+
 class request_license_action : public basic_umcd_action
 {
 public:
 	typedef basic_umcd_action base;
 
 	request_license_action(const server_info& info);
-	virtual void execute(boost::shared_ptr<umcd_protocol> protocol);
+	virtual void execute(boost::shared_ptr<protocol> proto);
 	virtual boost::shared_ptr<base> clone() const;
 
 private:
 	server_info server_info_;
 };
 
+} // namespace umcd
 #endif // UMCD_REQUEST_LICENSE_ACTION_HPP

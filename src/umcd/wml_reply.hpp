@@ -19,7 +19,9 @@
 #include <boost/asio.hpp>
 #include <boost/cstdint.hpp>
 
-#include "config.hpp"
+class config;
+
+namespace umcd{
 
 class wml_reply
 {
@@ -33,4 +35,5 @@ private:
 	boost::uint32_t payload_size_;
 };
 
+} // namespace umcd
 #endif // UMCD_WML_REPLY_HPP

@@ -21,12 +21,14 @@
 #include <vector>
 #include <utility>
 
+namespace umcd{
+
 class environment_loader;
 
 class logging_info
 {
 public:
-	typedef std::vector<umcd::severity::level> severity_list;
+	typedef std::vector<severity::level> severity_list;
 	typedef std::vector<std::pair<std::string, severity_list> > file_list;
 
 	umcd::severity::level lower_limit() const;
@@ -37,16 +39,17 @@ public:
 protected:
 	friend class environment_loader;
 
-	void set_lower_limit(umcd::severity::level lvl);
+	void set_lower_limit(severity::level lvl);
 	void set_to_cout(const severity_list& to_cout);
 	void set_to_cerr(const severity_list& to_cerr);
 	void set_to_files(const file_list& to_files);
 
 private:
-	static umcd::severity::level lower_limit_;
+	static severity::level lower_limit_;
 	static severity_list cout_;
 	static severity_list cerr_;
 	static file_list files_;
 };
 
+} // namespace umcd
 #endif // UMCD_LOGGING_INFO_HPP

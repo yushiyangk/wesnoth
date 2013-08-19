@@ -12,7 +12,10 @@
 	See the COPYING file for more details.
 */
 #include "umcd/wml_reply.hpp"
+#include "config.hpp"
 #include <boost/lexical_cast.hpp>
+
+namespace umcd{
 
 wml_reply::wml_reply(){}
 
@@ -29,3 +32,5 @@ std::vector<boost::asio::const_buffer> wml_reply::to_buffers() const
 	buffers.push_back(boost::asio::buffer(metadata_));
 	return buffers;
 }
+
+} // namespace umcd

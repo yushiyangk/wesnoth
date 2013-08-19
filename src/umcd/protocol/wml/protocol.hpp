@@ -28,11 +28,13 @@
 #include "umcd/wml_reply.hpp"
 #include "umcd/request_info.hpp"
 
+namespace umcd{
+
 class wml_request;
 class protocol_info;
 
-class umcd_protocol : 
-		public boost::enable_shared_from_this<umcd_protocol>
+class protocol : 
+		public boost::enable_shared_from_this<protocol>
 	,	private boost::noncopyable
 {
 public:
@@ -48,7 +50,7 @@ public:
 	static void load(const protocol_info& proto_info);
 
 	// This constructor is only called once in main, so the factory will be created once as well.
-	umcd_protocol(io_service_type& io_service, const environment& env);
+	protocol(io_service_type& io_service, const environment& env);
 
 	void handle_request();
 	// Precondition: handle_request has been called and connection has been initialized.
@@ -81,6 +83,8 @@ private:
 	wml_request request_;
 };
 
-boost::shared_ptr<umcd_protocol> make_umcd_protocol(umcd_protocol::io_service_type& io_service, const environment& serverinfo);
+boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service, const environment& env);
+
+} // namespace umcd
 
 #endif // UMCD_PROTOCOL_HPP

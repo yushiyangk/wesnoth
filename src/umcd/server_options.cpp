@@ -22,6 +22,8 @@ namespace
 	namespace po = boost::program_options;
 }
 
+namespace umcd{
+
 server_options::server_options(int argc, char* argv[]) : 
 		header_("  Wesnoth User Made Content Daemon (UMCD).\n  Development version by Pierre Talbot. Copyright (C) 2013.\n"), 
 		version_("Wesnoth User Made Content Daemon (UMCD) - Development version")
@@ -127,3 +129,5 @@ config server_options::read_config() const
 	}
 	return cfg;
 }
+
+} // namespace umcd

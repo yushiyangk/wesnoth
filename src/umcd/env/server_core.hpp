@@ -17,6 +17,7 @@
 
 #include <string>
 
+namespace umcd{
 class environment_loader;
 
 class server_core
@@ -36,4 +37,5 @@ private:
 	static std::string port_;
 };
 
+} // namespace umcd
 #endif // UMCD_SERVER_CORE_HPP

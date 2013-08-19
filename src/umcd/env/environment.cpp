@@ -15,11 +15,8 @@
 #include "umcd/env/environment.hpp"
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/actions/request_umc_upload_action.hpp"
-#include "umcd/logger/logger.hpp"
 
-#include "config.hpp"
-
-#include <boost/algorithm/string.hpp>
+namespace umcd{
 
 environment::environment(const server_info& info)
 : server_info_(info)
@@ -32,3 +29,5 @@ boost::shared_ptr<request_info> environment::get_request_info(const std::string&
 {
 	return action_factory_.make_product(request_name);
 }
+
+} // namespace umcd

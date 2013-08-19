@@ -15,10 +15,9 @@
 #ifndef UMCD_PROTOCOL_INFO_HPP
 #define UMCD_PROTOCOL_INFO_HPP
 
-#include <string>
-#include <vector>
-#include <utility>
+#include <cstddef>
 
+namespace umcd{
 class environment_loader;
 
 class protocol_info
@@ -34,4 +33,5 @@ private:
 	static std::size_t header_max_size_;
 };
 
+} // namespace umcd
 #endif // UMCD_PROTOCOL_INFO_HPP

@@ -14,6 +14,8 @@
 
 #include "umcd/env/database_info.hpp"
 
+namespace umcd{
+
 std::string database_info::dsn_;
 std::string database_info::user_;
 std::string database_info::password_;
@@ -47,3 +49,5 @@ void database_info::set_password(const std::string& password)
 {
 	password_ = password;
 }
+
+} // namespace umcd

@@ -19,6 +19,8 @@
 #include <string>
 #include "config.hpp"
 
+namespace umcd{
+
 class wml_request
 {
 public:
@@ -31,4 +33,5 @@ private:
 
 std::string peek_request_name(std::istream& raw_data_stream);
 
+} // namespace umcd
 #endif // UMCD_WML_REQUEST_HPP

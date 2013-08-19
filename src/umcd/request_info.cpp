@@ -14,6 +14,8 @@
 
 #include "umcd/request_info.hpp"
 
+namespace umcd{
+
 request_info::request_info(const action_ptr& action, const validator_ptr& validator)
 : umcd_action_(action)
 , request_validator_(validator)
@@ -36,3 +38,5 @@ boost::shared_ptr<request_info> request_info::clone() const
 		boost::make_shared<validator_type>(*request_validator_)
 	);
 }
+
+} // namespace umcd

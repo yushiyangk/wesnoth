@@ -22,6 +22,8 @@
 #include <boost/program_options.hpp>
 #include <boost/optional.hpp>
 
+namespace umcd{
+
 class server_options
 {
 private:
@@ -72,4 +74,5 @@ private:
 	std::string config_file_name_;
 };
 
+} // namespace umcd
 #endif //UMCD_OPTIONS_HPP

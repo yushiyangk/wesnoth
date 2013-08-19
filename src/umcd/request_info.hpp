@@ -21,6 +21,7 @@
 #include "filesystem.hpp"
 #include "umcd/env/server_info.hpp"
 
+namespace umcd{
 class request_info
 {
 public:
@@ -48,4 +49,5 @@ boost::shared_ptr<request_info> make_request_info(const server_info& info, const
 			info.wesnoth_dir() + get_umcd_protocol_schema_dir() + "/" + request_name+".cfg"));
 }
 
+} // namespace umcd
 #endif // UMCD_REQUEST_INFO_HPP

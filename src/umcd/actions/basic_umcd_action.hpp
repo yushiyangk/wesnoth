@@ -17,8 +17,11 @@
 
 #include "umcd/server/generic_action.hpp"
 
-class umcd_protocol;
+namespace umcd{
+class protocol;
 
-typedef generic_action<void, boost::shared_ptr<umcd_protocol> > basic_umcd_action;
+typedef generic_action<void, boost::shared_ptr<protocol> > basic_umcd_action;
+
+} // namespace umcd
 
 #endif // UMCD_BASIC_WML_ACTION_HPP

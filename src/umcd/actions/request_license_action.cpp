@@ -17,23 +17,27 @@ The license is not shipped with the Wesnoth client because this server can be re
 */
 
 #include "umcd/actions/request_license_action.hpp"
-#include "umcd/protocol/wml/umcd_protocol.hpp"
+#include "umcd/protocol/wml/protocol.hpp"
 #include "filesystem.hpp"
+
+namespace umcd{
 
 request_license_action::request_license_action(const server_info& info)
 : server_info_(info)
 {}
 
-void request_license_action::execute(boost::shared_ptr<umcd_protocol> protocol)
+void request_license_action::execute(boost::shared_ptr<protocol> proto)
 {
 	// NOTE: We don't use the COPYING file because the " are not double quoted, instead we use a preformatted license file with " replaced by "".
 	config reply("request_license");
 	reply.child("request_license")["text"] = "\"" + read_file(server_info_.wesnoth_dir() + "data/umcd/license.txt") + "\"";
-	protocol->get_reply() = wml_reply(reply);
-	protocol->async_send_reply();
+	proto->get_reply() = wml_reply(reply);
+	proto->async_send_reply();
 }
 
 boost::shared_ptr<request_license_action::base> request_license_action::clone() const
 {
 	return boost::shared_ptr<base>(new request_license_action(*this));
 }
+
+} // namespace umcd

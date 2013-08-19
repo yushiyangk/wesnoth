@@ -17,6 +17,7 @@
 
 #include <string>
 
+namespace umcd{
 class environment_loader;
 
 class server_info
@@ -33,4 +34,5 @@ private:
 	static std::string wesnoth_dir_;
 };
 
+} // namespace umcd
 #endif // UMCD_SERVER_INFO_HPP

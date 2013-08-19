@@ -25,7 +25,7 @@
 
 #include "umcd/server_options.hpp"
 #include "umcd/server/multi_threaded/server_mt.hpp"
-#include "umcd/protocol/wml/umcd_protocol.hpp"
+#include "umcd/protocol/wml/protocol.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include "umcd/daemon.hpp"
 #include "umcd/otl/otl.hpp"
@@ -33,6 +33,8 @@
 #include "umcd/env/environment_loader.hpp"
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
+
+using namespace umcd;
 
 int main(int argc, char *argv[])
 {
@@ -50,8 +52,8 @@ int main(int argc, char *argv[])
 			// (Because the game_config::path must be initialized to validate).
 			options.validate(cfg);
 
-			umcd::asio_logger::get().load(logging_info());
-			umcd_protocol::load(protocol_info());
+			asio_logger::get().load(logging_info());
+			protocol::load(protocol_info());
 
 			if(options.is_daemon())
 			{
@@ -82,10 +84,10 @@ int main(int argc, char *argv[])
 
 			server_info info;
 			environment env(info);
-			typedef boost::function<boost::shared_ptr<umcd_protocol> (umcd_protocol::io_service_type&)> umcd_protocol_factory;
-			server_mt<umcd_protocol, umcd_protocol_factory> addon_server(
+			typedef boost::function<boost::shared_ptr<protocol> (protocol::io_service_type&)> umcd_protocol_factory;
+			server_mt<protocol, umcd_protocol_factory> addon_server(
 				server_core(),
-				boost::bind(&make_umcd_protocol, _1, boost::cref(env))
+				boost::bind(&make_protocol, _1, boost::cref(env))
 			);
 
 			// Start logger.

@@ -20,6 +20,8 @@
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "umcd/env/server_info.hpp"
 
+namespace umcd{
+
 class request_umc_upload_action 
 : public basic_umcd_action
 {
@@ -29,12 +31,13 @@ public:
 	request_umc_upload_action(const server_info& info);
 	const config& get_info(const config& metadata);
 
-	virtual void execute(boost::shared_ptr<umcd_protocol> p);
+	virtual void execute(boost::shared_ptr<protocol> p);
 	virtual boost::shared_ptr<base> clone() const;
 
 private:
 	server_info server_info_;
-	boost::shared_ptr<umcd_protocol> protocol_;
+	boost::shared_ptr<protocol> protocol_;
 };
 
+} // namespace umcd
 #endif // UMCD_REQUEST_UMC_UPLOAD_ACTION_HPP

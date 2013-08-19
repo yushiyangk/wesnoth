@@ -21,8 +21,11 @@
 #include "umcd/server/generic_factory.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
 #include "umcd/request_info.hpp"
+#include "umcd/env/server_info.hpp"
 
 class config;
+
+namespace umcd{
 
 class environment : private boost::noncopyable
 {
@@ -51,4 +54,5 @@ void environment::register_request_info(const std::string& request_name)
 	 );
 }
 
+} // namespace umcd
 #endif // UMCD_ENVIRONMENT_HPP

@@ -16,43 +16,45 @@
 #include <boost/current_function.hpp>
 #include <boost/assert.hpp>
 
-#include "umcd/protocol/wml/umcd_protocol.hpp"
+#include "umcd/protocol/wml/protocol.hpp"
 #include "umcd/special_packet.hpp"
 #include "umcd/error.hpp"
 #include "umcd/env/server_info.hpp"
 #include "umcd/env/protocol_info.hpp"
 
-std::size_t umcd_protocol::REQUEST_HEADER_MAX_SIZE = 8192;
+namespace umcd{
+
+std::size_t protocol::REQUEST_HEADER_MAX_SIZE = 8192;
 
 #define FUNCTION_TRACER() UMCD_LOG_IP_FUNCTION_TRACER(socket_)
 
-umcd_protocol::umcd_protocol(io_service_type& io_service, const environment& env)
+protocol::protocol(io_service_type& io_service, const environment& env)
 : environment_(env)
 , socket_(io_service)
 {
 }
 
-wml_reply& umcd_protocol::get_reply()
+wml_reply& protocol::get_reply()
 {
 	return reply_;
 }
 
-config& umcd_protocol::get_metadata()
+config& protocol::get_metadata()
 {
 	return request_.get_metadata();
 }
 
-void umcd_protocol::load(const protocol_info& proto_info)
+void protocol::load(const protocol_info& proto_info)
 {
 	REQUEST_HEADER_MAX_SIZE = proto_info.header_max_size();
 }
 
-umcd_protocol::socket_type& umcd_protocol::socket()
+protocol::socket_type& protocol::socket()
 {
 	return socket_;
 }
 
-void umcd_protocol::complete_request(const boost::system::error_code& error, std::size_t)
+void protocol::complete_request(const boost::system::error_code& error, std::size_t)
 {
 	FUNCTION_TRACER();
 	if(error)
@@ -62,38 +64,38 @@ void umcd_protocol::complete_request(const boost::system::error_code& error, std
 	}
 }
 
-void umcd_protocol::async_send_reply()
+void protocol::async_send_reply()
 {
 	FUNCTION_TRACER();
 
 	boost::asio::async_write(socket_
 		, reply_.to_buffers()
-		, boost::bind(&umcd_protocol::complete_request, shared_from_this()
+		, boost::bind(&protocol::complete_request, shared_from_this()
 			, boost::asio::placeholders::error
 			, boost::asio::placeholders::bytes_transferred)
 	);
 }
 
-void umcd_protocol::async_send_error(const boost::system::error_condition& error)
+void protocol::async_send_error(const boost::system::error_condition& error)
 {
 	reply_ = make_error_reply(error.message());
 	async_send_reply();
 }
 
-void umcd_protocol::async_send_invalid_packet(const std::string &where, const std::exception& e)
+void protocol::async_send_invalid_packet(const std::string &where, const std::exception& e)
 {
 	UMCD_LOG_IP(error, socket_) << " -- invalid request at " << where << " (" << e.what() << ")";
-	async_send_error(make_error_condition(umcd::invalid_packet));
+	async_send_error(make_error_condition(invalid_packet));
 }
 
-void umcd_protocol::async_send_invalid_packet(const std::string &where, const twml_exception& e)
+void protocol::async_send_invalid_packet(const std::string &where, const twml_exception& e)
 {
 	UMCD_LOG_IP(error, socket_) << " -- invalid request at " << where 
 										<< " (user message=" << e.user_message << " ; dev message=" << e.dev_message << ")";
-	async_send_error(make_error_condition(umcd::invalid_packet));
+	async_send_error(make_error_condition(invalid_packet));
 }
 
-void umcd_protocol::read_request_body(const boost::system::error_code& error, std::size_t)
+void protocol::read_request_body(const boost::system::error_code& error, std::size_t)
 {
 	FUNCTION_TRACER();
 	if(!error)
@@ -104,13 +106,13 @@ void umcd_protocol::read_request_body(const boost::system::error_code& error, st
 			UMCD_LOG_IP(debug, socket_) << " -- Request of size: " << payload_size_;
 			if(payload_size_ > REQUEST_HEADER_MAX_SIZE)
 			{
-				async_send_error(make_error_condition(umcd::request_header_too_large));
+				async_send_error(make_error_condition(request_header_too_large));
 			}
 			else
 			{
 				request_body_.resize(payload_size_);
 				boost::asio::async_read(socket_, boost::asio::buffer(&request_body_[0], request_body_.size())
-					, boost::bind(&umcd_protocol::dispatch_request, shared_from_this()
+					, boost::bind(&protocol::dispatch_request, shared_from_this()
 					, boost::asio::placeholders::error
 					, boost::asio::placeholders::bytes_transferred)
 				);
@@ -123,7 +125,7 @@ void umcd_protocol::read_request_body(const boost::system::error_code& error, st
 	}
 }
 
-void umcd_protocol::dispatch_request(const boost::system::error_code& err, std::size_t)
+void protocol::dispatch_request(const boost::system::error_code& err, std::size_t)
 {
 	FUNCTION_TRACER();
 	if(!err)
@@ -155,17 +157,19 @@ void umcd_protocol::dispatch_request(const boost::system::error_code& err, std::
 	}
 }
 
-void umcd_protocol::handle_request()
+void protocol::handle_request()
 {
 	FUNCTION_TRACER();
 	boost::asio::async_read(socket_, boost::asio::buffer(reinterpret_cast<char*>(&payload_size_), sizeof(payload_size_))
-		, boost::bind(&umcd_protocol::read_request_body, shared_from_this()
+		, boost::bind(&protocol::read_request_body, shared_from_this()
 			, boost::asio::placeholders::error
 			, boost::asio::placeholders::bytes_transferred)
 	);
 }
 
-boost::shared_ptr<umcd_protocol> make_umcd_protocol(umcd_protocol::io_service_type& io_service, const environment& serverinfo)
+boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service, const environment& env)
 {
-	return boost::make_shared<umcd_protocol>(boost::ref(io_service), boost::cref(serverinfo));
+	return boost::make_shared<protocol>(boost::ref(io_service), boost::cref(env));
 }
+
+} // namespace umcd
