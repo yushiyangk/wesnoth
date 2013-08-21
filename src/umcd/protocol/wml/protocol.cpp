@@ -22,6 +22,8 @@
 #include "umcd/env/server_info.hpp"
 #include "umcd/env/protocol_info.hpp"
 
+//#include "umcd/protocol/header_data.hpp"
+
 namespace umcd{
 
 std::size_t protocol::REQUEST_HEADER_MAX_SIZE = 8192;
