@@ -546,22 +546,33 @@ if env["host"] in ["x86_64-nacl", "i686-nacl"]:
 client_env.WesnothProgram("wesnoth", wesnoth_objects, have_client_prereqs)
 
 libumcd_sources = Split("""
+    """)
+
+umcd_sources = Split("""
+    umcd/umcd.cpp
     umcd/server_options.cpp
     umcd/special_packet.cpp
     umcd/wml_reply.cpp
     umcd/wml_request.cpp
     umcd/request_info.cpp
-    umcd/logger.cpp
-    umcd/umcd_error.cpp
-    umcd/environment.cpp
+    umcd/logger/logger.cpp
+    umcd/logger/asio_logger.cpp
+    umcd/logger/severity_level.cpp
+    umcd/logger/detail/log_line_cache.cpp
+    umcd/logger/detail/log_line.cpp
+    umcd/logger/detail/log_stream.cpp
+    umcd/error.cpp
+    umcd/env/environment.cpp
+    umcd/env/environment_loader.cpp
+    umcd/env/server_info.cpp
+    umcd/env/database_info.cpp
+    umcd/env/logging_info.cpp
+    umcd/env/protocol_info.cpp
+    umcd/env/server_core.cpp
     umcd/actions/request_license_action.cpp
     umcd/actions/request_umc_upload_action.cpp
-    addon/validation.cpp
-    """)
-
-umcd_sources = Split("""
-    umcd/umcd.cpp
-    umcd/protocol/wml/umcd_protocol.cpp
+    umcd/protocol/wml/protocol.cpp
+    umcd/protocol/header_data.cpp
     """)
 
 libumcd = env.Library("umcd", libumcd_sources, OBJPREFIX = "umcd_")

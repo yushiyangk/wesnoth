@@ -23,10 +23,11 @@
 namespace umcd{
 namespace detail{
 
-struct log_line_cache;
+class log_line_cache;
 
-struct log_line
+class log_line
 {
+public:
 	severity::level severity_level;
 	std::string data;
 	boost::posix_time::ptime time;

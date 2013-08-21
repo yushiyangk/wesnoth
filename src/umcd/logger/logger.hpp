@@ -36,8 +36,8 @@
 
 namespace umcd{
 namespace detail{
-struct log_line;
-struct log_stream;
+class log_line;
+class log_stream;
 
 } // namespace detail
 

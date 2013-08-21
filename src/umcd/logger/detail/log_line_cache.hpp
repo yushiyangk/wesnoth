@@ -24,12 +24,12 @@ namespace umcd{
 class logger;
 
 namespace detail{
-struct log_line;
+class log_line;
 
 class log_line_cache
 {
 private:
-	friend struct log_line;
+	friend class log_line;
 
 public:
 	log_line_cache(logger& logger, severity::level severity_level);
