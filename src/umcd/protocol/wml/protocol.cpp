@@ -22,7 +22,7 @@
 #include "umcd/env/server_info.hpp"
 #include "umcd/env/protocol_info.hpp"
 
-//#include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/header_data.hpp"
 
 namespace umcd{
 
@@ -66,16 +66,31 @@ void protocol::complete_request(const boost::system::error_code& error, std::siz
 	}
 }
 
+void protocol::on_error(const boost::system::error_code& error)
+{
+	FUNCTION_TRACER();
+	if(error)
+	{
+		UMCD_LOG_IP(info, socket_) << " -- unable to send data to the client (" << error.message() << "). Connection dropped.";
+		// TODO close socket.
+	}
+}
+
 void protocol::async_send_reply()
 {
 	FUNCTION_TRACER();
 
+	boost::shared_ptr<header_data::sender_type> sender = make_header_sender(socket_, make_error_packet("header response test"));
+	sender->on_event(boost::bind(&protocol::on_error, shared_from_this(), boost::asio::placeholders::error)
+		, event::transfer_error);
+	sender->async_send();
+	/*
 	boost::asio::async_write(socket_
 		, reply_.to_buffers()
 		, boost::bind(&protocol::complete_request, shared_from_this()
 			, boost::asio::placeholders::error
 			, boost::asio::placeholders::bytes_transferred)
-	);
+	);*/
 }
 
 void protocol::async_send_error(const boost::system::error_condition& error)

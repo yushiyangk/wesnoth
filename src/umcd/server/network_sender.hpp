@@ -31,7 +31,7 @@ public:
 		* For this reason, don't put the on_event method in the constructor
 		* (Here we are sure that the user won't add event).
 		*/
-		on_event(boost::bind(&network_sender::async_send_chunk_event, this, _1)
+		this->on_event(boost::bind(&network_sender::async_send_chunk_event, this, _1)
 		  , event::chunk_complete
 		);
 		async_send_impl();

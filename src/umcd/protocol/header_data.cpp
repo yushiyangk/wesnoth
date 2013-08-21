@@ -14,11 +14,12 @@
 
 #include "umcd/protocol/header_data.hpp"
 #include "config.hpp"
+#include "serialization/parser.hpp"
 #include <boost/make_shared.hpp>
 
 namespace umcd{
 
-boost::shared_ptr<sender_type> header_data::make_sender(socket_type& socket) const
+boost::shared_ptr<header_data::sender_type> header_data::make_sender(socket_type& socket) const
 {
 	const_buffer_type buffers;
 	buffers.push_back(boost::asio::buffer(reinterpret_cast<const char*>(&payload_size), sizeof(payload_size)));

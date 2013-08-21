@@ -62,6 +62,7 @@ public:
 	socket_type& socket();
 
 private:
+	void on_error(const boost::system::error_code& error);
 	void complete_request(const boost::system::error_code& error, std::size_t bytes_transferred);
 
 	void async_send_error(const boost::system::error_condition& error);

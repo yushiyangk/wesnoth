@@ -49,13 +49,14 @@ public:
 	void on_event(boost::function<void (std::size_t, std::size_t)> slot_function, event::transfer_on_going_tag);
 	void on_event(boost::function<void (buffer_type&)> slot_function, event::chunk_complete_tag);
 
-protected:
+	// Should be protected but there is some problems in the derived class to access it in a bind declaration.
 	std::size_t is_transfer_complete(const boost::system::error_code& error,
 		std::size_t bytes_transferred);
 
 	void chunk_complete(const boost::system::error_code& error,
 		std::size_t bytes_transferred);
 
+protected:
 	/** The buffer size is equal to 
 	*/
 	network_communicator(const buffer_type& buffer);
@@ -64,8 +65,8 @@ protected:
 	*/
 	network_communicator(const buffer_type& buffer, std::size_t bytes_to_transfer);
 
-private:
 	buffer_type buffer_;
+private:
 	std::size_t bytes_to_transfer_;
 	std::size_t bytes_transferred_;
 	std::size_t blocks_to_transfer_;

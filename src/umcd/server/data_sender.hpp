@@ -30,7 +30,7 @@ public:
 	: base_type(socket, buffer)
 	, data_(data)
 	{}
-
+	
 private:
 	boost::shared_ptr<const NetworkData> data_;
 };
