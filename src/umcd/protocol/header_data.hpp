@@ -33,7 +33,7 @@ struct header_data : public boost::enable_shared_from_this<header_data>
 	boost::shared_ptr<sender_type> make_sender(socket_type& socket) const;
 	// boost::shared_ptr<receiver_type> make_receiver(socket_type& socket);
 
-	std::size_t payload_size;
+	boost::uint32_t payload_size;
 	std::string metadata;
 };
 
