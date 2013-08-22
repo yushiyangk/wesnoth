@@ -19,24 +19,33 @@
 
 struct transfer_complete{};
 struct transfer_error{};
-struct transfer_on_going{}; // Useful for refresh.
+
+/** Use this event to track the transmission process.
+*/
+struct transfer_on_going{};
 struct chunk_complete{}; // Useful to launch the next op.
 
 template <>
 struct event_slot<transfer_complete>
 {
+	/** A function declaration with no argument, just to notify the fact that the transfer is finished.
+	*/
 	typedef void type();
 };
 
 template <>
 struct event_slot<transfer_error>
 {
+	/** A function declaration that takes an error_code and is called if the transmission fails.
+	*/
 	typedef void type(const boost::system::error_code&);
 };
 
 template <>
 struct event_slot<transfer_on_going>
 {
+	/** A function declaration that takes the bytes transferred and the bytes to transfer (total).
+	*/
 	typedef void type(std::size_t, std::size_t);
 };
 
