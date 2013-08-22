@@ -15,6 +15,7 @@
 #ifndef UMCD_HEADER_DATA_HPP
 #define UMCD_HEADER_DATA_HPP
 
+#include "umcd/server/data_receiver.hpp"
 #include "umcd/server/data_sender.hpp"
 #include <vector>
 
@@ -28,18 +29,28 @@ struct header_data : public boost::enable_shared_from_this<header_data>
 	typedef boost::asio::mutable_buffers_1 mutable_buffer_type;
 
 	typedef data_sender<header_data> sender_type;
+	typedef data_receiver<header_data> receiver_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
 
 	boost::shared_ptr<sender_type> make_sender(socket_type& socket) const;
-	// boost::shared_ptr<receiver_type> make_receiver(socket_type& socket);
+	boost::shared_ptr<receiver_type> make_receiver(socket_type& socket);
+
 
 	boost::uint32_t payload_size;
 	std::string metadata;
+private:
+	void make_metadata_buffer(mutable_buffer_type& buffer, std::size_t &bytes_to_transfer);
+
+	boost::signals2::connection on_chunk_event_;
 };
 
 header_data& operator>>(const config& metadata, header_data& header);
 config& operator<<(config& metadata, const header_data& header);
 boost::shared_ptr<header_data::sender_type> make_header_sender(boost::asio::ip::tcp::socket& socket, const config& metadata);
+
+/** You can subscribe to the event transfer_complete to know when metadata will be filled.
+*/
+boost::shared_ptr<header_data::receiver_type> make_header_receiver(boost::asio::ip::tcp::socket& socket, config& metadata);
 
 } // namespace umcd
 

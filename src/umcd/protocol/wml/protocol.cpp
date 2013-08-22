@@ -177,6 +177,12 @@ void protocol::dispatch_request(const boost::system::error_code& err, std::size_
 void protocol::handle_request()
 {
 	FUNCTION_TRACER();
+/*
+	boost::shared_ptr<header_data::receiver_type> receiver = make_header_receiver(socket_, make_error_packet("header response test"));
+	sender->on_event(boost::bind(&protocol::on_error, shared_from_this(), boost::asio::placeholders::error)
+		, event::transfer_error);
+	sender->async_send();*/
+
 	boost::asio::async_read(socket_, boost::asio::buffer(reinterpret_cast<char*>(&payload_size_), sizeof(payload_size_))
 		, boost::bind(&protocol::read_request_body, shared_from_this()
 			, boost::asio::placeholders::error
