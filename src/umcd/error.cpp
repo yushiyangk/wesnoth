@@ -41,6 +41,12 @@ boost::system::error_condition make_error_condition(umcd::error e)
 	return boost::system::error_condition(e, umcd_category());
 }
 
+// UMCD Error code factory.
+boost::system::error_code make_error_code(umcd::error e)
+{
+	return boost::system::error_code(e, umcd_category());
+}
+
 const boost::system::error_category& umcd_category()
 {
 	static const umcd::error_category umcd_category_const;

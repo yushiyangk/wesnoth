@@ -35,6 +35,12 @@ struct is_error_condition_enum<umcd::error>
 {
 	static const bool value = true;
 };
+
+template<>
+struct is_error_code_enum<umcd::error>
+{
+	static const bool value = true;
+};
 }} // namespace boost::system
 
 namespace umcd{
@@ -49,6 +55,7 @@ public:
 } // namespace umcd
 
 boost::system::error_condition make_error_condition(umcd::error e);
+boost::system::error_code make_error_code(umcd::error e);
 const boost::system::error_category& umcd_category();
 
 #endif // UMCD_ERROR_HPP
