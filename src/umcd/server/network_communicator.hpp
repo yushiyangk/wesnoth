@@ -15,13 +15,15 @@
 #ifndef UMCD_NETWORK_COMMUNICATOR_HPP
 #define UMCD_NETWORK_COMMUNICATOR_HPP
 
+#include "umcd/server/events.hpp"
+
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/signals2.hpp>
 #include <cassert>
 
 #include "umcd/boost/asio/asio.hpp"
 
 namespace event{
+
 struct transfer_complete_tag{};
 struct transfer_error_tag{};
 struct transfer_on_going_tag{}; // Useful for refresh.
@@ -33,12 +35,37 @@ const transfer_on_going_tag transfer_on_going = {};
 const chunk_complete_tag chunk_complete = {};
 }
 
+template <>
+struct event_slot<event::transfer_complete_tag>
+{
+	typedef void type();
+};
+
+template <>
+struct event_slot<event::transfer_error_tag>
+{
+	typedef void type(const boost::system::error_code&);
+};
+
+template <>
+struct event_slot<event::transfer_on_going_tag>
+{
+	typedef void type(std::size_t, std::size_t);
+};
+
+template <>
+struct event_slot<event::chunk_complete_tag>
+{
+	typedef void type(std::size_t&);
+};
+
 template <class BufferSequence>
 class network_communicator
 	: private boost::noncopyable
 	, public boost::enable_shared_from_this<network_communicator<BufferSequence> >
 {
 public:
+	events<boost::mpl::set<event::transfer_complete_tag, event::transfer_error_tag> > events_;
 	typedef BufferSequence buffer_type;
 
 	std::size_t bytes_to_transfer() const;
@@ -129,6 +156,7 @@ bool network_communicator<BufferSequence>::is_done() const
 template <class BufferSequence>
 boost::signals2::connection network_communicator<BufferSequence>::on_event(boost::function<void()> slot_function, event::transfer_complete_tag)
 {
+	//events_.on_event<event::transfer_complete_tag>(slot_function);
 	return sig_transfer_complete_.connect(slot_function);
 }
 
