@@ -22,39 +22,31 @@
 
 #include "umcd/boost/asio/asio.hpp"
 
-namespace event{
-
-struct transfer_complete_tag{};
-struct transfer_error_tag{};
-struct transfer_on_going_tag{}; // Useful for refresh.
-struct chunk_complete_tag{}; // Useful to launch the next op.
-
-const transfer_complete_tag transfer_complete = {};
-const transfer_error_tag transfer_error = {};
-const transfer_on_going_tag transfer_on_going = {};
-const chunk_complete_tag chunk_complete = {};
-}
+struct transfer_complete{};
+struct transfer_error{};
+struct transfer_on_going{}; // Useful for refresh.
+struct chunk_complete{}; // Useful to launch the next op.
 
 template <>
-struct event_slot<event::transfer_complete_tag>
+struct event_slot<transfer_complete>
 {
 	typedef void type();
 };
 
 template <>
-struct event_slot<event::transfer_error_tag>
+struct event_slot<transfer_error>
 {
 	typedef void type(const boost::system::error_code&);
 };
 
 template <>
-struct event_slot<event::transfer_on_going_tag>
+struct event_slot<transfer_on_going>
 {
 	typedef void type(std::size_t, std::size_t);
 };
 
 template <>
-struct event_slot<event::chunk_complete_tag>
+struct event_slot<chunk_complete>
 {
 	typedef void type(std::size_t&);
 };
@@ -65,39 +57,47 @@ class network_communicator
 	, public boost::enable_shared_from_this<network_communicator<BufferSequence> >
 {
 public:
-	events<boost::mpl::set<event::transfer_complete_tag, event::transfer_error_tag> > events_;
 	typedef BufferSequence buffer_type;
 
 	std::size_t bytes_to_transfer() const;
 	std::size_t bytes_transferred() const;
 	bool is_done() const;
 
+	typedef events<boost::mpl::set<
+				transfer_complete
+			, transfer_error
+			, transfer_on_going
+			, chunk_complete> > events_type;
+
+	template <class Event, class F>
+	boost::signals2::connection on_event(F f);
+
 	/**
 	@param slot_function A function with no argument, just to notify the fact that the transfer is finished.
 	*/
-	boost::signals2::connection on_event(boost::function<void()> slot_function, event::transfer_complete_tag);
+	//boost::signals2::connection on_event(boost::function<void()> slot_function, event::transfer_complete_tag);
 
 	/**
 	@param slot_function A function that takes an error_code and is called if the transmission fails.
 	*/
-	boost::signals2::connection on_event(boost::function<void (const boost::system::error_code&)> slot_function, event::transfer_error_tag);
+	//boost::signals2::connection on_event(boost::function<void (const boost::system::error_code&)> slot_function, event::transfer_error_tag);
 
 	/** Use this event to track the transmission process.
 	@param slot_function A function that takes the bytes transferred and the bytes to transfer (total).
 	*/
-	boost::signals2::connection on_event(boost::function<void (std::size_t, std::size_t)> slot_function, event::transfer_on_going_tag);
+	//boost::signals2::connection on_event(boost::function<void (std::size_t, std::size_t)> slot_function, event::transfer_on_going_tag);
 
 	/** Use this event to dynamically change the buffer and the bytes to transfer or simply to track the chunk process.
 	The last can be useful to relaunch a transmission operation if the transmission is not finished yet.
 	@param slot_function A function that takes references to the buffer and the bytes to transfer.
 	*/
-	boost::signals2::connection on_event(boost::function<void (buffer_type&, std::size_t&)> slot_function, event::chunk_complete_tag);
+	//boost::signals2::connection on_event(boost::function<void (buffer_type&, std::size_t&)> slot_function, event::chunk_complete_tag);
 
 	// Should be protected but there is some problems in the derived class to access it in a bind declaration.
 	std::size_t is_transfer_complete(const boost::system::error_code& error,
 		std::size_t bytes_transferred);
 
-	void chunk_complete(const boost::system::error_code& error,
+	void on_chunk_complete(const boost::system::error_code& error,
 		std::size_t bytes_transferred);
 
 protected:
@@ -111,12 +111,9 @@ protected:
 
 	buffer_type buffer_;
 private:
+	events_type events_;
 	std::size_t bytes_to_transfer_;
 	std::size_t bytes_transferred_;
-	boost::signals2::signal<void ()> sig_transfer_complete_;
-	boost::signals2::signal<void (const boost::system::error_code&)> sig_transfer_error_;
-	boost::signals2::signal<void (std::size_t, std::size_t)> sig_transfer_on_going_;
-	boost::signals2::signal<void (buffer_type&, std::size_t&)> sig_chunk_complete_;
 };
 
 template <class BufferSequence>
@@ -154,28 +151,10 @@ bool network_communicator<BufferSequence>::is_done() const
 }
 
 template <class BufferSequence>
-boost::signals2::connection network_communicator<BufferSequence>::on_event(boost::function<void()> slot_function, event::transfer_complete_tag)
+template <class Event, class F>
+boost::signals2::connection network_communicator<BufferSequence>::on_event(F f)
 {
-	//events_.on_event<event::transfer_complete_tag>(slot_function);
-	return sig_transfer_complete_.connect(slot_function);
-}
-
-template <class BufferSequence>
-boost::signals2::connection network_communicator<BufferSequence>::on_event(boost::function<void (const boost::system::error_code&)> slot_function, event::transfer_error_tag)
-{
-	return sig_transfer_error_.connect(slot_function);
-}
-
-template <class BufferSequence>
-boost::signals2::connection network_communicator<BufferSequence>::on_event(boost::function<void (std::size_t, std::size_t)> slot_function, event::transfer_on_going_tag)
-{
-	return sig_transfer_on_going_.connect(slot_function);
-}
-
-template <class BufferSequence>
-boost::signals2::connection network_communicator<BufferSequence>::on_event(boost::function<void (buffer_type&, std::size_t&)> slot_function, event::chunk_complete_tag)
-{
-	return sig_chunk_complete_.connect(slot_function);
+	return events_.on_event<Event>(f);
 }
 
 template <class BufferSequence>
@@ -185,27 +164,27 @@ std::size_t network_communicator<BufferSequence>::is_transfer_complete(const boo
 	bytes_transferred_ = bytes_transferred;
 	if(error)
 	{
-		sig_transfer_error_(error);
+		events_.signal_event<transfer_error>(error);
 		return 0;
 	}
 	return bytes_to_transfer_ - bytes_transferred_;
 }
 
 template <class BufferSequence>
-void network_communicator<BufferSequence>::chunk_complete(const boost::system::error_code& error,
+void network_communicator<BufferSequence>::on_chunk_complete(const boost::system::error_code& error,
 	std::size_t bytes_transferred)
 {
 	bytes_transferred_ = bytes_transferred;
 	if(error)
 	{
-		sig_transfer_error_(error);
+		events_.signal_event<transfer_error>(error);
 	}
 	else
 	{
-		sig_chunk_complete_(buffer_, bytes_to_transfer_);
+		events_.signal_event<chunk_complete>(bytes_to_transfer_);
 		if(bytes_transferred_ == bytes_to_transfer_)
 		{
-			sig_transfer_complete_();
+			events_.signal_event<transfer_complete>();
 		}
 	}
 }

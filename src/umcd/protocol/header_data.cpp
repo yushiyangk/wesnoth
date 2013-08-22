@@ -35,12 +35,11 @@ boost::shared_ptr<header_data::receiver_type> header_data::make_receiver(socket_
 		boost::ref(socket), 
 		shared_from_this(),
 		boost::asio::buffer(reinterpret_cast<char*>(&payload_size), sizeof(payload_size)));
-	on_chunk_event_ = receiver->on_event(boost::bind(&header_data::make_metadata_buffer, shared_from_this(), _1, _2),
-		event::chunk_complete);
+	on_chunk_event_ = receiver->on_event<chunk_complete>(boost::bind(&header_data::make_metadata_buffer, shared_from_this(), _1));
 	return receiver;
 }
 
-void header_data::make_metadata_buffer(mutable_buffer_type& buffer, std::size_t &bytes_to_transfer)
+void header_data::make_metadata_buffer(/*mutable_buffer_type& buffer,*/ std::size_t &bytes_to_transfer)
 {
 	on_chunk_event_.disconnect();
 	// Retreive the size and check if it's good.
@@ -54,7 +53,7 @@ void header_data::make_metadata_buffer(mutable_buffer_type& buffer, std::size_t 
 	{
 		// Dynamically updates buffer and bytes to transfer because we get this information now.
 		metadata.resize(payload_size);
-		buffer = boost::asio::buffer(&metadata[0], metadata.size());
+		// buffer = boost::asio::buffer(&metadata[0], metadata.size());
 		bytes_to_transfer += metadata.size();
 	}
 }
@@ -113,7 +112,7 @@ boost::shared_ptr<header_data::receiver_type> make_header_receiver(boost::asio::
 
 	typedef detail::header2data<config> header2config;
 	boost::shared_ptr<header2config> h2c = boost::make_shared<header2config>(boost::cref(header), boost::ref(metadata));
-	receiver->on_event(boost::bind(&header2config::load_data, h2c), event::transfer_complete);
+	receiver->on_event<transfer_complete>(boost::bind(&header2config::load_data, h2c));
 	return receiver;
 }
 

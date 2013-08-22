@@ -31,9 +31,8 @@ public:
 		* For this reason, don't put the on_event method in the constructor
 		* (Here we are sure that the user won't add event).
 		*/
-		this->on_event(boost::bind(&network_transfer::async_transfer_chunk_event, this, _1, _2)
-		  , event::chunk_complete
-		);
+		this->template on_event<chunk_complete>(
+			boost::bind(&network_transfer::async_transfer_chunk_event, this, _1));
 		async_transfer_impl();
 	}
 
@@ -59,7 +58,7 @@ private:
 
 	/** After a chunk has been received we want to continue receiving others (so we recall async_receive).
 	*/
-	void async_transfer_chunk_event(BufferSequence&, std::size_t&)
+	void async_transfer_chunk_event(std::size_t&)
 	{
 		async_transfer_impl();
 	}

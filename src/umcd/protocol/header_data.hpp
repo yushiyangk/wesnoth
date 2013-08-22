@@ -39,7 +39,7 @@ struct header_data : public boost::enable_shared_from_this<header_data>
 	boost::uint32_t payload_size;
 	std::string metadata;
 private:
-	void make_metadata_buffer(mutable_buffer_type& buffer, std::size_t &bytes_to_transfer);
+	void make_metadata_buffer(/*mutable_buffer_type& buffer,*/ std::size_t &bytes_to_transfer);
 
 	boost::signals2::connection on_chunk_event_;
 };

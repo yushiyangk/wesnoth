@@ -45,7 +45,7 @@ public:
 		, boost::bind(&base_type::is_transfer_complete, this->shared_from_this()
 			, boost::asio::placeholders::error
 			, boost::asio::placeholders::bytes_transferred)
-		, boost::bind(&base_type::chunk_complete, this->shared_from_this()
+		, boost::bind(&base_type::on_chunk_complete, this->shared_from_this()
 			, boost::asio::placeholders::error
 			, boost::asio::placeholders::bytes_transferred)
 		);

@@ -55,7 +55,7 @@ public:
 	typename boost::enable_if<
 	    boost::is_same<Event, event_type>
 		, boost::signals2::connection
-	>::type on_event(typename event_slot<Event>::type slot_function)
+	>::type on_event(boost::function<typename event_slot<Event>::type> slot_function)
 	{
 		return signal_.connect(slot_function);
 	}
@@ -64,19 +64,20 @@ public:
 	typename boost::disable_if<
 			boost::is_same<Event, event_type>
 		, boost::signals2::connection
-	>::type on_event(typename event_slot<Event>::type slot_function)
+	>::type on_event(boost::function<typename event_slot<Event>::type> slot_function)
 	{
 		return events_tail_.on_event<Event>(slot_function);
 	}
 
-protected:
-		template <class Event>
+#define SLOT_FUN_ARG(E, n) typename boost::function_traits<typename event_slot<E>::type>::arg##n##_type
+
+	template <class Event>
 	typename boost::enable_if<
 	    boost::is_same<Event, event_type>
 		, void
 	>::type signal_event()
 	{
-		return signal_.connect();
+		signal_();
 	}
 
 	template <class Event>
@@ -85,43 +86,43 @@ protected:
 		, void
 	>::type signal_event()
 	{
-		return events_tail_.on_event<Event>();
+		events_tail_.signal_event<Event>();
 	}
 
-	template <class Event, class T1>
+	template <class Event>
 	typename boost::enable_if<
 	    boost::is_same<Event, event_type>
 		, void
-	>::type signal_event(T1 arg1)
+	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1)
 	{
-		return signal_.connect(arg1);
+		signal_(arg1);
 	}
 
-	template <class Event, class T1>
+	template <class Event>
 	typename boost::disable_if<
 			boost::is_same<Event, event_type>
 		, void
-	>::type signal_event(T1 arg1)
+	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1)
 	{
-		return events_tail_.on_event<Event>(arg1);
+		events_tail_.signal_event<Event>(arg1);
 	}
 
-	template <class Event, class T1, class T2>
+	template <class Event>
 	typename boost::enable_if<
 	    boost::is_same<Event, event_type>
 		, void
-	>::type signal_event(T1 arg1, T2 arg2)
+	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1, SLOT_FUN_ARG(Event, 2) arg2)
 	{
-		return signal_.connect(arg1, arg2);
+		signal_(arg1, arg2);
 	}
 
 	template <class Event, class T1, class T2>
 	typename boost::disable_if<
 			boost::is_same<Event, event_type>
 		, void
-	>::type signal_event(T1 arg1, T2 arg2)
+	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1, SLOT_FUN_ARG(Event, 2) arg2)
 	{
-		return events_tail_.on_event<Event>(arg1, arg2);
+		events_tail_.signal_event<Event>(arg1, arg2);
 	}
 private:
 	boost::signals2::signal<event_slot_type> signal_;
