@@ -69,6 +69,60 @@ public:
 		return events_tail_.on_event<Event>(slot_function);
 	}
 
+protected:
+		template <class Event>
+	typename boost::enable_if<
+	    boost::is_same<Event, event_type>
+		, void
+	>::type signal_event()
+	{
+		return signal_.connect();
+	}
+
+	template <class Event>
+	typename boost::disable_if<
+			boost::is_same<Event, event_type>
+		, void
+	>::type signal_event()
+	{
+		return events_tail_.on_event<Event>();
+	}
+
+	template <class Event, class T1>
+	typename boost::enable_if<
+	    boost::is_same<Event, event_type>
+		, void
+	>::type signal_event(T1 arg1)
+	{
+		return signal_.connect(arg1);
+	}
+
+	template <class Event, class T1>
+	typename boost::disable_if<
+			boost::is_same<Event, event_type>
+		, void
+	>::type signal_event(T1 arg1)
+	{
+		return events_tail_.on_event<Event>(arg1);
+	}
+
+	template <class Event, class T1, class T2>
+	typename boost::enable_if<
+	    boost::is_same<Event, event_type>
+		, void
+	>::type signal_event(T1 arg1, T2 arg2)
+	{
+		return signal_.connect(arg1, arg2);
+	}
+
+	template <class Event, class T1, class T2>
+	typename boost::disable_if<
+			boost::is_same<Event, event_type>
+		, void
+	>::type signal_event(T1 arg1, T2 arg2)
+	{
+		return events_tail_.on_event<Event>(arg1, arg2);
+	}
 private:
 	boost::signals2::signal<event_slot_type> signal_;
 
@@ -102,7 +156,7 @@ class events_impl_tag<EventSequence, mpl::aux::set_tag>
 } // namespace detail
 
 
-// Pre: EventSequence is a set and non-empty.
+// Pre: EventSequence is a set and is non-empty.
 template <class EventSequence>
 class events
 : public detail::events_impl_tag<
