@@ -129,7 +129,8 @@ void protocol::dispatch_request()
 
 			request_ = wml_request();
 			// Read into config and validate metadata.
-			request_info->validator()->validate(header_metadata_, "",0,"");
+			config dummy;
+			::read(dummy, header_metadata_.to_string(), request_info->validator()->get());
 			UMCD_LOG_IP(debug, socket_) << " -- request validated.";
 
 			request_info->action()->execute(shared_from_this());
