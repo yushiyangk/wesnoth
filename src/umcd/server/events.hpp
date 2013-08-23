@@ -66,7 +66,7 @@ public:
 		, boost::signals2::connection
 	>::type on_event(boost::function<typename event_slot<Event>::type> slot_function)
 	{
-		return events_tail_.on_event<Event>(slot_function);
+		return events_tail_.template on_event<Event>(slot_function);
 	}
 
 #define SLOT_FUN_ARG(E, n) typename boost::function_traits<typename event_slot<E>::type>::arg##n##_type
@@ -86,7 +86,7 @@ public:
 		, void
 	>::type signal_event()
 	{
-		events_tail_.signal_event<Event>();
+		events_tail_.template signal_event<Event>();
 	}
 
 	template <class Event>
@@ -104,7 +104,7 @@ public:
 		, void
 	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1)
 	{
-		events_tail_.signal_event<Event>(arg1);
+		events_tail_.template signal_event<Event>(arg1);
 	}
 
 	template <class Event>
@@ -122,7 +122,7 @@ public:
 		, void
 	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1, SLOT_FUN_ARG(Event, 2) arg2)
 	{
-		events_tail_.signal_event<Event>(arg1, arg2);
+		events_tail_.template signal_event<Event>(arg1, arg2);
 	}
 private:
 	boost::signals2::signal<event_slot_type> signal_;
