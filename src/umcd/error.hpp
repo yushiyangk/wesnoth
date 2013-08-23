@@ -22,6 +22,7 @@ namespace umcd{
 enum error
 {
 	invalid_packet,
+	invalid_packet_name,
 	request_header_too_large,
 	num_error
 };

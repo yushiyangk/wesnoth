@@ -111,82 +111,48 @@ void protocol::async_send_invalid_packet(const std::string &where, const twml_ex
 	async_send_error(make_error_condition(invalid_packet));
 }
 
-void protocol::read_request_body(const boost::system::error_code& error, std::size_t)
+void protocol::dispatch_request()
 {
-	FUNCTION_TRACER();
-	if(!error)
+	FUNCTION_TRACER();   
+	try
 	{
-		try
+		// Retrieve request name.
+		config::all_children_itors range = header_metadata_.all_children_range();
+		if(range.first == range.second)
+			async_send_error(make_error_condition(invalid_packet_name));
+		else
 		{
-			payload_size_ = ntohl(payload_size_);
-			UMCD_LOG_IP(debug, socket_) << " -- Request of size: " << payload_size_;
-			if(payload_size_ > REQUEST_HEADER_MAX_SIZE)
-			{
-				async_send_error(make_error_condition(request_header_too_large));
-			}
-			else
-			{
-				request_body_.resize(payload_size_);
-				boost::asio::async_read(socket_, boost::asio::buffer(&request_body_[0], request_body_.size())
-					, boost::bind(&protocol::dispatch_request, shared_from_this()
-					, boost::asio::placeholders::error
-					, boost::asio::placeholders::bytes_transferred)
-				);
-			}
-		}
-		catch(const std::exception& e)
-		{
-			async_send_invalid_packet(BOOST_CURRENT_FUNCTION, e);
-		}
-	}
-}
-
-void protocol::dispatch_request(const boost::system::error_code& err, std::size_t)
-{
-	FUNCTION_TRACER();
-	if(!err)
-	{
-		std::stringstream request_stream(request_body_);      
-		try
-		{
-			// Retrieve request name.
-			std::string request_name = peek_request_name(request_stream);
+			const std::string& request_name = range.first->key;
 			UMCD_LOG_IP(info, socket_) << " -- request: " << request_name;
 			info_ptr request_info = environment_.get_request_info(request_name);
-			UMCD_LOG_IP(info, socket_) << " -- request:\n" << request_body_;
+			UMCD_LOG_IP(info, socket_) << " -- request:\n" << header_metadata_;
 
 			request_ = wml_request();
 			// Read into config and validate metadata.
-			::read(request_.get_metadata(), request_stream, request_info->validator().get());
+			request_info->validator()->validate(header_metadata_, "",0,"");
 			UMCD_LOG_IP(debug, socket_) << " -- request validated.";
 
 			request_info->action()->execute(shared_from_this());
 		}
-		catch(const std::exception& e)
-		{
-			async_send_invalid_packet(BOOST_CURRENT_FUNCTION, e);
-		}
-		catch(const twml_exception& e)
-		{
-			async_send_invalid_packet(BOOST_CURRENT_FUNCTION, e);
-		}
+	}
+	catch(const std::exception& e)
+	{
+		async_send_invalid_packet(BOOST_CURRENT_FUNCTION, e);
+	}
+	catch(const twml_exception& e)
+	{
+		async_send_invalid_packet(BOOST_CURRENT_FUNCTION, e);
 	}
 }
 
 void protocol::handle_request()
 {
 	FUNCTION_TRACER();
-/*
-	boost::shared_ptr<header_data::receiver_type> receiver = make_header_receiver(socket_, make_error_packet("header response test"));
-	sender->on_event(boost::bind(&protocol::on_error, shared_from_this(), boost::asio::placeholders::error)
-		, event::transfer_error);
-	sender->async_send();*/
 
-	boost::asio::async_read(socket_, boost::asio::buffer(reinterpret_cast<char*>(&payload_size_), sizeof(payload_size_))
-		, boost::bind(&protocol::read_request_body, shared_from_this()
-			, boost::asio::placeholders::error
-			, boost::asio::placeholders::bytes_transferred)
-	);
+	boost::shared_ptr<header_mutable_buffer::receiver_type> receiver = make_header_receiver(socket_, header_metadata_);
+	receiver->on_event<transfer_error>(boost::bind(&protocol::on_error, shared_from_this(), boost::asio::placeholders::error));
+	receiver->on_event<transfer_complete>(boost::bind(&protocol::dispatch_request, shared_from_this()));
+	receiver->async_receive();
 }
 
 boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service, const environment& env)

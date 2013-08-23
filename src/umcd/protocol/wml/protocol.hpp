@@ -69,17 +69,13 @@ private:
 	void async_send_invalid_packet(const std::string &where, const std::exception& e);
 	void async_send_invalid_packet(const std::string &where, const twml_exception& e);
 
-	// Precondition: size_of_request must be read.
-	void read_request_body(const boost::system::error_code& error, std::size_t bytes_transferred);
-
-	// Precondition: request_body must be read.
-	void dispatch_request(const boost::system::error_code& error, std::size_t bytes_transferred);
+	// Precondition: header_metadata_ must be read.
+	void dispatch_request();
 
 private:
 	const environment& environment_;
 	socket_type socket_;
-	boost::uint32_t payload_size_;
-	std::string request_body_;
+	config header_metadata_;
 	wml_reply reply_;
 	wml_request request_;
 };
