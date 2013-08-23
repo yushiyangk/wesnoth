@@ -1088,6 +1088,7 @@ set(umcd_lib_SRC
 	umcd/actions/request_umc_upload_action.cpp
 	umcd/protocol/wml/protocol.cpp
 	umcd/protocol/header_data.cpp
+	umcd/protocol/error_sender.cpp
 	${wesnoth-schema_validator-dependencies_SRC}
 )
 

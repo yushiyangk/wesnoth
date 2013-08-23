@@ -25,6 +25,7 @@
 #include "umcd/env/environment.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include "umcd/request_info.hpp"
+#include "umcd/protocol/error_sender.hpp"
 
 namespace umcd{
 
@@ -62,7 +63,6 @@ private:
 	void on_error(const boost::system::error_code& error);
 	void complete_request(const boost::system::error_code& error, std::size_t bytes_transferred);
 
-	void async_send_error(const boost::system::error_condition& error);
 	void async_send_invalid_packet(const std::string &where, const std::exception& e);
 	void async_send_invalid_packet(const std::string &where, const twml_exception& e);
 

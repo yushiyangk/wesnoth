@@ -80,23 +80,17 @@ void protocol::async_send_reply()
 	sender->async_send();
 }
 
-void protocol::async_send_error(const boost::system::error_condition& error)
-{
-	reply_ = make_error_packet(error.message());
-	async_send_reply();
-}
-
 void protocol::async_send_invalid_packet(const std::string &where, const std::exception& e)
 {
 	UMCD_LOG_IP(error, socket_) << " -- invalid request at " << where << " (" << e.what() << ")";
-	async_send_error(make_error_condition(invalid_packet));
+	async_send_error(socket_, make_error_condition(invalid_packet));
 }
 
 void protocol::async_send_invalid_packet(const std::string &where, const twml_exception& e)
 {
 	UMCD_LOG_IP(error, socket_) << " -- invalid request at " << where 
 										<< " (user message=" << e.user_message << " ; dev message=" << e.dev_message << ")";
-	async_send_error(make_error_condition(invalid_packet));
+	async_send_error(socket_, make_error_condition(invalid_packet));
 }
 
 void protocol::dispatch_request()
@@ -107,7 +101,7 @@ void protocol::dispatch_request()
 		// Retrieve request name.
 		config::all_children_itors range = header_metadata_.all_children_range();
 		if(range.first == range.second)
-			async_send_error(make_error_condition(invalid_packet_name));
+			async_send_error(socket_, make_error_condition(invalid_packet_name));
 		else
 		{
 			const std::string& request_name = range.first->key;

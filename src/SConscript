@@ -571,6 +571,7 @@ umcd_sources = Split("""
     umcd/actions/request_umc_upload_action.cpp
     umcd/protocol/wml/protocol.cpp
     umcd/protocol/header_data.cpp
+    umcd/protocol/error_sender.cpp
     """)
 
 libumcd = env.Library("umcd", libumcd_sources, OBJPREFIX = "umcd_")
