@@ -31,7 +31,7 @@ void request_license_action::execute(boost::shared_ptr<protocol> proto)
 	// NOTE: We don't use the COPYING file because the " are not double quoted, instead we use a preformatted license file with " replaced by "".
 	config reply("request_license");
 	reply.child("request_license")["text"] = "\"" + read_file(server_info_.wesnoth_dir() + "data/umcd/license.txt") + "\"";
-	proto->get_reply() = wml_reply(reply);
+	proto->get_reply() = reply;
 	proto->async_send_reply();
 }
 

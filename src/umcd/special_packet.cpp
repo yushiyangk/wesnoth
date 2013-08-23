@@ -13,7 +13,6 @@
 */
 
 #include "umcd/special_packet.hpp"
-#include "umcd/wml_reply.hpp"
 #include "config.hpp"
 
 namespace umcd{
@@ -33,16 +32,6 @@ config make_error_packet(const std::string& message)
 config make_warning_packet(const std::string& message)
 {
 	return make_special_packet(message, "warning");
-}
-
-wml_reply make_error_reply(const std::string& message)
-{
-	return wml_reply(make_error_packet(message));
-}
-
-wml_reply make_warning_reply(const std::string& message)
-{
-	return wml_reply(make_warning_packet(message));
 }
 
 } // namespace umcd

@@ -36,14 +36,9 @@ protocol::protocol(io_service_type& io_service, const environment& env)
 {
 }
 
-wml_reply& protocol::get_reply()
+config& protocol::get_reply()
 {
 	return reply_;
-}
-
-config& protocol::get_metadata()
-{
-	return request_.get_metadata();
 }
 
 void protocol::load(const protocol_info& proto_info)
@@ -80,21 +75,14 @@ void protocol::async_send_reply()
 {
 	FUNCTION_TRACER();
 
-	boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket_, make_error_packet("header response test"));
+	boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket_, reply_);
 	sender->on_event<transfer_error>(boost::bind(&protocol::on_error, shared_from_this(), boost::asio::placeholders::error));
 	sender->async_send();
-	/*
-	boost::asio::async_write(socket_
-		, reply_.to_buffers()
-		, boost::bind(&protocol::complete_request, shared_from_this()
-			, boost::asio::placeholders::error
-			, boost::asio::placeholders::bytes_transferred)
-	);*/
 }
 
 void protocol::async_send_error(const boost::system::error_condition& error)
 {
-	reply_ = make_error_reply(error.message());
+	reply_ = make_error_packet(error.message());
 	async_send_reply();
 }
 
@@ -127,10 +115,9 @@ void protocol::dispatch_request()
 			info_ptr request_info = environment_.get_request_info(request_name);
 			UMCD_LOG_IP(info, socket_) << " -- request:\n" << header_metadata_;
 
-			request_ = wml_request();
 			// Read into config and validate metadata.
 			config dummy;
-			::read(dummy, header_metadata_.to_string(), request_info->validator()->get());
+			::read(dummy, header_metadata_.to_string(), request_info->validator().get());
 			UMCD_LOG_IP(debug, socket_) << " -- request validated.";
 
 			request_info->action()->execute(shared_from_this());

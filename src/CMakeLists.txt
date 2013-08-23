@@ -1069,8 +1069,6 @@ set(wesnoth-schema_validator-dependencies_SRC
 set(umcd_lib_SRC
 	umcd/server_options.cpp
 	umcd/special_packet.cpp
-	umcd/wml_reply.cpp
-	umcd/wml_request.cpp
 	umcd/request_info.cpp
 	umcd/logger/logger.cpp
 	umcd/logger/asio_logger.cpp

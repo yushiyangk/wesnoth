@@ -23,9 +23,7 @@
 #include "wml_exception.hpp"
 
 #include "umcd/env/environment.hpp"
-#include "umcd/wml_request.hpp"
 #include "umcd/logger/asio_logger.hpp"
-#include "umcd/wml_reply.hpp"
 #include "umcd/request_info.hpp"
 
 namespace umcd{
@@ -56,8 +54,7 @@ public:
 	// Precondition: handle_request has been called and connection has been initialized.
 	void async_send_reply();
 
-	wml_reply& get_reply();
-	config& get_metadata();
+	config& get_reply();
 
 	socket_type& socket();
 
@@ -76,8 +73,7 @@ private:
 	const environment& environment_;
 	socket_type socket_;
 	config header_metadata_;
-	wml_reply reply_;
-	wml_request request_;
+	config reply_;
 };
 
 boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service, const environment& env);

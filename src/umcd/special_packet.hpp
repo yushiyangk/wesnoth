@@ -20,14 +20,9 @@
 class config;
 
 namespace umcd{
-
-class wml_reply;
 	
 config make_error_packet(const std::string& message);
 config make_warning_packet(const std::string& message);
-
-wml_reply make_error_reply(const std::string& message);
-wml_reply make_warning_reply(const std::string& message);
 
 } // namespace umcd
 #endif // UMCD_ERROR_PACKET_HPP
