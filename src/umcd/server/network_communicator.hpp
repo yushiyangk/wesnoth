@@ -51,12 +51,16 @@ protected:
 	network_communicator(const boost::shared_ptr<BufferProvider>& buffer_provider);
 
 private:
+	typedef network_communicator<BufferProvider> this_type;
 	void update_bytes_transferred(std::size_t bytes_in_buffer);
+	bool has_error() const;
+	void on_error(const boost::system::error_code&);
 
 	transfer_events events_;
 	boost::shared_ptr<BufferProvider> buffer_provider_;
 	std::size_t bytes_transferred_;
 	std::size_t bytes_chunk_transferred_;
+	bool has_error_;
 };
 
 template <class BufferProvider>
@@ -64,7 +68,16 @@ network_communicator<BufferProvider>::network_communicator(const boost::shared_p
 : buffer_provider_(buffer_provider)
 , bytes_transferred_(0)
 , bytes_chunk_transferred_(0)
-{}
+, has_error_(false)
+{
+	events_.on_event<transfer_error>(boost::bind(&this_type::on_error, this, _1));
+}
+
+template <class BufferProvider>
+void network_communicator<BufferProvider>::on_error(const boost::system::error_code&)
+{
+	has_error_ = true;
+}
 
 template <class BufferProvider>
 std::size_t network_communicator<BufferProvider>::bytes_to_transfer() const
@@ -82,6 +95,12 @@ template <class BufferProvider>
 bool network_communicator<BufferProvider>::is_done() const
 {
 	return bytes_to_transfer() == bytes_transferred();
+}
+
+template <class BufferProvider>
+bool network_communicator<BufferProvider>::has_error() const
+{
+	return has_error_;
 }
 
 template <class BufferProvider>
@@ -123,7 +142,7 @@ void network_communicator<BufferProvider>::on_chunk_complete(const boost::system
 	else
 	{
 		events_.signal_event<chunk_complete>(events_);
-		if(is_done())
+		if(is_done() && !has_error())
 		{
 			events_.signal_event<transfer_complete>();
 		}
