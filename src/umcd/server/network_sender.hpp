@@ -17,12 +17,12 @@
 
 #include "umcd/server/network_transfer.hpp"
 
-template <class ConstBufferSequence>
-class network_sender : public network_transfer<network_sender<ConstBufferSequence>, ConstBufferSequence>
+template <class BufferProvider>
+class network_sender : public network_transfer<network_sender<BufferProvider>, BufferProvider>
 {
 public:
-	typedef ConstBufferSequence buffer_type;
-	typedef network_transfer<network_sender<buffer_type>, buffer_type> base_type;
+	typedef typename BufferProvider::buffer_type buffer_type;
+	typedef network_transfer<network_sender<BufferProvider>, BufferProvider> base_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
 
 	void async_send()
@@ -30,15 +30,11 @@ public:
 		base_type::async_transfer();
 	}
 
-	network_sender(socket_type& socket, const ConstBufferSequence& buffer)
-	: base_type(socket, buffer)
+	network_sender(socket_type& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
+	: base_type(socket, buffer_provider)
 	{}
 
-	network_sender(socket_type& socket, const ConstBufferSequence& buffer, std::size_t bytes_to_write)
-	: base_type(socket, buffer, bytes_to_write)
-	{}
-
-	void async_transfer(socket_type& socket, const ConstBufferSequence& buffer)
+	void async_transfer(socket_type& socket, const buffer_type& buffer)
 	{
 		boost::asio::async_write(socket
 		, buffer

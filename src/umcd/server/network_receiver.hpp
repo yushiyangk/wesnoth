@@ -17,12 +17,12 @@
 
 #include "umcd/server/network_transfer.hpp"
 
-template <class MutableBufferSequence>
-class network_receiver : public network_transfer<network_receiver<MutableBufferSequence>, MutableBufferSequence>
+template <class BufferProvider>
+class network_receiver : public network_transfer<network_receiver<BufferProvider>, BufferProvider>
 {
 public:
-	typedef MutableBufferSequence buffer_type;
-	typedef network_transfer<network_receiver<buffer_type>, buffer_type> base_type;
+	typedef typename BufferProvider::buffer_type buffer_type;
+	typedef network_transfer<network_receiver<BufferProvider>, BufferProvider> base_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
 
 	void async_receive()
@@ -30,15 +30,11 @@ public:
 		base_type::async_transfer();
 	}
 
-	network_receiver(socket_type& socket, const MutableBufferSequence& buffer)
-	: base_type(socket, buffer)
+	network_receiver(socket_type& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
+	: base_type(socket, buffer_provider)
 	{}
 
-	network_receiver(socket_type& socket, const MutableBufferSequence& buffer, std::size_t bytes_to_read)
-	: base_type(socket, buffer, bytes_to_read)
-	{}
-
-	void async_transfer(socket_type& socket, const MutableBufferSequence& buffer)
+	void async_transfer(socket_type& socket, const buffer_type& buffer)
 	{
 		boost::asio::async_read(socket
 		, buffer

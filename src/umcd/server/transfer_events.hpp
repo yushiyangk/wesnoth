@@ -16,6 +16,7 @@
 #define UMCD_TRANSFER_EVENTS_HPP
 
 #include "umcd/server/events.hpp"
+#include <boost/system/error_code.hpp>
 
 struct transfer_complete{};
 struct transfer_error{};

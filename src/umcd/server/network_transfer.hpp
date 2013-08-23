@@ -17,11 +17,11 @@
 
 #include "umcd/server/network_communicator.hpp"
 
-template <class TransferOp, class BufferSequence>
-class network_transfer : public network_communicator<BufferSequence>
+template <class TransferOp, class BufferProvider>
+class network_transfer : public network_communicator<BufferProvider>
 {
 public:
-	typedef network_communicator<BufferSequence> base_type;
+	typedef network_communicator<BufferProvider> base_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
 
 	void async_transfer()
@@ -37,13 +37,8 @@ public:
 	}
 
 protected:
-	network_transfer(socket_type& socket, const BufferSequence& buffer)
-	: base_type(buffer)
-	, socket_(socket)
-	{}
-
-	network_transfer(socket_type& socket, const BufferSequence& buffer, std::size_t bytes_to_transfer)
-	: base_type(buffer, bytes_to_transfer)
+	network_transfer(socket_type& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
+	: base_type(buffer_provider)
 	, socket_(socket)
 	{}
 
@@ -52,13 +47,13 @@ private:
 	{
 		if(!this->is_done())
 		{
-			static_cast<TransferOp*>(this)->async_transfer(socket_, this->buffer_);
+			static_cast<TransferOp*>(this)->async_transfer(socket_, this->use_buffer());
 		}
 	}
 
 	/** After a chunk has been received we want to continue receiving others (so we recall async_receive).
 	*/
-	void async_transfer_chunk_event(std::size_t&)
+	void async_transfer_chunk_event(transfer_events&)
 	{
 		async_transfer_impl();
 	}

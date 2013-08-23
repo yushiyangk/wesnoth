@@ -80,7 +80,7 @@ void protocol::async_send_reply()
 {
 	FUNCTION_TRACER();
 
-	boost::shared_ptr<header_data::sender_type> sender = make_header_sender(socket_, make_error_packet("header response test"));
+	boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket_, make_error_packet("header response test"));
 	sender->on_event<transfer_error>(boost::bind(&protocol::on_error, shared_from_this(), boost::asio::placeholders::error));
 	sender->async_send();
 	/*
