@@ -1069,15 +1069,13 @@ set(wesnoth-schema_validator-dependencies_SRC
 set(umcd_lib_SRC
 	umcd/server_options.cpp
 	umcd/special_packet.cpp
-	umcd/request_info.cpp
+	umcd/error.cpp
 	umcd/logger/logger.cpp
 	umcd/logger/asio_logger.cpp
 	umcd/logger/severity_level.cpp
 	umcd/logger/detail/log_line_cache.cpp
 	umcd/logger/detail/log_line.cpp
 	umcd/logger/detail/log_stream.cpp
-	umcd/error.cpp
-	umcd/env/environment.cpp
 	umcd/env/environment_loader.cpp
 	umcd/env/server_info.cpp
 	umcd/env/database_info.cpp

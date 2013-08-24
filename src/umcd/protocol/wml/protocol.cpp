@@ -23,7 +23,6 @@
 #include "umcd/env/protocol_info.hpp"
 
 #include "umcd/protocol/header_data.hpp"
-#include "umcd/protocol/action_dispatcher.hpp"
 
 namespace umcd{
 
@@ -31,9 +30,8 @@ std::size_t protocol::REQUEST_HEADER_MAX_SIZE = 8192;
 
 #define FUNCTION_TRACER() UMCD_LOG_IP_FUNCTION_TRACER(*socket_)
 
-protocol::protocol(io_service_type& io_service, const environment& env)
-: environment_(env)
-, socket_(boost::make_shared<socket_type>(boost::ref(io_service)))
+protocol::protocol(io_service_type& io_service)
+: socket_(boost::make_shared<socket_type>(boost::ref(io_service)))
 {
 }
 
@@ -102,9 +100,9 @@ void protocol::handle_request()
 	dispatcher->async_receive_request();
 }
 
-boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service, const environment& env)
+boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service)
 {
-	return boost::make_shared<protocol>(boost::ref(io_service), boost::cref(env));
+	return boost::make_shared<protocol>(boost::ref(io_service));
 }
 
 } // namespace umcd

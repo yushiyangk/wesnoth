@@ -22,10 +22,9 @@
 	 
 #include "wml_exception.hpp"
 
-#include "umcd/env/environment.hpp"
 #include "umcd/logger/asio_logger.hpp"
-#include "umcd/request_info.hpp"
 #include "umcd/protocol/error_sender.hpp"
+#include "umcd/protocol/action_dispatcher.hpp"
 
 namespace umcd{
 
@@ -44,13 +43,12 @@ public:
 
 private:
 	typedef basic_umcd_action action_type;
-	typedef boost::shared_ptr<request_info> info_ptr;
 
 public:
 	static void load(const protocol_info& proto_info);
 
 	// This constructor is only called once in main, so the factory will be created once as well.
-	protocol(io_service_type& io_service, const environment& env);
+	protocol(io_service_type& io_service);
 
 	void handle_request();
 	// Precondition: handle_request has been called and connection has been initialized.
@@ -66,15 +64,14 @@ private:
 
 	void async_send_invalid_packet(const std::string &where, const std::exception& e);
 	void async_send_invalid_packet(const std::string &where, const twml_exception& e);
-	
+
 private:
-	const environment& environment_;
 	socket_ptr socket_;
 	config header_metadata_;
 	config reply_;
 };
 
-boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service, const environment& env);
+boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service);
 
 } // namespace umcd
 

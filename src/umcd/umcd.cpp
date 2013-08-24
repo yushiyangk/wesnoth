@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
 			options.validate(cfg);
 
 			asio_logger::get().load(logging_info());
-			protocol::load(protocol_info());
 
 			if(options.is_daemon())
 			{
@@ -82,12 +81,10 @@ int main(int argc, char *argv[])
 				std::cerr<<e.var_info<<std::endl; // print out the variable that caused the error
 			}
 
-			server_info info;
-			environment env(info);
 			typedef boost::function<boost::shared_ptr<protocol> (protocol::io_service_type&)> umcd_protocol_factory;
 			server_mt<protocol, umcd_protocol_factory> addon_server(
 				server_core(),
-				boost::bind(&make_protocol, _1, boost::cref(env))
+				&make_protocol
 			);
 
 			// Start logger.
