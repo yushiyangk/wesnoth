@@ -31,9 +31,9 @@ header_const_buffer::header_const_buffer(const header_data& header)
 	bytes_to_transfer_ = boost::asio::buffer_size(buffer_);
 }
 
-boost::shared_ptr<header_const_buffer::sender_type> header_const_buffer::make_sender(socket_type& socket)
+boost::shared_ptr<header_const_buffer::sender_type> header_const_buffer::make_sender(const socket_ptr& socket)
 {
-	return boost::make_shared<sender_type>(boost::ref(socket), boost::cref(this->shared_from_this()));
+	return boost::make_shared<sender_type>(boost::cref(socket), boost::cref(this->shared_from_this()));
 }
 
 const header_data& header_const_buffer::data() const
@@ -49,10 +49,10 @@ header_mutable_buffer::header_mutable_buffer()
 	bytes_to_transfer_ = boost::asio::buffer_size(buffer_);
 }
 
-boost::shared_ptr<header_mutable_buffer::receiver_type> header_mutable_buffer::make_receiver(socket_type& socket)
+boost::shared_ptr<header_mutable_buffer::receiver_type> header_mutable_buffer::make_receiver(const socket_ptr& socket)
 {
 	boost::shared_ptr<receiver_type> receiver = boost::make_shared<receiver_type>(
-		boost::ref(socket), 
+		boost::cref(socket), 
 		shared_from_this()
 	);
 	on_chunk_event_ = receiver->on_event<chunk_complete>(
@@ -125,7 +125,7 @@ private:
 } // namespace detail
 
 // Factories
-boost::shared_ptr<header_const_buffer::sender_type> make_header_sender(boost::asio::ip::tcp::socket& socket, const config& metadata)
+boost::shared_ptr<header_const_buffer::sender_type> make_header_sender(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, const config& metadata)
 {
 	header_data data;
 	metadata >> data;
@@ -133,7 +133,7 @@ boost::shared_ptr<header_const_buffer::sender_type> make_header_sender(boost::as
 	return header->make_sender(socket);
 }
 
-boost::shared_ptr<header_mutable_buffer::receiver_type> make_header_receiver(boost::asio::ip::tcp::socket& socket, config& metadata)
+boost::shared_ptr<header_mutable_buffer::receiver_type> make_header_receiver(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, config& metadata)
 {
 	boost::shared_ptr<header_mutable_buffer> header = boost::make_shared<header_mutable_buffer>();
 	boost::shared_ptr<header_mutable_buffer::receiver_type> receiver = header->make_receiver(socket);

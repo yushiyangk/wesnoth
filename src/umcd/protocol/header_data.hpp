@@ -40,9 +40,10 @@ private:
 public:
 	typedef network_sender<base_type> sender_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 	header_const_buffer(const header_data& header);
-	boost::shared_ptr<sender_type> make_sender(socket_type& socket);
+	boost::shared_ptr<sender_type> make_sender(const socket_ptr& socket);
 
 	const header_data& data() const;
 private:
@@ -57,9 +58,10 @@ public:
 	typedef boost::asio::mutable_buffers_1 buffer_type;
 	typedef network_receiver<base_type> receiver_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 	header_mutable_buffer();
-	boost::shared_ptr<receiver_type> make_receiver(socket_type& socket);
+	boost::shared_ptr<receiver_type> make_receiver(const socket_ptr& socket);
 
 	header_data& data();
 
@@ -72,11 +74,11 @@ private:
 
 header_data& operator>>(const config& metadata, header_data& header);
 config& operator<<(config& metadata, const header_data& header);
-boost::shared_ptr<header_const_buffer::sender_type> make_header_sender(boost::asio::ip::tcp::socket& socket, const config& metadata);
+boost::shared_ptr<header_const_buffer::sender_type> make_header_sender(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, const config& metadata);
 
 /** You can subscribe to the event transfer_complete to know when metadata will be filled.
 */
-boost::shared_ptr<header_mutable_buffer::receiver_type> make_header_receiver(boost::asio::ip::tcp::socket& socket, config& metadata);
+boost::shared_ptr<header_mutable_buffer::receiver_type> make_header_receiver(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, config& metadata);
 
 } // namespace umcd
 

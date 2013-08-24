@@ -23,20 +23,20 @@ class network_receiver : public network_transfer<network_receiver<BufferProvider
 public:
 	typedef typename BufferProvider::buffer_type buffer_type;
 	typedef network_transfer<network_receiver<BufferProvider>, BufferProvider> base_type;
-	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef typename base_type::socket_ptr socket_ptr;
 
 	void async_receive()
 	{
 		base_type::async_transfer();
 	}
 
-	network_receiver(socket_type& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
+	network_receiver(const socket_ptr& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
 	: base_type(socket, buffer_provider)
 	{}
 
-	void async_transfer(socket_type& socket, const buffer_type& buffer)
+	void async_transfer(const socket_ptr& socket, const buffer_type& buffer)
 	{
-		boost::asio::async_read(socket
+		boost::asio::async_read(*socket
 		, buffer
 		, boost::bind(&base_type::is_transfer_complete, this->shared_from_this()
 			, boost::asio::placeholders::error

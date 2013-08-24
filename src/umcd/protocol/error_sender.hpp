@@ -16,9 +16,10 @@
 #define UMCD_ERROR_SENDER_HPP
 
 #include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace umcd{
-void async_send_error(boost::asio::ip::tcp::socket &socket, const boost::system::error_condition& error);
+void async_send_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socket, const boost::system::error_condition& error);
 } // namespace umcd
 
 #endif // UMCD_ERROR_SENDER_HPP

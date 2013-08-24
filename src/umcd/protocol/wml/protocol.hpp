@@ -39,6 +39,7 @@ class protocol :
 public:
 	static std::size_t REQUEST_HEADER_MAX_SIZE;
 	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef boost::shared_ptr<socket_type> socket_ptr;
 	typedef boost::asio::io_service io_service_type;
 
 private:
@@ -71,7 +72,7 @@ private:
 
 private:
 	const environment& environment_;
-	socket_type socket_;
+	socket_ptr socket_;
 	config header_metadata_;
 	config reply_;
 };

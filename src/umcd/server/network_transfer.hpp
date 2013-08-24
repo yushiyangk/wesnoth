@@ -23,6 +23,7 @@ class network_transfer : public network_communicator<BufferProvider>
 public:
 	typedef network_communicator<BufferProvider> base_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 	void async_transfer()
 	{
@@ -37,7 +38,7 @@ public:
 	}
 
 protected:
-	network_transfer(socket_type& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
+	network_transfer(const socket_ptr& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
 	: base_type(buffer_provider)
 	, socket_(socket)
 	{}
@@ -58,7 +59,7 @@ private:
 		async_transfer_impl();
 	}
 
-	socket_type& socket_;
+	socket_ptr socket_;
 };
 
 #endif // UMCD_NETWORK_SENDER_HPP
