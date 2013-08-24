@@ -15,10 +15,12 @@
 #ifndef UMCD_REQUEST_UMC_UPLOAD_ACTION_HPP
 #define UMCD_REQUEST_UMC_UPLOAD_ACTION_HPP
 
-#include <boost/shared_ptr.hpp>
-#include "config.hpp"
 #include "umcd/actions/basic_umcd_action.hpp"
-#include "umcd/env/server_info.hpp"
+#include "serialization/schema_validator.hpp"
+#include <boost/shared_ptr.hpp>
+#include <boost/asio.hpp>
+
+class config;
 
 namespace umcd{
 
@@ -26,17 +28,19 @@ class request_umc_upload_action
 : public basic_umcd_action
 {
 public:
-	typedef basic_umcd_action base;
+	typedef basic_umcd_action base_type;
+	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef boost::shared_ptr<socket_type> socket_ptr;
 
-	request_umc_upload_action(const server_info& info);
+	request_umc_upload_action(const socket_ptr& socket);
+	request_umc_upload_action();
 	const config& get_info(const config& metadata);
 
-	virtual void execute(boost::shared_ptr<protocol> p);
-	virtual boost::shared_ptr<base> clone() const;
+	virtual void execute(const config& request);
+	virtual boost::shared_ptr<base_type> clone() const;
 
 private:
-	server_info server_info_;
-	boost::shared_ptr<protocol> protocol_;
+	socket_ptr socket_;
 };
 
 } // namespace umcd

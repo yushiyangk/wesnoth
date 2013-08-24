@@ -14,6 +14,7 @@
 
 #include "umcd/protocol/error_sender.hpp"
 #include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/close_on_error.hpp"
 #include "umcd/special_packet.hpp"
 #include "config.hpp"
 
@@ -22,6 +23,7 @@ namespace umcd{
 void async_send_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socket, const boost::system::error_condition& error)
 {
 	boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket, make_error_packet(error.message()));
+	sender->on_event<transfer_error>(boost::bind(&close_on_error, socket, _1));
 	sender->async_send();
 }
 } // namespace umcd

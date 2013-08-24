@@ -13,14 +13,18 @@
 */
 
 #include "umcd/actions/request_umc_upload_action.hpp"
+#include "umcd/env/server_info.hpp"
 #include "umcd/otl/otl.hpp"
 #include "filesystem.hpp"
-#include "umcd/protocol/wml/protocol.hpp"
+#include "config.hpp"
 
 namespace umcd{
 
-request_umc_upload_action::request_umc_upload_action(const server_info& info)
-: server_info_(info)
+request_umc_upload_action::request_umc_upload_action(const socket_ptr& socket)
+: socket_(socket)
+{}
+
+request_umc_upload_action::request_umc_upload_action()
 {}
 
 const config& request_umc_upload_action::get_info(const config& metadata)
@@ -28,15 +32,13 @@ const config& request_umc_upload_action::get_info(const config& metadata)
 	return metadata.child("request_umc_upload").child("umc_configuration").child("info");
 }
 
-void request_umc_upload_action::execute(boost::shared_ptr<protocol> p)
+void request_umc_upload_action::execute(const config&)
 {
-	protocol_ = p;
-	//config& metadata = protocol_->get_metadata();
 }
 
-boost::shared_ptr<request_umc_upload_action::base> request_umc_upload_action::clone() const
+boost::shared_ptr<request_umc_upload_action::base_type> request_umc_upload_action::clone() const
 {
-	return boost::shared_ptr<base>(new request_umc_upload_action(*this));
+	return boost::shared_ptr<base_type>(new request_umc_upload_action(*this));
 }
 
 } // namespace umcd

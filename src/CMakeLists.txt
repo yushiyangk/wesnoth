@@ -1089,6 +1089,8 @@ set(umcd_lib_SRC
 	umcd/protocol/wml/protocol.cpp
 	umcd/protocol/header_data.cpp
 	umcd/protocol/error_sender.cpp
+	umcd/protocol/close_on_error.cpp
+	umcd/protocol/action_dispatcher.cpp
 	${wesnoth-schema_validator-dependencies_SRC}
 )
 

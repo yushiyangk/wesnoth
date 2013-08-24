@@ -23,6 +23,7 @@
 #include "umcd/env/protocol_info.hpp"
 
 #include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/action_dispatcher.hpp"
 
 namespace umcd{
 
@@ -93,48 +94,12 @@ void protocol::async_send_invalid_packet(const std::string &where, const twml_ex
 	async_send_error(socket_, make_error_condition(invalid_packet));
 }
 
-void protocol::dispatch_request()
-{
-	FUNCTION_TRACER();   
-	try
-	{
-		// Retrieve request name.
-		config::all_children_itors range = header_metadata_.all_children_range();
-		if(range.first == range.second)
-			async_send_error(socket_, make_error_condition(invalid_packet_name));
-		else
-		{
-			const std::string& request_name = range.first->key;
-			UMCD_LOG_IP(info, *socket_) << " -- request: " << request_name;
-			info_ptr request_info = environment_.get_request_info(request_name);
-			UMCD_LOG_IP(info, *socket_) << " -- request:\n" << header_metadata_;
-
-			// Read into config and validate metadata.
-			config dummy;
-			::read(dummy, header_metadata_.to_string(), request_info->validator().get());
-			UMCD_LOG_IP(debug, *socket_) << " -- request validated.";
-
-			request_info->action()->execute(shared_from_this());
-		}
-	}
-	catch(const std::exception& e)
-	{
-		async_send_invalid_packet(BOOST_CURRENT_FUNCTION, e);
-	}
-	catch(const twml_exception& e)
-	{
-		async_send_invalid_packet(BOOST_CURRENT_FUNCTION, e);
-	}
-}
-
 void protocol::handle_request()
 {
 	FUNCTION_TRACER();
 
-	boost::shared_ptr<header_mutable_buffer::receiver_type> receiver = make_header_receiver(socket_, header_metadata_);
-	receiver->on_event<transfer_error>(boost::bind(&protocol::on_error, shared_from_this(), boost::asio::placeholders::error));
-	receiver->on_event<transfer_complete>(boost::bind(&protocol::dispatch_request, shared_from_this()));
-	receiver->async_receive();
+	boost::shared_ptr<action_dispatcher> dispatcher = boost::make_shared<action_dispatcher>(socket_);
+	dispatcher->async_receive_request();
 }
 
 boost::shared_ptr<protocol> make_protocol(protocol::io_service_type& io_service, const environment& env)

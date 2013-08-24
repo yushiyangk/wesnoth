@@ -29,7 +29,6 @@
 #include "umcd/logger/asio_logger.hpp"
 #include "umcd/daemon.hpp"
 #include "umcd/otl/otl.hpp"
-#include "umcd/env/environment.hpp"
 #include "umcd/env/environment_loader.hpp"
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
@@ -46,6 +45,7 @@ int main(int argc, char *argv[])
 			config cfg = options.read_config();
 
 			environment_loader env_loader;
+			env_loader.init_once();
 			env_loader.load(cfg);
 
 			// Badly the environment must me loaded before we can validate.

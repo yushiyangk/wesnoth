@@ -16,11 +16,18 @@
 #include "umcd/env/server_core.hpp"
 #include "umcd/env/server_info.hpp"
 #include "umcd/env/database_info.hpp"
+#include "umcd/protocol/action_dispatcher.hpp"
 #include "config.hpp"
 
 #include <boost/algorithm/string.hpp>
 
 namespace umcd{
+
+void environment_loader::init_once()
+{
+	severity::init_severity_str2enum();
+	action_dispatcher::init_action_factory();
+}
 
 void environment_loader::load(const config& cfg)
 {
@@ -77,7 +84,6 @@ logging_info::file_list environment_loader::make_file_list(const config& cfg)
 
 void environment_loader::load_logging_info(const config& cfg)
 {
-	umcd::severity::init_severity_str2enum();
 	logging_info li;
 	// Set the severity level.
 	li.set_lower_limit(severity::str2enum[cfg["log_if_greater_or_equal"].str()]);

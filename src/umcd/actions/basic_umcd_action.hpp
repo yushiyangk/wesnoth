@@ -17,10 +17,10 @@
 
 #include "umcd/server/generic_action.hpp"
 
+class config;
 namespace umcd{
-class protocol;
 
-typedef generic_action<void, boost::shared_ptr<protocol> > basic_umcd_action;
+typedef generic_action<void, const config&> basic_umcd_action;
 
 } // namespace umcd
 

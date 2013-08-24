@@ -560,8 +560,8 @@ umcd_sources = Split("""
     umcd/logger/detail/log_line.cpp
     umcd/logger/detail/log_stream.cpp
     umcd/error.cpp
-    umcd/env/environment.cpp
     umcd/env/environment_loader.cpp
+    umcd/env/environment.cpp
     umcd/env/server_info.cpp
     umcd/env/database_info.cpp
     umcd/env/logging_info.cpp
@@ -572,6 +572,8 @@ umcd_sources = Split("""
     umcd/protocol/wml/protocol.cpp
     umcd/protocol/header_data.cpp
     umcd/protocol/error_sender.cpp
+    umcd/protocol/close_on_error.cpp
+    umcd/protocol/action_dispatcher.cpp
     """)
 
 libumcd = env.Library("umcd", libumcd_sources, OBJPREFIX = "umcd_")

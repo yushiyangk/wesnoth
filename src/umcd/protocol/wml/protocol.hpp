@@ -66,10 +66,7 @@ private:
 
 	void async_send_invalid_packet(const std::string &where, const std::exception& e);
 	void async_send_invalid_packet(const std::string &where, const twml_exception& e);
-
-	// Precondition: header_metadata_ must be read.
-	void dispatch_request();
-
+	
 private:
 	const environment& environment_;
 	socket_ptr socket_;

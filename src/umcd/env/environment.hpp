@@ -50,7 +50,7 @@ void environment::register_request_info(const std::string& request_name)
 {
 	 action_factory_.register_product(
 			request_name, 
-			make_request_info<Action, validator_type>(server_info_, request_name)
+			make_request_info<Action, validator_type>(request_name)
 	 );
 }
 

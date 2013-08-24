@@ -41,10 +41,11 @@ private:
 };
 
 template <class Action, class Validator>
-boost::shared_ptr<request_info> make_request_info(const server_info& info, const std::string& request_name)
+boost::shared_ptr<request_info> make_request_info(const std::string& request_name)
 {
+	server_info info;
 	return boost::make_shared<request_info>(
-		boost::make_shared<Action>(info),
+		boost::make_shared<Action>(),
 		boost::make_shared<Validator>(
 			info.wesnoth_dir() + get_umcd_protocol_schema_dir() + "/" + request_name+".cfg"));
 }
