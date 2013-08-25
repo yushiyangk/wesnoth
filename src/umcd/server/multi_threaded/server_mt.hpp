@@ -25,23 +25,23 @@
 #include "umcd/boost/thread/workaround.hpp"
 #include <boost/thread/thread.hpp>
 
-template <class Protocol, class ProtocolFactory>
-class server_mt : public basic_server<Protocol, ProtocolFactory>
+class server_mt : public basic_server
 {
 private:
-	typedef basic_server<Protocol, ProtocolFactory> base;
+	typedef basic_server base_type;
+	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 public:
-	explicit server_mt(const umcd::server_core& server_config, typename base::protocol_factory_type protocol_factory);
+	explicit server_mt(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler);
 	void run();
 
 private:
 	std::size_t thread_pool_size_;
 };
 
-template <class Protocol, class ProtocolFactory>
-server_mt<Protocol, ProtocolFactory>::server_mt(const umcd::server_core& server_config, typename base::protocol_factory_type protocol_factory)
-: base(server_config, protocol_factory)
+server_mt::server_mt(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler)
+: base_type(server_config, request_handler)
 {
 	thread_pool_size_ = server_config.threads();
 	if(thread_pool_size_ == 0)
@@ -51,20 +51,19 @@ server_mt<Protocol, ProtocolFactory>::server_mt(const umcd::server_core& server_
 	}
 }
 
-template <class Protocol, class ProtocolFactory>
-void server_mt<Protocol, ProtocolFactory>::run()
+void server_mt::run()
 {
 	// Create a pool of threads to run all of the io_services.
 	std::vector<boost::shared_ptr<boost::thread> > threads;
 	for (std::size_t i = 0; i < thread_pool_size_-1; ++i)
 	{
 		boost::shared_ptr<boost::thread> thread = boost::make_shared<boost::thread>(
-					boost::bind(&base::run, this));
+					boost::bind(&base_type::run, this));
 		threads.push_back(thread);
 	}
 
 	// This thread is also used.
-	base::run();
+	base_type::run();
 
 	// Wait for all threads in the pool to exit.
 	for (std::size_t i = 0; i < threads.size(); ++i)

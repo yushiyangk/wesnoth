@@ -1084,7 +1084,7 @@ set(umcd_lib_SRC
 	umcd/env/server_core.cpp
 	umcd/actions/request_license_action.cpp
 	umcd/actions/request_umc_upload_action.cpp
-	umcd/protocol/wml/protocol.cpp
+	umcd/protocol/entry_point.cpp
 	umcd/protocol/header_data.cpp
 	umcd/protocol/error_sender.cpp
 	umcd/protocol/close_on_error.cpp

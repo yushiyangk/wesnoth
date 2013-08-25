@@ -28,39 +28,35 @@
 #include <boost/noncopyable.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/current_function.hpp>
+#include <boost/function.hpp>
 
-template <class Protocol, class ProtocolFactory>
 class basic_server : boost::noncopyable
 {
 public:
-	typedef Protocol protocol_type;
-	typedef boost::shared_ptr<protocol_type> protocol_ptr;
-	typedef ProtocolFactory protocol_factory_type;
+	typedef boost::asio::ip::tcp::socket socket_type;
+	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 public:
-	explicit basic_server(const umcd::server_core& server_config, protocol_factory_type protocol_factory);
+	explicit basic_server(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler);
 	void run();
-	boost::asio::io_service& get_io_service();
+	boost::asio::io_service& io_service();
 
 private:
 	void start_accept();
-	void handle_accept(const boost::system::error_code& e);
+	void handle_accept(const socket_ptr& socket, const boost::system::error_code& e);
 	void handle_stop();
 
 protected:
 	boost::asio::io_service io_service_;
 	boost::asio::ip::tcp::acceptor acceptor_;
-	protocol_factory_type protocol_factory_;
-	protocol_ptr protocol_;
+	boost::function<void(const socket_ptr&)> request_handler_;
 	bool server_on_;
 };
 
-template <class Protocol, class ProtocolFactory>
-basic_server<Protocol, ProtocolFactory>::basic_server(const umcd::server_core& server_config, protocol_factory_type protocol_factory)
+basic_server::basic_server(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler)
 : io_service_()
 , acceptor_(io_service_)
-, protocol_factory_(protocol_factory)
-, protocol_(protocol_factory_(io_service_))
+, request_handler_(request_handler)
 , server_on_(true)
 {
 	using namespace boost::asio::ip;
@@ -95,8 +91,7 @@ basic_server<Protocol, ProtocolFactory>::basic_server(const umcd::server_core& s
 	start_accept();
 }
 
-template <class Protocol, class ProtocolFactory>
-void basic_server<Protocol, ProtocolFactory>::run()
+void basic_server::run()
 {
 	UMCD_LOG_FUNCTION_TRACER();
 	while(server_on_)
@@ -116,36 +111,32 @@ void basic_server<Protocol, ProtocolFactory>::run()
 	}
 }
 
-template <class Protocol, class ProtocolFactory>
-void basic_server<Protocol, ProtocolFactory>::start_accept()
+void basic_server::start_accept()
 {
 	UMCD_LOG_FUNCTION_TRACER();
-	protocol_ = protocol_factory_(io_service_);
-	acceptor_.async_accept(protocol_->socket(),
-		boost::bind(&basic_server::handle_accept, this, boost::asio::placeholders::error)
+	socket_ptr socket = boost::make_shared<socket_type>(boost::ref(io_service_));
+	acceptor_.async_accept(*socket,
+		boost::bind(&basic_server::handle_accept, this, socket, boost::asio::placeholders::error)
 	);
 }
 
-template <class Protocol, class ProtocolFactory>
-void basic_server<Protocol, ProtocolFactory>::handle_accept(const boost::system::error_code& e)
+void basic_server::handle_accept(const socket_ptr& socket, const boost::system::error_code& e)
 {
-	UMCD_LOG_IP_FUNCTION_TRACER(protocol_->socket());
+	UMCD_LOG_IP_FUNCTION_TRACER(*socket);
 	if (!e)
 	{
-		protocol_->handle_request();
+		request_handler_(socket);
 	}
 	start_accept();
 }
 
-template <class Protocol, class ProtocolFactory>
-void basic_server<Protocol, ProtocolFactory>::handle_stop()
+void basic_server::handle_stop()
 {
 	server_on_ = false;
 	io_service_.stop();
 }
 
-template <class Protocol, class ProtocolFactory>
-boost::asio::io_service& basic_server<Protocol, ProtocolFactory>::get_io_service()
+boost::asio::io_service& basic_server::io_service()
 {
 	return io_service_;
 }

@@ -12,7 +12,19 @@
 	See the COPYING file for more details.
 */
 
-#include <stdexcept>
+
+#include "umcd/server_options.hpp"
+#include "umcd/server/multi_threaded/server_mt.hpp"
+#include "umcd/protocol/entry_point.hpp"
+#include "umcd/logger/asio_logger.hpp"
+#include "umcd/daemon.hpp"
+#include "umcd/otl/otl.hpp"
+#include "umcd/env/environment_loader.hpp"
+#include "umcd/env/database_info.hpp"
+#include "umcd/env/protocol_info.hpp"
+
+#include "wml_exception.hpp"
+#include "config.hpp"
 
 #include "umcd/boost/thread/workaround.hpp"
 #include <boost/thread/thread.hpp>
@@ -21,17 +33,7 @@
 #include <boost/function.hpp>
 #include <boost/format.hpp>
 
-#include "config.hpp"
-
-#include "umcd/server_options.hpp"
-#include "umcd/server/multi_threaded/server_mt.hpp"
-#include "umcd/protocol/wml/protocol.hpp"
-#include "umcd/logger/asio_logger.hpp"
-#include "umcd/daemon.hpp"
-#include "umcd/otl/otl.hpp"
-#include "umcd/env/environment_loader.hpp"
-#include "umcd/env/database_info.hpp"
-#include "umcd/env/protocol_info.hpp"
+#include <stdexcept>
 
 using namespace umcd;
 
@@ -81,14 +83,13 @@ int main(int argc, char *argv[])
 				std::cerr<<e.var_info<<std::endl; // print out the variable that caused the error
 			}
 
-			typedef boost::function<boost::shared_ptr<protocol> (protocol::io_service_type&)> umcd_protocol_factory;
-			server_mt<protocol, umcd_protocol_factory> addon_server(
+			server_mt addon_server(
 				server_core(),
-				&make_protocol
+				protocol_entry_point
 			);
 
 			// Start logger.
-			umcd::asio_logger::get_asio_log().run(addon_server.get_io_service(), boost::posix_time::milliseconds(500));
+			umcd::asio_logger::get_asio_log().run(addon_server.io_service(), boost::posix_time::milliseconds(500));
 
 			addon_server.run();
 		}
