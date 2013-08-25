@@ -15,9 +15,9 @@
 
 #include "umcd/server_options.hpp"
 #include "umcd/server/multi_threaded/server_mt.hpp"
+#include "umcd/server/daemon.hpp"
 #include "umcd/protocol/entry_point.hpp"
 #include "umcd/logger/asio_logger.hpp"
-#include "umcd/daemon.hpp"
 #include "umcd/otl/otl.hpp"
 #include "umcd/env/environment_loader.hpp"
 #include "umcd/env/database_info.hpp"
