@@ -22,8 +22,6 @@
 #define SERVER_MULTI_THREADED_SERVER_HPP
 
 #include "umcd/server/basic_server.hpp"
-#include "umcd/boost/thread/workaround.hpp"
-#include <boost/thread/thread.hpp>
 
 class server_mt : public basic_server
 {
@@ -39,35 +37,5 @@ public:
 private:
 	std::size_t thread_pool_size_;
 };
-
-server_mt::server_mt(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler)
-: base_type(server_config, request_handler)
-{
-	thread_pool_size_ = server_config.threads();
-	if(thread_pool_size_ == 0)
-	{
-		thread_pool_size_ = boost::thread::hardware_concurrency();
-		UMCD_LOG(info) << thread_pool_size_ << " cores found.";
-	}
-}
-
-void server_mt::run()
-{
-	// Create a pool of threads to run all of the io_services.
-	std::vector<boost::shared_ptr<boost::thread> > threads;
-	for (std::size_t i = 0; i < thread_pool_size_-1; ++i)
-	{
-		boost::shared_ptr<boost::thread> thread = boost::make_shared<boost::thread>(
-					boost::bind(&base_type::run, this));
-		threads.push_back(thread);
-	}
-
-	// This thread is also used.
-	base_type::run();
-
-	// Wait for all threads in the pool to exit.
-	for (std::size_t i = 0; i < threads.size(); ++i)
-		threads[i]->join();
-}
 
 #endif // SERVER_MULTI_THREADED_SERVER_HPP
