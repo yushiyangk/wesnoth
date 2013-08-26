@@ -13,21 +13,13 @@
 #define UMCD_ACTION_DISPATCHER_HPP
 
 #include "umcd/server/generic_factory.hpp"
-#include "umcd/actions/request_license_action.hpp"
-#include "umcd/actions/request_umc_upload_action.hpp"
-
-#include "umcd/protocol/error_sender.hpp"
-#include "umcd/protocol/close_on_error.hpp"
-#include "umcd/protocol/header_data.hpp"
-#include "umcd/error.hpp"
-#include "umcd/logger/asio_logger.hpp"
-
+#include "umcd/actions/basic_umcd_action.hpp"
+#include "config.hpp"
+#include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/current_function.hpp>
-
-#define FUNCTION_TRACER() UMCD_LOG_IP_FUNCTION_TRACER(*socket_)
 
 namespace umcd{
+
 class action_dispatcher : public boost::enable_shared_from_this<action_dispatcher>
 {
 public:

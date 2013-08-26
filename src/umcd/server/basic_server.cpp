@@ -92,7 +92,7 @@ void basic_server::start_accept()
 
 void basic_server::handle_accept(const socket_ptr& socket, const boost::system::error_code& e)
 {
-	UMCD_LOG_IP_FUNCTION_TRACER(*socket);
+	UMCD_LOG_IP_FUNCTION_TRACER(socket);
 	if (!e)
 	{
 		request_handler_(socket);

@@ -44,7 +44,7 @@ void request_license_action::execute(const config& request)
 		validator_type validator(validator_filename);
 		config dummy;
 		::read(dummy, request.to_string(), &validator);
-		UMCD_LOG_IP(debug, *socket_) << BOOST_CURRENT_FUNCTION << " -- request validated.";
+		UMCD_LOG_IP(debug, socket_) << BOOST_CURRENT_FUNCTION << " -- request validated.";
 
 		// NOTE: We don't use the COPYING file because the " are not double quoted, instead we use a preformatted license file with " replaced by "".
 		config reply("request_license");
@@ -52,7 +52,7 @@ void request_license_action::execute(const config& request)
 	}
 	catch(const twml_exception& e)
 	{
-		UMCD_LOG_IP(error, *socket_) << " -- invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.dev_message << ")";
+		UMCD_LOG_IP(error, socket_) << " -- invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.dev_message << ")";
 		async_send_error(socket_, make_error_condition(invalid_packet));
 	}
 }

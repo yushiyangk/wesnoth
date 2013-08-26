@@ -11,6 +11,15 @@
 
 #include "umcd/protocol/action_dispatcher.hpp"
 
+#include "umcd/actions/request_license_action.hpp"
+#include "umcd/actions/request_umc_upload_action.hpp"
+#include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/close_on_error.hpp"
+#include "umcd/protocol/error_sender.hpp"
+#include "umcd/error.hpp"
+#include "umcd/logger/asio_logger.hpp"
+#include <boost/current_function.hpp>
+
 namespace umcd{
 
 action_dispatcher::action_factory_type action_dispatcher::action_factory_;
@@ -31,7 +40,7 @@ void action_dispatcher::async_receive_request()
 
 void action_dispatcher::dispatch()
 {
-	FUNCTION_TRACER();   
+	UMCD_LOG_IP_FUNCTION_TRACER(socket_);
 	try
 	{
 		// Retrieve request name.
@@ -43,8 +52,8 @@ void action_dispatcher::dispatch()
 		else
 		{
 			const std::string& request_name = range.first->key;
-			UMCD_LOG_IP(info, *socket_) << " -- request name: " << request_name;
-			UMCD_LOG_IP(trace, *socket_) << " -- request header:\n" << header_metadata_;
+			UMCD_LOG_IP(info, socket_) << " -- request name: " << request_name;
+			UMCD_LOG_IP(trace, socket_) << " -- request header:\n" << header_metadata_;
 
 			action_ptr action = action_factory_.make_product(request_name);
 			action->execute(header_metadata_);
@@ -52,7 +61,7 @@ void action_dispatcher::dispatch()
 	}
 	catch(const std::exception& e)
 	{
-		UMCD_LOG_IP(error, *socket_) << " -- invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.what() << ")";
+		UMCD_LOG_IP(error, socket_) << " -- invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.what() << ")";
 		async_send_error(socket_, make_error_condition(invalid_packet));
 	}
 }

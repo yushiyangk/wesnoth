@@ -19,9 +19,7 @@
 #include <boost/asio.hpp>
 
 namespace umcd{
-
 void protocol_entry_point(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket);
-
 } // namespace umcd
 
 #endif // UMCD_ENTRY_POINT_HPP
