@@ -18,45 +18,29 @@
 
 namespace umcd{
 
-asio_logger::asio_logger()
-: running_(false)
-{}
-
-/**
-@param local_timer is necessary if the sequence [run, stop, run] occurs too fast.
-*/
-void asio_logger::run_impl(boost::shared_ptr<boost::asio::deadline_timer> local_timer, const boost::system::error_code& error)
+asio_logger::asio_logger(boost::asio::io_service& io_service, boost::posix_time::time_duration time_between_log)
+: timer(boost::make_shared<boost::asio::deadline_timer>(boost::ref(io_service), time_between_log))
 {
-	get().run_once();
-	if(running_ && !error)
-	{
-		timer->async_wait(boost::bind(&asio_logger::run_impl, this,
-			local_timer, boost::asio::placeholders::error));
-	}
+	timer->async_wait(boost::bind(&asio_logger::run_impl, this, boost::asio::placeholders::error));
 }
 
-asio_logger& asio_logger::get_asio_log()
+void asio_logger::run_impl(const boost::system::error_code& error)
 {
-	static asio_logger lg;
-	return lg;
+	get().run_once();
+	if(!error)
+	{
+		timer->async_wait(boost::bind(&asio_logger::run_impl, this, boost::asio::placeholders::error));
+	}
 }
 
 logger& asio_logger::get()
 {
-	return get_asio_log().logger_;
-}
-
-void asio_logger::run(boost::asio::io_service& io_service_, boost::posix_time::time_duration timing)
-{
-	running_ = true;
-	timer = boost::make_shared<boost::asio::deadline_timer>(boost::ref(io_service_), timing);
-	timer->async_wait(boost::bind(&asio_logger::run_impl, this,
-			timer, boost::asio::placeholders::error));
+	static logger logger_;
+	return logger_;
 }
 
 void asio_logger::stop()
 {
-	running_ = false;
 	timer->cancel();
 }
 

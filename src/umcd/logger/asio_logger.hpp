@@ -24,27 +24,23 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 namespace umcd{
 
-class asio_logger : private boost::noncopyable
+class asio_logger : 
+    private boost::noncopyable
+  , public boost::enable_shared_from_this<asio_logger>
 {
-	asio_logger();
-
-	/**
-	@param local_timer is necessary if the sequence [run, stop, run] occurs too fast.
-	*/
-	void run_impl(boost::shared_ptr<boost::asio::deadline_timer> local_timer, const boost::system::error_code& error);
+	void run_impl(const boost::system::error_code& error);
 
 public:
-	static asio_logger& get_asio_log();
 	static logger& get();
-	void run(boost::asio::io_service& io_service_, boost::posix_time::time_duration timing);
+
+	asio_logger(boost::asio::io_service& io_service, boost::posix_time::time_duration time_between_log);
 	void stop();
 
 private:
-	logger logger_;
-	bool running_;
 	boost::shared_ptr<boost::asio::deadline_timer> timer;
 };
 

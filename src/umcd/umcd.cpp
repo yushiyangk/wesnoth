@@ -88,8 +88,8 @@ int main(int argc, char *argv[])
 				protocol_entry_point
 			);
 
-			// Start logger.
-			umcd::asio_logger::get_asio_log().run(addon_server.io_service(), boost::posix_time::milliseconds(500));
+			// Launch logger.
+			asio_logger logger(boost::ref(addon_server.io_service()), boost::posix_time::milliseconds(500));
 
 			addon_server.run();
 		}
