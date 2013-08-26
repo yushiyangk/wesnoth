@@ -355,6 +355,11 @@ std::string get_umcd_config_file_schema()
 	return get_umcd_schema_dir() + "/umcd.cfg";
 }
 
+std::string get_umcd_license_file()
+{
+	return "data/umcd/license.txt";
+}
+
 std::string get_next_filename(const std::string& name, const std::string& extension)
 {
 	std::string next_filename;

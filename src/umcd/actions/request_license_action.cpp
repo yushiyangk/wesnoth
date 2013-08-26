@@ -48,7 +48,7 @@ void request_license_action::execute(const config& request)
 
 		// NOTE: We don't use the COPYING file because the " are not double quoted, instead we use a preformatted license file with " replaced by "".
 		config reply("request_license");
-		reply.child("request_license")["text"] = "\"" + read_file(info.wesnoth_dir() + "data/umcd/license.txt") + "\"";
+		reply.child("request_license")["text"] = "\"" + read_file(info.wesnoth_dir() + get_umcd_license_file()) + "\"";
 	}
 	catch(const twml_exception& e)
 	{
