@@ -46,22 +46,23 @@ class logger : boost::noncopyable
 	typedef std::vector<detail::log_line> cache_type;
 	typedef boost::shared_ptr<cache_type> cache_ptr;
 
-	void default_logging_output();
 	// Returns the old cache.
 	cache_ptr make_new_cache();
 	std::string make_header(severity::level sev) const;
 	void set_log_output(const logging_info::severity_list& sev_list, const boost::shared_ptr<detail::log_stream>& stream);
 	void set_standard_output(const logging_info::severity_list& sev_list, const std::ostream& stream);
 	void set_files_output(const logging_info::file_list& files);
+	void add_line(const detail::log_line_cache& line);
+	void set_severity(severity::level level);
+	void set_output(severity::level sev, const boost::shared_ptr<detail::log_stream>& stream);
+
+	friend class detail::log_line_cache;
 
 public:
 	logger();
-	void add_line(const detail::log_line_cache& line);
 	void run_once();
 	void load(const logging_info& log_info);
-	void set_severity(severity::level level);
 	severity::level get_current_severity() const;
-	void set_output(severity::level sev, const boost::shared_ptr<detail::log_stream>& stream);
 	detail::log_line_cache get_logger(severity::level level);
 private:
 	severity::level current_sev_lvl_;

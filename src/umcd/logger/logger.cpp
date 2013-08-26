@@ -21,19 +21,6 @@
 
 namespace umcd{
 
-void logger::default_logging_output()
-{
-	int sev;
-	for(sev=0; sev <= severity::warning; ++sev)
-	{
-		set_output(static_cast<severity::level>(sev), boost::make_shared<detail::standard_log_stream>(std::cout));
-	}
-	for(; sev < severity::num_severity_level; ++sev)
-	{
-		set_output(static_cast<severity::level>(sev), boost::make_shared<detail::standard_log_stream>(std::cerr));
-	}
-}
-
 // Returns the old cache.
 logger::cache_ptr logger::make_new_cache()
 {
@@ -72,9 +59,7 @@ void logger::set_files_output(const logging_info::file_list& files)
 logger::logger()
 : current_sev_lvl_(severity::trace)
 , cache_(boost::make_shared<cache_type>())
-{
-	default_logging_output();
-}
+{}
 
 void logger::add_line(const umcd::detail::log_line_cache& line)
 {
