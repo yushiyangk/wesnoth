@@ -27,6 +27,9 @@
 #include <boost/static_assert.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
+#include <boost/preprocessor/arithmetic/dec.hpp>
+#include <boost/preprocessor/arithmetic/inc.hpp>
+#include <boost/preprocessor/facilities/intercept.hpp>
 
 #ifndef EVENT_LIMIT_ARG
 	#define EVENT_LIMIT_ARG 5
@@ -75,8 +78,12 @@ public:
 		return events_tail_.template on_event<Event>(slot_function);
 	}
 
-#define MAKE_EVENT_ARG(z, count, unused) \
-	typename boost::function_traits<typename event_slot<Event>::type>::arg##count##_type \
+#define MAKE_ARG_PARAM_TYPE_IMPL(count) typename boost::function_traits<typename event_slot<Event>::type>::arg##count##_type
+#define MAKE_ARG_PARAM_TYPE(count) MAKE_ARG_PARAM_TYPE_IMPL(count)
+
+#define MAKE_EVENT_ARG(z, count, unused) 		\
+	BOOST_PP_COMMA_IF(count)									\
+	MAKE_ARG_PARAM_TYPE(BOOST_PP_INC(count)) 	\
 	arg##count
 
 #define SIGNAL_EVENT(z, n, unused) 												\
@@ -93,7 +100,7 @@ public:
 	typename boost::disable_if<															\
 			boost::is_same<Event, event_type>										\
 		, void																								\
-	>::type signal_event(BOOST_PP_REPEAT(n, MAKE_EVENT_ARG,~))\
+	>::type signal_event(BOOST_PP_REPEAT(n, MAKE_EVENT_ARG,~)) \
 	{																												\
 		events_tail_.template signal_event<Event>(BOOST_PP_ENUM_PARAMS(n, arg)); \
 	}

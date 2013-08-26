@@ -18,35 +18,33 @@
 #include "tools/code_generator/sql2cpp/sql/ast.hpp"
 
 #include <boost/make_shared.hpp>
+#include <boost/preprocessor/repetition/repeat.hpp>
+#include <boost/preprocessor/repetition/enum_params.hpp>
+#include <boost/preprocessor/repetition/enum_binary_params.hpp>
+#include <boost/preprocessor/punctuation/comma_if.hpp>
+
+#define MAKE_PTR_LIMIT_ARGS 5
 
 namespace sql{
 
 class semantic_actions
 {
 public:
-	template <class T, class U>
-	void make_ptr(boost::shared_ptr<U>& res) const
-	{
-		res = boost::make_shared<T>();
+#define MAKE_PTR(z, count, unused) 													\
+	template <class T, 																				\
+						class U BOOST_PP_COMMA_IF(count) 								\
+						BOOST_PP_ENUM_PARAMS(count, class Arg) >       	\
+	void make_ptr(boost::shared_ptr<U>& res 									\
+								BOOST_PP_COMMA_IF(count)										\
+								BOOST_PP_ENUM_BINARY_PARAMS(count, Arg, const& arg) \
+							 )const 																			\
+	{																													\
+		res = boost::make_shared<T>(BOOST_PP_ENUM_PARAMS(count, arg)); \
 	}
 	
-	template <class T, class U, class A>
-	void make_ptr(boost::shared_ptr<U>& res, A const& arg) const
-	{
-		res = boost::make_shared<T>(arg);
-	}
-	
-	template <class T, class U, class A1, class A2>
-	void make_ptr(boost::shared_ptr<U>& res, A1 const& arg1, A2 const& arg2) const
-	{
-		res = boost::make_shared<T>(arg1, arg2);
-	}
+BOOST_PP_REPEAT(MAKE_PTR_LIMIT_ARGS, MAKE_PTR, ~)
 
-	template <class T, class U, class A1, class A2, class A3>
-	void make_ptr(boost::shared_ptr<U>& res, A1 const& arg1, A2 const& arg2, A3 const& arg3) const
-	{
-		res = boost::make_shared<T>(arg1, arg2, arg3);
-	}
+#undef MAKE_PTR
 
 	void make_unsigned_numeric(boost::shared_ptr<type::numeric_type>& res) const;
 	/**
