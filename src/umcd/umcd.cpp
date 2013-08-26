@@ -91,6 +91,8 @@ int main(int argc, char *argv[])
 			// Launch logger.
 			asio_logger logger(boost::ref(addon_server.io_service()), boost::posix_time::milliseconds(500));
 
+			UMCD_LOG(info) << addon_server.thread_pool_size() << " cores found.";
+
 			addon_server.run();
 		}
 	}

@@ -19,9 +19,9 @@
 */
 
 #include "umcd/server/multi_threaded/server_mt.hpp"
-#include "umcd/logger/asio_logger.hpp"
 #include "umcd/boost/thread/workaround.hpp"
 #include <boost/thread/thread.hpp>
+#include <boost/make_shared.hpp>
 
 server_mt::server_mt(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler)
 : base_type(server_config, request_handler)
@@ -30,7 +30,6 @@ server_mt::server_mt(const umcd::server_core& server_config, const boost::functi
 	if(thread_pool_size_ == 0)
 	{
 		thread_pool_size_ = boost::thread::hardware_concurrency();
-		UMCD_LOG(info) << thread_pool_size_ << " cores found.";
 	}
 }
 
@@ -51,4 +50,9 @@ void server_mt::run()
 	// Wait for all threads in the pool to exit.
 	for (std::size_t i = 0; i < threads.size(); ++i)
 		threads[i]->join();
+}
+
+std::size_t server_mt::thread_pool_size() const
+{
+	return thread_pool_size_;
 }
