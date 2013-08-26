@@ -25,6 +25,12 @@
 #include <boost/type_traits.hpp>
 #include <boost/utility.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/preprocessor/repetition/repeat.hpp>
+#include <boost/preprocessor/repetition/enum_params.hpp>
+
+#ifndef EVENT_LIMIT_ARG
+	#define EVENT_LIMIT_ARG 5
+#endif
 
 template <class Event>
 struct event_slot
@@ -69,61 +75,33 @@ public:
 		return events_tail_.template on_event<Event>(slot_function);
 	}
 
-#define SLOT_FUN_ARG(E, n) typename boost::function_traits<typename event_slot<E>::type>::arg##n##_type
+#define MAKE_EVENT_ARG(z, count, unused) \
+	typename boost::function_traits<typename event_slot<Event>::type>::arg##count##_type \
+	arg##count
 
-	template <class Event>
-	typename boost::enable_if<
-	    boost::is_same<Event, event_type>
-		, void
-	>::type signal_event()
-	{
-		signal_();
+#define SIGNAL_EVENT(z, n, unused) 												\
+	template <class Event>																	\
+	typename boost::enable_if<															\
+	    boost::is_same<Event, event_type>										\
+		, void																								\
+	>::type signal_event(BOOST_PP_REPEAT(n, MAKE_EVENT_ARG,~)) \
+	{																												\
+		signal_(BOOST_PP_ENUM_PARAMS(n, arg));								\
+	}																												\
+																													\
+	template <class Event>																	\
+	typename boost::disable_if<															\
+			boost::is_same<Event, event_type>										\
+		, void																								\
+	>::type signal_event(BOOST_PP_REPEAT(n, MAKE_EVENT_ARG,~))\
+	{																												\
+		events_tail_.template signal_event<Event>(BOOST_PP_ENUM_PARAMS(n, arg)); \
 	}
 
-	template <class Event>
-	typename boost::disable_if<
-			boost::is_same<Event, event_type>
-		, void
-	>::type signal_event()
-	{
-		events_tail_.template signal_event<Event>();
-	}
+BOOST_PP_REPEAT(EVENT_LIMIT_ARG, SIGNAL_EVENT, ~)
 
-	template <class Event>
-	typename boost::enable_if<
-	    boost::is_same<Event, event_type>
-		, void
-	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1)
-	{
-		signal_(arg1);
-	}
+#undef SIGNAL_EVENT
 
-	template <class Event>
-	typename boost::disable_if<
-			boost::is_same<Event, event_type>
-		, void
-	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1)
-	{
-		events_tail_.template signal_event<Event>(arg1);
-	}
-
-	template <class Event>
-	typename boost::enable_if<
-	    boost::is_same<Event, event_type>
-		, void
-	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1, SLOT_FUN_ARG(Event, 2) arg2)
-	{
-		signal_(arg1, arg2);
-	}
-
-	template <class Event, class T1, class T2>
-	typename boost::disable_if<
-			boost::is_same<Event, event_type>
-		, void
-	>::type signal_event(SLOT_FUN_ARG(Event, 1) arg1, SLOT_FUN_ARG(Event, 2) arg2)
-	{
-		events_tail_.template signal_event<Event>(arg1, arg2);
-	}
 private:
 	boost::signals2::signal<event_slot_type> signal_;
 
