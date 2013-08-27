@@ -1,10 +1,4 @@
 /*
-	Copyright (c) 2003-2012 Christopher M. Kohlhoff (chris at kohlhoff dot com)
-
-	Distributed under the Boost Software License, Version 1.0.
-	(See http://www.boost.org/LICENSE_1_0.txt)
-*/
-/*
 	Copyright (C) 2013 by Pierre Talbot <ptalbot@mopong.net>
 	Part of the Battle for Wesnoth Project http://www.wesnoth.org/
 
