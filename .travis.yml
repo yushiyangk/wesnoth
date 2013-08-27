@@ -5,8 +5,6 @@ compiler:
 install:
     - sudo apt-get update -qq
     - sudo apt-get install -qq unixodbc-dev libboost1.48-all-dev libboost-iostreams1.48-dev libboost-program-options1.48-dev libboost-regex1.48-dev libboost-system1.48-dev libboost-thread1.48-dev libboost-date-time1.48-dev libcairo2-dev libfribidi-dev libpango1.0-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-net1.2-dev libsdl-ttf2.0-dev
-    - sudo apt-mark auto libboost1.46-all-dev
-    - dpkg -S /usr/include/boost/signals2/detail/auto_buffer.hpp
 script: scons cxxtool=$CXX wesnoth wesnothd umcd
 notifications:
     email: false
