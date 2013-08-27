@@ -19,10 +19,11 @@
 namespace umcd{
 void close_on_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socket, const boost::system::error_code& error)
 {
-	typedef boost::asio::ip::tcp::socket socket_type;
 	assert(static_cast<bool>(error));
 	UMCD_LOG_IP_FUNCTION_TRACER(socket);
 	UMCD_LOG_IP(info, socket) << " -- unable to send data to the client (" << error.message() << "). Connection dropped.";
+	
+	typedef boost::asio::ip::tcp::socket socket_type;
 	socket->shutdown(socket_type::shutdown_both);
 	socket->close();
 }

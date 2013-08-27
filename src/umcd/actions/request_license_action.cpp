@@ -18,6 +18,8 @@ The license is not shipped with the Wesnoth client because this server can be re
 
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/protocol/error_sender.hpp"
+#include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/close_on_error.hpp"
 #include "umcd/error.hpp"
 #include "umcd/env/server_info.hpp"
 #include "umcd/logger/asio_logger.hpp"
@@ -39,6 +41,7 @@ void request_license_action::execute(const config& request)
 {
 	try
 	{
+		// (1) Validation of the request.
 		server_info info;
 		std::string validator_filename = info.wesnoth_dir() + get_umcd_protocol_schema_dir() + "/request_license.cfg";
 		validator_type validator(validator_filename);
@@ -46,9 +49,15 @@ void request_license_action::execute(const config& request)
 		::read(dummy, request.to_string(), &validator);
 		UMCD_LOG_IP(debug, socket_) << BOOST_CURRENT_FUNCTION << " -- request validated.";
 
+		// (2) Creation of the reply.
 		// NOTE: We don't use the COPYING file because the " are not double quoted, instead we use a preformatted license file with " replaced by "".
 		config reply("request_license");
 		reply.child("request_license")["text"] = "\"" + read_file(info.wesnoth_dir() + get_umcd_license_file()) + "\"";
+
+		// (3) Sending the reply.
+		boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket_, reply);
+		sender->on_event<transfer_error>(boost::bind(&close_on_error, socket_, _1));
+		sender->async_send();
 	}
 	catch(const twml_exception& e)
 	{
