@@ -66,9 +66,6 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			UMCD_LOG(info) << "Configuration requested:\n" << cfg;
-
-			otl_connect::otl_initialize();
 			otl_connect db;
 			try
 			{

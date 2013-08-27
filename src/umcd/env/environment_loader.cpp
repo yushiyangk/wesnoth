@@ -16,8 +16,12 @@
 #include "umcd/env/server_core.hpp"
 #include "umcd/env/server_info.hpp"
 #include "umcd/env/database_info.hpp"
+#include "umcd/env/protocol_info.hpp"
 #include "umcd/protocol/action_dispatcher.hpp"
+#include "umcd/logger/asio_logger.hpp"
 #include "config.hpp"
+
+#include "umcd/otl/otl.hpp"
 
 #include <boost/algorithm/string.hpp>
 
@@ -25,16 +29,18 @@ namespace umcd{
 
 void environment_loader::init_once()
 {
+	otl_connect::otl_initialize();
 	severity::init_severity_str2enum();
 	action_dispatcher::init_action_factory();
 }
 
 void environment_loader::load(const config& cfg)
 {
+	load_logging_info(cfg.child("logging"));
+	load_protocol_info(cfg.child("protocol"));
 	load_server_core(cfg.child("server_core"));
 	load_database_info(cfg.child("database"));
 	load_server_info(cfg.child("server_info"));
-	load_logging_info(cfg.child("logging"));
 }
 
 void environment_loader::load_server_core(const config& cfg)
@@ -56,6 +62,12 @@ void environment_loader::load_server_info(const config& cfg)
 {
 	server_info si;
 	si.set_wesnoth_dir(cfg["wesnoth_dir"]);
+}
+
+void environment_loader::load_protocol_info(const config& cfg)
+{
+	protocol_info pi;
+	pi.set_header_max_size(cfg["header_max_size"]);
 }
 
 logging_info::severity_list environment_loader::make_severity_list(const std::string& levels)
