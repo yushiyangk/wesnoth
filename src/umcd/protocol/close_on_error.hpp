@@ -19,6 +19,8 @@
 #include <boost/shared_ptr.hpp>
 
 namespace umcd{
+/** Log and close the socket on error. This is designed to be an event handler so an error must have occurred.
+*/
 void close_on_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socket, const boost::system::error_code& error);
 } // namespace umcd
 

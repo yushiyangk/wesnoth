@@ -9,6 +9,10 @@
 	See the COPYING file for more details.
 */
 
+/** @file Dispatch incoming request on the good action. An action is a class
+* that handles a specific request.
+*/
+
 #ifndef UMCD_ACTION_DISPATCHER_HPP
 #define UMCD_ACTION_DISPATCHER_HPP
 
@@ -35,14 +39,23 @@ public:
 	: socket_(socket)
 	{}
 
+	/** Before starting to dispatch request, we must read it first.
+	* We read it in this class because the data will only be used here.
+	* The dispatch will be automatic after the reading.
+	*/
 	void async_receive_request();
 
 private:
+	/** Dispatch a successful read request on the good action.
+	*/
 	void dispatch();
 
 	socket_ptr socket_;
 	config header_metadata_;
 
+	/** Boilerplate code that initialized the action factory.
+	* This factory maps request name to action object.
+	*/
 	static action_factory_type action_factory;
  	struct action_factory_initializer
 	{

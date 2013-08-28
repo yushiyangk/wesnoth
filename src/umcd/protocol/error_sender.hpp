@@ -19,6 +19,8 @@
 #include <boost/shared_ptr.hpp>
 
 namespace umcd{
+/** Asynchronously send an error and close the socket if it fails to send it.
+*/
 void async_send_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socket, const boost::system::error_condition& error);
 } // namespace umcd
 
