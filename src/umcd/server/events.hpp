@@ -12,6 +12,81 @@
 	See the COPYING file for more details.
 */
 
+/**
+ * @file
+ * Provides support to subscribe to and to trigger events.
+ * This class doesn't need a base event class to store the events
+ * as they are statically given via templates.
+ *
+ * Step to use this class:
+ *
+ * \code{.cpp}
+// Define two events (tag-like structure).
+
+struct transfer_is_complete{};
+struct transfer_error{};
+
+// Specialize the event_slot structure. The slot is a function called when
+// an event is triggered.
+
+template <>
+struct event_slot<transfer_complete>
+{
+	typedef void type();
+};
+
+template <>
+struct event_slot<transfer_error>
+{
+	typedef void type(const boost::system::error_code&);
+};
+
+// Create the event class, a simple typedef on events that
+// gather all event previously declared with boost::mpl::set.
+
+struct transfer_events
+: events<boost::mpl::set<
+				transfer_complete
+			, transfer_error> >
+{};
+
+// Finally you can use this class wherever you need this particular set of
+// events.
+
+class network_communicator
+{
+public:
+	// This method is just delegating event registration to the class event.
+	template <class Event, class F>
+	boost::signals2::connection on_event(F f)
+	{
+	  events_.on_event<Event>(f);
+	}
+
+private:
+	// Typical Boost.Asio handler, we signal if something goes wrong or if the transfer is completed.
+	// Thus we delegate the responsability of handling these events by others classes and makes this class
+	// highly re-usable (because there is no buiseness logic implemented in).
+	void network_communicator::on_completion(const boost::system::error_code& error,
+		std::size_t bytes_in_buffer)
+	{
+		if(error)
+		{
+			events_.signal_event<transfer_error>(error);
+		}
+		else
+		{
+			events_.signal_event<transfer_complete>();
+		}
+	}
+
+	// The event class previously defined.
+	transfer_events events_;
+};
+
+ * \endcode
+*/
+
 #ifndef UMCD_EVENTS_HPP
 #define UMCD_EVENTS_HPP
 
@@ -32,10 +107,16 @@
 
 #include "umcd/boost/static_assert.hpp"
 
+/** The maximum arguments number we can pass to the event slot.
+* Increase this if the slots take more than EVENT_LIMIT_ARG arguments.
+*/
 #ifndef EVENT_LIMIT_ARG
 	#define EVENT_LIMIT_ARG 5
 #endif
 
+/** Empty trait, it must be specialized to link an event with a particular
+* function slot signature.
+*/
 template <class Event>
 struct event_slot
 {};
@@ -43,7 +124,9 @@ struct event_slot
 namespace detail{
 namespace mpl = boost::mpl;
 
-// For some reasons it's not available in Boost.MPL (no implementation defined...).
+/** Define a type that is the Sequence type list privates from its first type.
+* @note For some reasons it's not available in Boost.MPL (no implementation defined...).
+*/
 template <class Sequence>
 struct pop_front
 {
@@ -53,6 +136,9 @@ struct pop_front
 	>::type type;
 };
 
+/** Store the signal/slot mechanism of the type in front of EventSequence.
+ * Recursively store itself (events_impl) until the EventSequence is empty (see specialization).
+*/
 template <class EventSequence, bool empty = mpl::empty<EventSequence>::value>
 class events_impl
 {
@@ -61,6 +147,10 @@ class events_impl
 	typedef typename event_slot<event_type>::type event_slot_type;
 
 public:
+	/** The event we want to add a slot function has been found so we can connect it.
+	* @param slot_function The slot function we want to call when Event will be triggered.
+	* @return boost::signals2::connection of the connected slot, you can use it to deconnect the slot.
+	*/
 	template <class Event>
 	typename boost::enable_if<
 	    boost::is_same<Event, event_type>
@@ -70,6 +160,9 @@ public:
 		return signal_.connect(slot_function);
 	}
 
+	/** The current event is not the same as the one we want to connect the function.
+	* Recursively calls itself until an event match.
+	*/
 	template <class Event>
 	typename boost::disable_if<
 			boost::is_same<Event, event_type>
@@ -79,6 +172,9 @@ public:
 		return events_tail_.template on_event<Event>(slot_function);
 	}
 
+/** Boilerplate macros that help to select the nth arguments of the function slot and 
+* thus making the correct argument type.
+*/
 #define MAKE_ARG_PARAM_TYPE_IMPL(count) typename boost::function_traits<typename event_slot<Event>::type>::arg##count##_type
 #define MAKE_ARG_PARAM_TYPE(count) MAKE_ARG_PARAM_TYPE_IMPL(count)
 
@@ -87,6 +183,15 @@ public:
 	MAKE_ARG_PARAM_TYPE(BOOST_PP_INC(count)) 	\
 	arg##count
 
+/** signal_event is used to signal that an event occurs. In the same fashion than on_event, 
+* it recursively calls itself until the good event is found.
+*
+* Moreover, we need to create some functions overload that will takes exactly the number of
+* arguments needed by the slot function. BOOST_PP_REPEAT expands the SIGNAL_EVENT to
+* EVENT_LIMIT_ARG so we have N overloads of this function.
+* We also need to horizontally expand the argument and that's why we use the MAKE_EVENT_ARG
+* with a second BOOST_PP_REPEAT macro.
+*/
 #define SIGNAL_EVENT(z, n, unused) 												\
 	template <class Event>																	\
 	typename boost::enable_if<															\
@@ -111,12 +216,21 @@ BOOST_PP_REPEAT(EVENT_LIMIT_ARG, SIGNAL_EVENT, ~)
 #undef SIGNAL_EVENT
 
 private:
+	/** The signal that will be triggered if the current event occurs.
+	*/
 	boost::signals2::signal<event_slot_type> signal_;
 
+	/** The tail of the events type list. We remove the front (which is actually
+	* handled by this class) and we recursively delegate storage to the next instances
+	* of this class.
+	*/
 	typedef typename pop_front<events_type>::type events_tail_type;
 	events_impl<events_tail_type> events_tail_;
 };
 
+/** Denote the end of the typelist, if on_event is called here, it means we didn't found the event
+* we try to access.
+*/
 template <class EventSequence>
 class events_impl<EventSequence, true>
 {
@@ -129,7 +243,9 @@ public:
 	}
 };
 
-// We check that the sequence is a set.
+/** Class checking that the sequence meets is a mpl::set.
+* We use a set because it doesn't make sense to add twice an event.
+*/
 template <class EventSequence, class sequence_tag>
 class events_impl_tag
 {
@@ -143,7 +259,11 @@ class events_impl_tag<EventSequence, mpl::aux::set_tag>
 } // namespace detail
 
 
-// Pre: EventSequence is a set and is non-empty.
+/** Provides slot registration (with on_event) and event triggering (with signal_event)
+* for each events in the EventSequence.
+*
+* @see events_impl for a more detailled description of the methods.
+*/
 template <class EventSequence>
 class events
 : public detail::events_impl_tag<
