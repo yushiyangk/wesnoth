@@ -12,11 +12,18 @@
 	See the COPYING file for more details.
 */
 
+/** @file Asynchronously receive data from the network.
+*/
+
 #ifndef UMCD_NETWORK_RECEIVER_HPP
 #define UMCD_NETWORK_RECEIVER_HPP
 
 #include "umcd/server/network_transfer.hpp"
 
+/** Wrap calls the boost::asio::async_read method and bind argument to it.
+*
+* @see network_sender network_transfer
+*/
 template <class BufferProvider>
 class network_receiver : public network_transfer<network_receiver<BufferProvider>, BufferProvider>
 {
@@ -25,11 +32,17 @@ public:
 	typedef network_transfer<network_receiver<BufferProvider>, BufferProvider> base_type;
 	typedef typename base_type::socket_ptr socket_ptr;
 
+	/** Asynchronously receive data from the socket and put them in the associated buffer provider.
+	*/
 	void async_receive()
 	{
 		base_type::async_transfer();
 	}
 
+	/**
+	* @param socket Receive data from this socket.
+	* @param buffer_provider Provide buffer to receive data in.
+	*/
 	network_receiver(const socket_ptr& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
 	: base_type(socket, buffer_provider)
 	{}

@@ -12,11 +12,20 @@
 	See the COPYING file for more details.
 */
 
+/** @file Represents a transfer of data over the network.
+*/
+
 #ifndef UMCD_NETWORK_TRANSFER_HPP
 #define UMCD_NETWORK_TRANSFER_HPP
 
 #include "umcd/server/network_communicator.hpp"
 
+/** Transfer some data with the help of the derived TransferOp class.
+* It subscribes to the chunk_complete event to be sure to transfer all
+* the data until it finishes.
+*
+* @see network_sender network_receiver
+*/
 template <class TransferOp, class BufferProvider>
 class network_transfer : public network_communicator<BufferProvider>
 {
@@ -25,6 +34,8 @@ public:
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
+	/** Start an asynchronous transfer of data.
+	*/
 	void async_transfer()
 	{
 		/** By default push to the back of the event handler queue, 
@@ -43,7 +54,11 @@ protected:
 	, socket_(socket)
 	{}
 
+	network_transfer(){}
+
 private:
+	/** Until the transfer is done, we relaunch the transfer operation.
+	*/
 	void async_transfer_impl()
 	{
 		if(!this->is_done())
@@ -52,7 +67,7 @@ private:
 		}
 	}
 
-	/** After a chunk has been received we want to continue receiving others (so we recall async_receive).
+	/** After a chunk has been received we want to continue receiving others (so we recall async_transfer_impl).
 	*/
 	void async_transfer_chunk_event(transfer_events&)
 	{

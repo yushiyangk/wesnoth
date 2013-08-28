@@ -12,11 +12,18 @@
 	See the COPYING file for more details.
 */
 
+/** @file Asynchronously send data over the network.
+*/
+
 #ifndef UMCD_NETWORK_SENDER_HPP
 #define UMCD_NETWORK_SENDER_HPP
 
 #include "umcd/server/network_transfer.hpp"
 
+/** Wrap calls the boost::asio::async_write method and bind argument to it.
+*
+* @see network_sender network_transfer
+*/
 template <class BufferProvider>
 class network_sender : public network_transfer<network_sender<BufferProvider>, BufferProvider>
 {
@@ -25,11 +32,17 @@ public:
 	typedef network_transfer<network_sender<BufferProvider>, BufferProvider> base_type;
 	typedef typename base_type::socket_ptr socket_ptr;
 
+	/** Asynchronously send data from the buffer given by the associated buffer provider to the socket.
+	*/
 	void async_send()
 	{
 		base_type::async_transfer();
 	}
 
+	/**
+	* @param socket Send data to this socket.
+	* @param buffer_provider Provide buffer to send data from.
+	*/
 	network_sender(const socket_ptr& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
 	: base_type(socket, buffer_provider)
 	{}
