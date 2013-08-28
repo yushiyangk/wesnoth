@@ -23,6 +23,7 @@
 namespace umcd{
 
 action_dispatcher::action_factory_type action_dispatcher::action_factory;
+action_dispatcher::action_factory_initializer action_dispatcher::action_init;
 
 action_dispatcher::action_factory_initializer::action_factory_initializer()
 {
