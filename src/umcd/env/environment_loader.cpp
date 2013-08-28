@@ -17,7 +17,6 @@
 #include "umcd/env/server_info.hpp"
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
-#include "umcd/protocol/action_dispatcher.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include "config.hpp"
 
@@ -31,7 +30,6 @@ void environment_loader::init_once()
 {
 	otl_connect::otl_initialize();
 	severity::init_severity_str2enum();
-	action_dispatcher::init_action_factory();
 }
 
 void environment_loader::load(const config& cfg)

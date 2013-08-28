@@ -16,6 +16,7 @@
 #include "umcd/boost/thread/workaround.hpp"
 #include <boost/thread/thread.hpp>
 #include <boost/make_shared.hpp>
+#include <stdexcept>
 
 server_mt::server_mt(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler)
 : base_type(server_config, request_handler)
@@ -24,6 +25,11 @@ server_mt::server_mt(const umcd::server_core& server_config, const boost::functi
 	if(thread_pool_size_ == 0)
 	{
 		thread_pool_size_ = boost::thread::hardware_concurrency();
+		if(thread_pool_size_ == 0)
+		{
+			throw std::runtime_error("Your system doesn't give information about the number of cores available.\n"
+															 "Choose another value than 0 in the \"thread_pool_size\" property.\n");
+		}
 	}
 }
 

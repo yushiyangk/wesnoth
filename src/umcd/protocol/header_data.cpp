@@ -44,6 +44,7 @@ const header_data& header_const_buffer::data() const
 // header_mutable_buffer
 header_mutable_buffer::header_mutable_buffer()
 : base_type(buffer_type(NULL, 0))
+, header_()
 {
 	buffer_ = boost::asio::buffer(reinterpret_cast<char*>(&header_.payload_size), sizeof(header_.payload_size));
 	bytes_to_transfer_ = boost::asio::buffer_size(buffer_);

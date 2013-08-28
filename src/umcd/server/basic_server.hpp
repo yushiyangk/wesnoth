@@ -28,7 +28,7 @@ public:
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 public:
-	explicit basic_server(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler);
+	basic_server(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler);
 	void run();
 	boost::asio::io_service& io_service();
 

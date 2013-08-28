@@ -31,8 +31,6 @@ private:
 	typedef generic_factory<basic_umcd_action> action_factory_type;
 
 public:
-	static void init_action_factory();
-
 	action_dispatcher(const socket_ptr& socket)
 	: socket_(socket)
 	{}
@@ -44,7 +42,18 @@ private:
 
 	socket_ptr socket_;
 	config header_metadata_;
-	static action_factory_type action_factory_;
+
+ 	struct action_factory_initializer
+	{
+		static action_factory_type factory;
+		action_factory_initializer();
+	};
+
+	static action_factory_type& action_factory()
+	{
+		static action_factory_initializer action_init;
+		return action_init.factory;
+	}
 };
 
 } // namespace umcd
