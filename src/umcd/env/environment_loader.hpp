@@ -25,7 +25,6 @@ namespace umcd{
 class environment_loader
 {
 public:
-	void init_once();
 	void load(const config& cfg);
 
 private:

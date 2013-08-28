@@ -20,16 +20,9 @@
 #include "umcd/logger/asio_logger.hpp"
 #include "config.hpp"
 
-#include "umcd/otl/otl.hpp"
-
 #include <boost/algorithm/string.hpp>
 
 namespace umcd{
-
-void environment_loader::init_once()
-{
-	otl_connect::otl_initialize();
-}
 
 void environment_loader::load(const config& cfg)
 {

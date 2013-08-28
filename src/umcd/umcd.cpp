@@ -18,10 +18,10 @@
 #include "umcd/server/daemon.hpp"
 #include "umcd/protocol/entry_point.hpp"
 #include "umcd/logger/asio_logger.hpp"
-#include "umcd/otl/otl.hpp"
 #include "umcd/env/environment_loader.hpp"
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
+#include "umcd/database.hpp"
 
 #include "wml_exception.hpp"
 #include "config.hpp"
@@ -31,7 +31,6 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/function.hpp>
-#include <boost/format.hpp>
 
 #include <stdexcept>
 
@@ -47,7 +46,6 @@ int main(int argc, char *argv[])
 			config cfg = options.read_config();
 
 			environment_loader env_loader;
-			env_loader.init_once();
 			env_loader.load(cfg);
 
 			// Badly the environment must me loaded before we can validate.
@@ -66,19 +64,8 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			otl_connect db;
-			try
-			{
-				database_info db_info;
-				db.rlogon(boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str());
-			}
-			catch(otl_exception& e)
-			{
-				std::cerr<<e.msg<<std::endl; // print out error message
-				std::cerr<<e.stm_text<<std::endl; // print out SQL that caused the error
-				std::cerr<<e.sqlstate<<std::endl; // print out SQLSTATE message
-				std::cerr<<e.var_info<<std::endl; // print out the variable that caused the error
-			}
+			database_info db_info;
+			database db(db_info);
 
 			server_mt addon_server(
 				server_core(),
