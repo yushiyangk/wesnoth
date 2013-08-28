@@ -18,6 +18,9 @@
 #include "umcd/server/transfer_events.hpp"
 #include <boost/enable_shared_from_this.hpp>
 
+/** Provide an access to buffer and the *known* size to transfer.
+* Meaning that this size can rise.
+*/
 template <class Buffer>
 class buffer_provider : public boost::enable_shared_from_this<buffer_provider<Buffer> >
 {
@@ -36,6 +39,10 @@ public:
 
 protected:
 	buffer_provider(){}
+	~buffer_provider(){}
+
+	/** This constructor is mainly for buffer that have no default constructor.
+	*/
 	buffer_provider(buffer_type buffer)
 	: buffer_(buffer)
 	{}
