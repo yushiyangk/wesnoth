@@ -19,31 +19,24 @@ The license is not shipped with the Wesnoth client because this server can be re
 #ifndef UMCD_REQUEST_LICENSE_ACTION_HPP
 #define UMCD_REQUEST_LICENSE_ACTION_HPP
 
-#include "umcd/actions/basic_umcd_action.hpp"
+#include "umcd/actions/basic_action.hpp"
 #include "serialization/schema_validator.hpp"
-#include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
 
 class config;
 
 namespace umcd{
 
-class request_license_action : public basic_umcd_action
+class request_license_action : 
+  public basic_action_crtp<request_license_action>
 {
 	typedef schema_validation::schema_validator validator_type;
 
 public:
-	typedef basic_umcd_action base_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
-	request_license_action(const socket_ptr& socket);
-	request_license_action();
-	virtual void execute(const config& request);
-	virtual boost::shared_ptr<base_type> clone() const;
-
-private:
-	socket_ptr socket_;
+	virtual void execute(const socket_ptr& socket, const config& request);
+	virtual ~request_license_action();
 };
 
 } // namespace umcd

@@ -20,25 +20,15 @@
 
 namespace umcd{
 
-request_umc_upload_action::request_umc_upload_action(const socket_ptr& socket)
-: socket_(socket)
-{}
-
-request_umc_upload_action::request_umc_upload_action()
-{}
-
 const config& request_umc_upload_action::get_info(const config& metadata)
 {
 	return metadata.child("request_umc_upload").child("umc_configuration").child("info");
 }
 
-void request_umc_upload_action::execute(const config&)
+void request_umc_upload_action::execute(const socket_ptr&, const config&)
 {
 }
 
-boost::shared_ptr<request_umc_upload_action::base_type> request_umc_upload_action::clone() const
-{
-	return boost::shared_ptr<base_type>(new request_umc_upload_action(*this));
-}
+request_umc_upload_action::~request_umc_upload_action(){}
 
 } // namespace umcd

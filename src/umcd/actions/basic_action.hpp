@@ -12,29 +12,42 @@
 	See the COPYING file for more details.
 */
 
-#ifndef UMCD_REQUEST_UMC_UPLOAD_ACTION_HPP
-#define UMCD_REQUEST_UMC_UPLOAD_ACTION_HPP
+#ifndef UMCD_BASIC_UMCD_ACTION_HPP
+#define UMCD_BASIC_UMCD_ACTION_HPP
 
-#include "umcd/actions/basic_action.hpp"
-#include "serialization/schema_validator.hpp"
 #include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 class config;
-
 namespace umcd{
 
-class request_umc_upload_action 
-: public basic_action_crtp<request_umc_upload_action>
+class basic_action
 {
 public:
+	typedef basic_action this_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
-	const config& get_info(const config& metadata);
+	virtual void execute(const socket_ptr& socket, const config& request) = 0;
+	virtual boost::shared_ptr<this_type> create() const = 0;
+	virtual ~basic_action(){}
+};
 
-	virtual void execute(const socket_ptr& socket, const config& request);
-	virtual ~request_umc_upload_action();
+template <class ActionType>
+class basic_action_crtp : public basic_action
+{
+public:
+	virtual void execute(const socket_ptr& socket, const config& request) = 0;
+
+	virtual boost::shared_ptr<basic_action> create() const
+	{
+		return boost::make_shared<ActionType>();
+	}
+
+	virtual ~basic_action_crtp(){}
 };
 
 } // namespace umcd
-#endif // UMCD_REQUEST_UMC_UPLOAD_ACTION_HPP
+
+#endif // UMCD_BASIC_WML_ACTION_HPP

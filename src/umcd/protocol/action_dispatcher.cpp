@@ -57,7 +57,7 @@ void action_dispatcher::dispatch()
 			UMCD_LOG_IP(trace, socket_) << " -- request header:\n" << header_metadata_;
 
 			action_ptr action = action_factory.make_product(request_name);
-			action->execute(header_metadata_);
+			action->execute(socket_, header_metadata_);
 		}
 	}
 	catch(const std::exception& e)

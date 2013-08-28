@@ -13,7 +13,7 @@
 #define UMCD_ACTION_DISPATCHER_HPP
 
 #include "umcd/server/generic_factory.hpp"
-#include "umcd/actions/basic_umcd_action.hpp"
+#include "umcd/actions/basic_action.hpp"
 #include "config.hpp"
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -23,12 +23,12 @@ namespace umcd{
 class action_dispatcher : public boost::enable_shared_from_this<action_dispatcher>
 {
 public:
-	typedef boost::shared_ptr<basic_umcd_action> action_ptr;
+	typedef boost::shared_ptr<basic_action> action_ptr;
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 private:
-	typedef generic_factory<basic_umcd_action> action_factory_type;
+	typedef generic_factory<basic_action> action_factory_type;
 
 public:
 	action_dispatcher(const socket_ptr& socket)

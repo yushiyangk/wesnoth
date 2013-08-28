@@ -56,7 +56,7 @@ public:
 		typename id_to_product_map::const_iterator product = products_.find(id);
 		if(product == products_.end())
 			throw product_not_found(id);
-		return product->second->clone();
+		return product->second->create();
 	}
 private:
 	id_to_product_map products_;
