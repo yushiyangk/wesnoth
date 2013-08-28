@@ -23,6 +23,9 @@ class config;
 
 namespace umcd{
 
+/** Analyse the request (pbl file) and if it seems correct, tell the client to send
+* the compressed UMC file.
+*/
 class request_umc_upload_action 
 : public basic_action_crtp<request_umc_upload_action>
 {

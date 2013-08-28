@@ -12,8 +12,12 @@
 	See the COPYING file for more details.
 */
 
-#ifndef UMCD_BASIC_UMCD_ACTION_HPP
-#define UMCD_BASIC_UMCD_ACTION_HPP
+/** @file Provide a type erasure for the actions and a "CRTP action" used for common
+* behavior such as the create method.
+*/
+
+#ifndef UMCD_BASIC_ACTION_HPP
+#define UMCD_BASIC_ACTION_HPP
 
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
@@ -22,6 +26,9 @@
 class config;
 namespace umcd{
 
+/** Type erasure and define the interface of an action. Hence, an action is default
+* constructible (via the create method) and executable (via the execute method).
+*/
 class basic_action
 {
 public:
@@ -29,15 +36,26 @@ public:
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
+	/** Execute the logic behind an action. The action analyse the request and use the 
+	* socket to send the response.
+	*/
 	virtual void execute(const socket_ptr& socket, const config& request) = 0;
+
+	/** Create an action of the current sub-type.
+	*/
 	virtual boost::shared_ptr<this_type> create() const = 0;
 	virtual ~basic_action(){}
 };
 
+/** CRTP on action for common behavior such as the creation.
+*/
 template <class ActionType>
 class basic_action_crtp : public basic_action
 {
 public:
+	/**
+	* @see basic_action
+	*/
 	virtual void execute(const socket_ptr& socket, const config& request) = 0;
 
 	virtual boost::shared_ptr<basic_action> create() const
@@ -50,4 +68,4 @@ public:
 
 } // namespace umcd
 
-#endif // UMCD_BASIC_WML_ACTION_HPP
+#endif // UMCD_BASIC_ACTION_HPP

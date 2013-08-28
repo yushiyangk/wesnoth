@@ -12,8 +12,9 @@
 	See the COPYING file for more details.
 */
 
-/* Design rational:
-The license is not shipped with the Wesnoth client because this server can be re-use with different licenses on other server than Wesnoth ones.
+/* @file A license can be requested for information or for acceptation before uploading/downloading an UMC.
+* The license is not shipped with the Wesnoth client because this server can be re-used with different 
+* licenses on other server than Wesnoth ones.
 */
 
 #ifndef UMCD_REQUEST_LICENSE_ACTION_HPP
@@ -26,6 +27,9 @@ class config;
 
 namespace umcd{
 
+/** Send the license of the desired language or in english if not available.
+* In the latter case, a warning is also sent.
+*/
 class request_license_action : 
   public basic_action_crtp<request_license_action>
 {
