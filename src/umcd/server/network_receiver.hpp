@@ -33,6 +33,7 @@ public:
 	typedef typename base_type::socket_ptr socket_ptr;
 
 	/** Asynchronously receive data from the socket and put them in the associated buffer provider.
+	* @note This class must stay alive until the event transfer_complete or transfer_error has been launched.
 	*/
 	void async_receive()
 	{
