@@ -29,7 +29,6 @@ namespace umcd{
 void environment_loader::init_once()
 {
 	otl_connect::otl_initialize();
-	severity::init_severity_str2enum();
 }
 
 void environment_loader::load(const config& cfg)

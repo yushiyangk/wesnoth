@@ -33,11 +33,14 @@ struct severity
 		num_severity_level
 	};
 
-	// Init map "textual representation of the severity level" to "severity level enum".
-	static void init_severity_str2enum();
-
 	static const char* enum2str[];
 	static std::map<std::string, severity::level> str2enum;
+private:
+	struct str2enum_initializer
+	{
+		str2enum_initializer();
+	};
+	static str2enum_initializer str2enum_initializer_;
 };
 } // namespace umcd
 

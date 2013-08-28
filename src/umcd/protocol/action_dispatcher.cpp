@@ -22,12 +22,12 @@
 
 namespace umcd{
 
-action_dispatcher::action_factory_type action_dispatcher::action_factory_initializer::factory;
+action_dispatcher::action_factory_type action_dispatcher::action_factory;
 
 action_dispatcher::action_factory_initializer::action_factory_initializer()
 {
-	factory.register_product("request_license", boost::make_shared<request_license_action>());
-	factory.register_product("request_umc_upload", boost::make_shared<request_umc_upload_action>());
+	action_factory.register_product("request_license", boost::make_shared<request_license_action>());
+	action_factory.register_product("request_umc_upload", boost::make_shared<request_umc_upload_action>());
 }
 
 void action_dispatcher::async_receive_request()
@@ -55,7 +55,7 @@ void action_dispatcher::dispatch()
 			UMCD_LOG_IP(info, socket_) << " -- request name: " << request_name;
 			UMCD_LOG_IP(trace, socket_) << " -- request header:\n" << header_metadata_;
 
-			action_ptr action = action_factory().make_product(request_name);
+			action_ptr action = action_factory.make_product(request_name);
 			action->execute(header_metadata_);
 		}
 	}

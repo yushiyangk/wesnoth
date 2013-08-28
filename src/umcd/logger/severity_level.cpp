@@ -26,9 +26,12 @@ const char* severity::enum2str[] = {
 
 std::map<std::string, severity::level> severity::str2enum;
 
-void severity::init_severity_str2enum()
+severity::str2enum_initializer::str2enum_initializer()
 {
 	for(int sev=0; sev < num_severity_level; ++sev)
 		str2enum[enum2str[sev]] = static_cast<level>(sev);
 }
+
+severity::str2enum_initializer severity::str2enum_initializer_;
+
 } // namespace umcd

@@ -43,17 +43,12 @@ private:
 	socket_ptr socket_;
 	config header_metadata_;
 
+	static action_factory_type action_factory;
  	struct action_factory_initializer
 	{
-		static action_factory_type factory;
 		action_factory_initializer();
 	};
-
-	static action_factory_type& action_factory()
-	{
-		static action_factory_initializer action_init;
-		return action_init.factory;
-	}
+	static action_factory_initializer action_init;
 };
 
 } // namespace umcd
