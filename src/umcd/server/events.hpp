@@ -24,12 +24,13 @@
 #include <boost/signals2.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/utility.hpp>
-#include <boost/static_assert.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/arithmetic/dec.hpp>
 #include <boost/preprocessor/arithmetic/inc.hpp>
 #include <boost/preprocessor/facilities/intercept.hpp>
+
+#include "umcd/boost/static_assert.hpp"
 
 #ifndef EVENT_LIMIT_ARG
 	#define EVENT_LIMIT_ARG 5
@@ -123,7 +124,7 @@ public:
 	template <class Event>
 	boost::signals2::connection on_event(typename event_slot<Event>::type)
 	{
-		BOOST_STATIC_ASSERT_MSG(sizeof(Event) == 0, "** You are trying to access an empty sequence. Or to record a slot for an unknown event. **");
+		BOOST_STATIC_ASSERT_MSG(sizeof(Event) == 0, "** You are trying to record a slot for an unknown event. **");
 		return boost::signals2::connection();
 	}
 };
