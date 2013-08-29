@@ -38,7 +38,7 @@ public:
 	*/
 	void async_transfer()
 	{
-		assert(!static_cast<bool>(socket));
+		assert(static_cast<bool>(socket));
 		/** By default push to the back of the event handler queue, 
 		* so it will be called after the buffer has been changed.
 		* For this reason, don't put the on_event method in the constructor

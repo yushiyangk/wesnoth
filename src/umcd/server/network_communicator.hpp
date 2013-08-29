@@ -160,17 +160,17 @@ boost::signals2::connection network_communicator<BufferProvider>::on_event(F f)
 	return events_.on_event<Event>(f);
 }
 
+// We ignore the error, it will be handled by the on_chunk_complete operation.
 template <class BufferProvider>
 std::size_t network_communicator<BufferProvider>::is_transfer_complete(const boost::system::error_code& error,
 	std::size_t bytes_in_buffer)
 {
 	update_bytes_transferred(bytes_in_buffer);
-	if(error)
-	{
-		events_.signal_event<transfer_error>(error);
+	events_.signal_event<transfer_on_going>(bytes_transferred(), bytes_to_transfer());
+	if(!error)
+		return bytes_to_transfer() - bytes_transferred();
+	else
 		return 0;
-	}
-	return bytes_to_transfer() - bytes_transferred();
 }
 
 template <class BufferProvider>
@@ -184,6 +184,7 @@ void network_communicator<BufferProvider>::on_chunk_complete(const boost::system
 	}
 	else
 	{
+		events_.signal_event<transfer_on_going>(bytes_transferred(), bytes_to_transfer());
 		events_.signal_event<chunk_complete>(events_);
 		if(is_done() && !has_error())
 		{

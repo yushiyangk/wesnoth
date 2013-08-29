@@ -1225,8 +1225,6 @@ endif(ENABLE_TOOLS)
 
 if(ENABLE_UMCD_TESTS)
 
-	add_definitions(-DBOOST_TEST_DYN_LINK)
-
 	set(umcd_test_SRC
 		tests/umcd/test_protocol.cpp
 		loadscreen_empty.cpp
@@ -1236,13 +1234,12 @@ if(ENABLE_UMCD_TESTS)
 		${umcd_test_SRC}
 	)
 	target_link_libraries(umcd_test
-		umcd-lib
+#		umcd-lib
 		wesnoth-core
 		wesnoth-schema_validator
 		${server-external-libs}
-		boost_unit_test_framework
 		${Boost_THREAD_LIBRARY}
-	  	${Boost_SYSTEM_LIBRARY}
+	  ${Boost_SYSTEM_LIBRARY}
 	)
 	set_target_properties(umcd_test
 		PROPERTIES OUTPUT_NAME ${BINARY_PREFIX}umcd_test${BINARY_SUFFIX}

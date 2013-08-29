@@ -46,12 +46,21 @@ private:
 
 } // namespace umcd
 
-#define CURRENT_FUNCTION_STRING "in " << BOOST_CURRENT_FUNCTION
+// We need to create an unique identifier depending on the line number. Of course, if two UMCD_LOG_IP statement appear
+// to be on the same line, a redeclaration error will occur.
+#define MAKE_UNIQUE_ERROR_ID_IMPL2(id, line) id ## line
+#define MAKE_UNIQUE_ERROR_ID_IMPL(id, line) MAKE_UNIQUE_ERROR_ID_IMPL2(id, line)
+#define UNIQUE_ERROR_ID() MAKE_UNIQUE_ERROR_ID_IMPL(_ignore_log_err_, __LINE__)
+#define CURRENT_FUNCTION_STRING " in " << BOOST_CURRENT_FUNCTION
 
 #define UMCD_LOG(lvl) if(umcd::asio_logger::get().get_current_severity() > umcd::severity::lvl) ; \
 										  else umcd::asio_logger::get().get_logger(umcd::severity::lvl)
 
-#define UMCD_LOG_IP(lvl, socket_ptr) UMCD_LOG(lvl) << (socket_ptr)->remote_endpoint()
+// We must be careful if the socket is closed by the client while we try to access the remote endpoint address, it will throw.
+// That's why we use the UNIQUE_ERROR_ID to create a local and unused error variable.
+#define UMCD_LOG_IP(lvl, socket_ptr) boost::system::error_code UNIQUE_ERROR_ID(); \
+																		 UMCD_LOG(lvl) << (socket_ptr)->remote_endpoint(UNIQUE_ERROR_ID())
+
 #define UMCD_LOG_IP_FUNCTION_TRACER(socket_ptr) UMCD_LOG_IP(trace, socket_ptr) << CURRENT_FUNCTION_STRING
 #define UMCD_LOG_FUNCTION_TRACER() UMCD_LOG(trace) << CURRENT_FUNCTION_STRING
 #define RUN_ONCE_LOGGER() umcd::asio_logger::get().run_once();
