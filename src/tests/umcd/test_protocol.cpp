@@ -11,118 +11,43 @@
 
    See the COPYING file for more details.
 */
-#define BOOST_TEST_MODULE umcd_test
 
-#include <fstream>
 
-#include <boost/test/unit_test.hpp>
-#include <boost/bind.hpp>
-#include <boost/asio.hpp>
+#include "umcd/client/client.hpp"
+// #include "game_config.hpp"
+// #include "serialization/parser.hpp"
 
-#include "game_config.hpp"
-#include "serialization/parser.hpp"
-#include "umcd/protocol/wml/umcd_protocol.hpp"
+// #include <fstream>
+#include <iostream>
 
-using namespace boost::unit_test;
-using boost::asio::ip::tcp;
+using namespace umcd;
 
-struct umcd_stream
+void on_failure(const boost::system::error_code& error);
+void on_failure(const boost::system::error_code& error)
 {
-  static tcp::iostream tcp_iostream;
-
-  static const std::string& port()
-  {
-    static const std::string p = "12523";
-    return p;
-  }
-
-  static const std::string& host()
-  {
-    static const std::string h = "localhost";
-    return h;
-  }
-};
-
-void test_stream_state(const tcp::iostream& stream)
-{
-  if(!stream.good())
-  {
-    BOOST_FAIL(stream.error().message());
-  }
+  std::cout << "error: " << error.message() << std::endl;
 }
 
-void test_exchange(const std::string& request_path, const std::string& reply_validator_path, bool no_response=false)
-{      
-  game_config::path = "../";
-  std::ifstream request_file(request_path.c_str());
-  config request_conf;
-  read(request_conf, request_file);
-
-  tcp::iostream stream(umcd_stream::host(), umcd_stream::port());
-  test_stream_state(stream);
-  std::string request_conf_string = request_conf.to_string();
-  stream << make_size_header(request_conf_string.size(), umcd_protocol::REQUEST_HEADER_SIZE_FIELD_LENGTH);
-  BOOST_TEST_MESSAGE("Request size sent.");
-  stream << request_conf_string;
-  BOOST_TEST_MESSAGE("Request sent.");
-  test_stream_state(stream);
-  if(!no_response)
-  {
-    config response;
-    boost::shared_ptr<schema_validation::schema_validator> validator(new schema_validation::schema_validator(reply_validator_path));
-
-    BOOST_TEST_MESSAGE("Wait the reply...");
-    boost::array<char, umcd_protocol::REQUEST_HEADER_SIZE_FIELD_LENGTH> size_header;
-    stream.read(&size_header[0], umcd_protocol::REQUEST_HEADER_SIZE_FIELD_LENGTH);
-    test_stream_state(stream);
-    std::string request_size_c = std::string(size_header.data(), size_header.size());
-    std::size_t request_size = boost::lexical_cast<std::size_t>(request_size_c);
-    std::string reply;
-    reply.resize(request_size);
-    stream.read(&reply[0], request_size);
-    test_stream_state(stream);
-    // Should not throw! we don't use BOOST_CHECK_NO_THROW because it doesn't print the message.
-    std::stringstream reply_stream(reply);
-    ::read(response, reply_stream, validator.get());
-    BOOST_TEST_MESSAGE("Reply received.");
-  }
-}
-
-BOOST_AUTO_TEST_SUITE(umcd_common_test_suite)
-
-BOOST_AUTO_TEST_CASE(umcd_bad_request_name)
+void on_success(const std::string& host_ip);
+void on_success(const std::string& host_ip)
 {
-  const std::string request_path = "../data/umcd/tests/common/bad_request_name.cfg";
-  const std::string error_reply_cfg_path = "../data/umcd/protocol_schema/error_reply.cfg";
-  test_exchange(request_path, error_reply_cfg_path);
+  std::cout << "Connected to " << host_ip << std::endl;
 }
 
-BOOST_AUTO_TEST_SUITE_END() // umcd_common_test_suite
-
-BOOST_AUTO_TEST_SUITE(umcd_request_license_test_suite)
-
-BOOST_AUTO_TEST_CASE(umcd_request_license_empty_lang)
+void on_connect(const std::string& host_ip);
+void on_connect(const std::string& host_ip)
 {
-  const std::string request_path = "../data/umcd/tests/request_license/request_license_empty_lang.cfg";
-  const std::string license_path = "../data/umcd/protocol_schema/request_license_reply.cfg";
-  test_exchange(request_path, license_path);
+  std::cout << "Trying to connect at " << host_ip << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(umcd_request_license_en_GB)
+int main()
 {
-  const std::string request_path = "../data/umcd/tests/request_license/request_license_english.cfg";
-  const std::string license_path = "../data/umcd/protocol_schema/request_license_reply.cfg";
-  test_exchange(request_path, license_path);
+  boost::asio::io_service io_service;
+  client c(io_service);
+  c.on_event<try_connecting_with_ip>(on_connect);
+  c.on_event<connection_success>(on_success);
+  c.on_event<connection_failure>(on_failure);
+  c.async_connect("localhost", "12522");
+  io_service.run();
+  return 0;
 }
-
-BOOST_AUTO_TEST_SUITE_END() // umcd_request_license_test_suite
-
-BOOST_AUTO_TEST_SUITE(umcd_request_upload_test_suite)
-
-BOOST_AUTO_TEST_CASE(umcd_request_basic_upload)
-{
-  const std::string request_path = "../data/umcd/tests/request_umc_upload/request_umc_upload_basic.cfg";
-  test_exchange(request_path, "", true);
-}
-
-BOOST_AUTO_TEST_SUITE_END() // umcd_request_upload_test_suite
