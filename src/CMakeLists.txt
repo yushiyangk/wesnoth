@@ -1066,19 +1066,16 @@ set(wesnoth-schema_validator-dependencies_SRC
 	sha1.cpp
 )
 
-set(umcd_protocol_lib_SRC
-	umcd/protocol/entry_point.cpp
-	umcd/protocol/header_data.cpp
-	umcd/protocol/error_sender.cpp
-	umcd/protocol/close_on_error.cpp
-	umcd/protocol/action_dispatcher.cpp
-)
-
 set(umcd_lib_SRC
 	umcd/server_options.cpp
 	umcd/special_packet.cpp
 	umcd/error.cpp
 	umcd/database.cpp
+	umcd/protocol/entry_point.cpp
+	umcd/protocol/header_data.cpp
+	umcd/protocol/error_sender.cpp
+	umcd/protocol/close_on_error.cpp
+	umcd/protocol/action_dispatcher.cpp
 	umcd/server/basic_server.cpp
 	umcd/server/multi_threaded/server_mt.cpp
 	umcd/logger/logger.cpp
@@ -1104,7 +1101,6 @@ set(umcd_SRC
 )
 
 add_library(umcd-lib ${LIBRARY_TYPE} EXCLUDE_FROM_ALL ${umcd_lib_SRC})
-add_library(umcd-protocol-lib ${LIBRARY_TYPE} EXCLUDE_FROM_ALL ${umcd_protocol_lib_SRC})
 
 add_dependencies(umcd-lib sql_headers)
 
@@ -1120,7 +1116,6 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 
 target_link_libraries(umcd
 	umcd-lib
-	umcd-protocol-lib
 	wesnoth-core
 	wesnoth-schema_validator
 	${server-external-libs}
