@@ -16,7 +16,6 @@
 #define UMCD_CLIENT_HPP
 
 #include "umcd/client/client_connection_events.hpp"
-#include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 
@@ -94,11 +93,11 @@ private:
 	}
 
 	void handle_connect(const boost::system::error_code& error,
-			resolver_type::iterator endpoint_iterator)
+			resolver_type::iterator)
 	{
 		if (!error)
 		{
-			events_.signal_event<connection_success>(ip_address(*endpoint_iterator));
+			events_.signal_event<connection_success>(socket_);
 		}
 		else
 		{

@@ -16,6 +16,7 @@
 #define UMCD_CLIENT_CONNECTION_EVENT_HPP
 
 #include "umcd/server/events.hpp"
+#include <boost/asio.hpp>
 #include <boost/system/error_code.hpp>
 #include <string>
 
@@ -40,7 +41,7 @@ struct event_slot<umcd::connection_success>
 {
 	/** Notify the fact that the client is connected to the server with the ip passed in the arguments.
 	*/
-	typedef void type(const std::string&);
+	typedef void type(const boost::shared_ptr<boost::asio::ip::tcp::socket>&);
 };
 
 template <>

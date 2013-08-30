@@ -14,10 +14,12 @@
 
 
 #include "umcd/client/client.hpp"
+#include "umcd/protocol/header_data.hpp"
+#include "config.hpp"
 // #include "game_config.hpp"
-// #include "serialization/parser.hpp"
+#include "serialization/parser.hpp"
 
-// #include <fstream>
+#include <fstream>
 #include <iostream>
 
 using namespace umcd;
@@ -28,10 +30,17 @@ void on_failure(const boost::system::error_code& error)
   std::cout << "error: " << error.message() << std::endl;
 }
 
-void on_success(const std::string& host_ip);
-void on_success(const std::string& host_ip)
+void on_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket);
+void on_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket)
 {
-  std::cout << "Connected to " << host_ip << std::endl;
+  std::cout << "connected to " << socket->remote_endpoint() << std::endl;
+
+  std::ifstream request_file("../data/umcd/tests/request_license/request_license_empty_lang.cfg");
+  config request;
+  read(request, request_file);
+
+  boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket, request);
+  sender->async_send();
 }
 
 void on_connect(const std::string& host_ip);
