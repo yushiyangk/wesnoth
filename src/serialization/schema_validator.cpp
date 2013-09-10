@@ -210,7 +210,8 @@ void schema_validator::validate(const config & cfg, const std::string & name,
 			print(*i);
 		}
 	}
-	cache_.pop();
+	if(cache_.size() > 1)
+		cache_.pop();
 	// clear cache
 	cache_it = cache_.top().find(&cfg);
 	if (cache_it != cache_.top().end()){
