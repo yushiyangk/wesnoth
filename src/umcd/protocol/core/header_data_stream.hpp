@@ -20,7 +20,7 @@ class config;
 namespace umcd{
 namespace core{
 
-class header_data;
+struct header_data;
 
 /** Transform the WML metadata into binary data (header_data).
 */
