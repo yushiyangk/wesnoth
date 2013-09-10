@@ -14,7 +14,7 @@
 
 
 #include "umcd/client/client.hpp"
-#include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/make_header.hpp"
 #include "config.hpp"
 // #include "game_config.hpp"
 #include "serialization/parser.hpp"
@@ -23,6 +23,7 @@
 #include <iostream>
 
 using namespace umcd;
+using namespace umcd::core;
 
 void on_failure(const boost::system::error_code& error);
 void on_failure(const boost::system::error_code& error)
