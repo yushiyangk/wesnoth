@@ -16,10 +16,11 @@
 #define UMCD_CORE_HEADER_DATA_STREAM_HPP
 
 class config;
-class header_data;
 
 namespace umcd{
 namespace core{
+
+class header_data;
 
 /** Transform the WML metadata into binary data (header_data).
 */

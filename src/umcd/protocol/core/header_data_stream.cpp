@@ -21,7 +21,6 @@
 namespace umcd{
 namespace core{
 
-// Helpers to transform a config into a string and a string into a config.
 header_data& operator>>(const config& metadata, header_data& header)
 {
 	header.metadata = metadata.to_string();

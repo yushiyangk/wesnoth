@@ -15,6 +15,9 @@
 #ifndef UMCD_CORE_HEADER_DATA_HPP
 #define UMCD_CORE_HEADER_DATA_HPP
 
+#include <boost/cstdint.hpp>
+#include <string>
+
 namespace umcd{
 namespace core{
 

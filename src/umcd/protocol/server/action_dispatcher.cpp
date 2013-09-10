@@ -13,7 +13,7 @@
 
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/actions/request_umc_upload_action.hpp"
-#include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/make_header.hpp"
 #include "umcd/protocol/server/close_on_error.hpp"
 #include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/error.hpp"
@@ -34,7 +34,7 @@ action_dispatcher::action_factory_initializer::action_factory_initializer()
 void action_dispatcher::async_receive_request()
 {
 	UMCD_LOG_IP_FUNCTION_TRACER(socket_);
-	boost::shared_ptr<header_mutable_buffer::receiver_type> receiver = make_header_receiver(socket_, header_metadata_);
+	boost::shared_ptr<core::header_mutable_buffer::receiver_type> receiver = make_header_receiver(socket_, header_metadata_);
 	receiver->on_event<transfer_error>(boost::bind(&close_on_error, socket_, _1));
 	receiver->on_event<transfer_complete>(boost::bind(&action_dispatcher::dispatch, shared_from_this()));
 	receiver->async_receive();

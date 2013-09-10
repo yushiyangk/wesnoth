@@ -570,7 +570,9 @@ umcd_sources = Split("""
     umcd/env/server_core.cpp
     umcd/actions/request_license_action.cpp
     umcd/actions/request_umc_upload_action.cpp
-    umcd/protocol/header_data.cpp
+    umcd/protocol/core/header_const_buffer.cpp
+    umcd/protocol/core/header_mutable_buffer.cpp
+    umcd/protocol/core/header_data_stream.cpp
     umcd/protocol/core/close_on_error.cpp
     umcd/protocol/server/error_sender.cpp
     umcd/protocol/server/entry_point.cpp

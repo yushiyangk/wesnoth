@@ -1071,7 +1071,9 @@ set(umcd_lib_SRC
 	umcd/special_packet.cpp
 	umcd/error.cpp
 	umcd/database.cpp
-	umcd/protocol/header_data.cpp
+	umcd/protocol/core/header_const_buffer.cpp
+	umcd/protocol/core/header_mutable_buffer.cpp
+	umcd/protocol/core/header_data_stream.cpp
 	umcd/protocol/core/close_on_error.cpp
 	umcd/server/basic_server.cpp
 	umcd/server/multi_threaded/server_mt.cpp

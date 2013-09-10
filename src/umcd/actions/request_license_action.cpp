@@ -18,7 +18,7 @@ The license is not shipped with the Wesnoth client because this server can be re
 
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/protocol/server/error_sender.hpp"
-#include "umcd/protocol/header_data.hpp"
+#include "umcd/protocol/make_header.hpp"
 #include "umcd/protocol/server/close_on_error.hpp"
 #include "umcd/error.hpp"
 #include "umcd/env/server_info.hpp"
@@ -49,7 +49,7 @@ void request_license_action::execute(const socket_ptr& socket, const config& req
 		reply.child("request_license")["text"] = "\"" + read_file(info.wesnoth_dir() + get_umcd_license_file()) + "\"";
 
 		// (3) Sending the reply.
-		boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket, reply);
+		boost::shared_ptr<core::header_const_buffer::sender_type> sender = make_header_sender(socket, reply);
 		sender->on_event<transfer_error>(boost::bind(&close_on_error, socket, _1));
 		sender->async_send();
 	}
