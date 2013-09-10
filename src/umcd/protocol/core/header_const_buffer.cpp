@@ -23,6 +23,7 @@ namespace core{
 header_const_buffer::header_const_buffer(const header_data& header)
 : header_(header)
 {
+	header_.payload_size = htonl(header_.payload_size);
 	buffer_.push_back(boost::asio::buffer(reinterpret_cast<const char*>(&header_.payload_size), sizeof(header_.payload_size)));
 	buffer_.push_back(boost::asio::buffer(header_.metadata));
 	bytes_to_transfer_ = boost::asio::buffer_size(buffer_);
