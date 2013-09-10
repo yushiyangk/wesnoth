@@ -30,7 +30,7 @@ server_options::server_options(int argc, char* argv[]) :
 {
 	build_options_desc();
 
-	// Positional options (we don't need the option "cfg-file" to specify the config file).
+	// Positional options (we don't need the option "-f" to specify the config file).
 	po::positional_options_description p;
 	p.add("file,f", -1);
 
