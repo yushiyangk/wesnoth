@@ -13,14 +13,17 @@
 */
 
 #include "umcd/protocol/core/header_mutable_buffer.hpp"
-#include "umcd/env/protocol_info.hpp"
 #include "umcd/error.hpp"
 
 #include <boost/make_shared.hpp>
 #include <boost/ref.hpp>
 
+#include <limits>
+
 namespace umcd{
 namespace core{
+
+std::size_t header_mutable_buffer::header_max_size_ = std::numeric_limits<std::size_t>::max();
 
 // header_mutable_buffer
 header_mutable_buffer::header_mutable_buffer()
@@ -47,8 +50,7 @@ void header_mutable_buffer::make_metadata_buffer(transfer_events& ev)
 	on_chunk_event_.disconnect();
 	// Retreive the size and check if it's good.
 	header_.payload_size = ntohl(header_.payload_size);
-	protocol_info info;
-	if(header_.payload_size > info.header_max_size())
+	if(header_.payload_size > header_max_size_)
 	{
 		ev.signal_event<transfer_error>(make_error_code(request_header_too_large));
 	}
@@ -64,6 +66,11 @@ void header_mutable_buffer::make_metadata_buffer(transfer_events& ev)
 header_data& header_mutable_buffer::data()
 {
 	return header_;
+}
+
+void header_mutable_buffer::set_header_max_size(std::size_t size)
+{
+	header_max_size_ = size;
 }
 
 }} // namespace umcd::core

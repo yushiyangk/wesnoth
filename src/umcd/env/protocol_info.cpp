@@ -17,6 +17,7 @@
 namespace umcd{
 
 std::size_t protocol_info::header_max_size_;
+boost::signals2::signal<protocol_info::slot_type> protocol_info::signal_;
 
 std::size_t protocol_info::header_max_size() const
 {
@@ -26,6 +27,11 @@ std::size_t protocol_info::header_max_size() const
 void protocol_info::set_header_max_size(std::size_t header_size)
 {
 	header_max_size_ = header_size;
+}
+
+void protocol_info::on_header_max_size_change(boost::function<slot_type> slot_function)
+{
+	signal_.connect(slot_function);
 }
 
 } // namespace umcd

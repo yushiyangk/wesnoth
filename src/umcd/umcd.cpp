@@ -22,6 +22,7 @@
 #include "umcd/env/environment_loader.hpp"
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
+#include "umcd/protocol/core/header_mutable_buffer.hpp"
 #include "umcd/database.hpp"
 
 #include "wml_exception.hpp"
@@ -45,6 +46,9 @@ int main(int argc, char *argv[])
 		if(!options.is_info())
 		{
 			config cfg = options.read_config();
+
+			protocol_info info;
+			info.on_header_max_size_change(umcd::core::header_mutable_buffer::set_header_max_size);
 
 			environment_loader env_loader;
 			env_loader.load(cfg);

@@ -48,6 +48,8 @@ public:
 	*/
 	header_data& data();
 
+	static void set_header_max_size(std::size_t size);
+
 private:
 	/** This is an event handler that is called when the first chunk is read.
 	* We can read the metadata before we get the payload and thus know how much
@@ -57,6 +59,8 @@ private:
 
 	boost::signals2::connection on_chunk_event_;
 	header_data header_;
+
+	static std::size_t header_max_size_;
 };
 
 }} // namespace umcd::core
