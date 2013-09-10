@@ -546,13 +546,17 @@ if env["host"] in ["x86_64-nacl", "i686-nacl"]:
 client_env.WesnothProgram("wesnoth", wesnoth_objects, have_client_prereqs)
 
 libumcd_sources = Split("""
+    umcd/special_packet.cpp
+    umcd/error.cpp
+    umcd/protocol/core/header_const_buffer.cpp
+    umcd/protocol/core/header_mutable_buffer.cpp
+    umcd/protocol/core/header_data_stream.cpp
+    umcd/protocol/core/close_on_error.cpp
     """)
 
 umcd_sources = Split("""
     umcd/umcd.cpp
     umcd/server_options.cpp
-    umcd/special_packet.cpp
-    umcd/error.cpp
     umcd/database.cpp
     umcd/server/basic_server.cpp
     umcd/server/multi_threaded/server_mt.cpp
@@ -570,10 +574,6 @@ umcd_sources = Split("""
     umcd/env/server_core.cpp
     umcd/actions/request_license_action.cpp
     umcd/actions/request_umc_upload_action.cpp
-    umcd/protocol/core/header_const_buffer.cpp
-    umcd/protocol/core/header_mutable_buffer.cpp
-    umcd/protocol/core/header_data_stream.cpp
-    umcd/protocol/core/close_on_error.cpp
     umcd/protocol/server/error_sender.cpp
     umcd/protocol/server/entry_point.cpp
     umcd/protocol/server/close_on_error.cpp
@@ -687,9 +687,8 @@ test = test_env.WesnothProgram("test", test_sources +  [libwesnoth_extras, libwe
 
 umcd_test_sources = Split("""
     tests/umcd/test_protocol.cpp
+    tests/umcd/send_receive_test.cpp
     """)
-# hack: When umcd_protocol.cpp is added in libumcd_sources, a lot of link errors occurs, so we add it here.
-umcd_test_sources.extend(env.Object("umcd_protocol_test", "umcd/protocol/wml/umcd_protocol.cpp"))
 
 test_env.WesnothProgram("umcd_test", umcd_test_sources + [libwesnoth_core, libwesnothd, libumcd, libschema], have_umcd_test_prereqs)
 
