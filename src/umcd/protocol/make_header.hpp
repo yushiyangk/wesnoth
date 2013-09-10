@@ -42,28 +42,20 @@ template <class DataType>
 boost::shared_ptr<core::header_mutable_buffer::receiver_type> make_header_receiver(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, DataType& metadata);
 
 /** The receiving is a bit more tricky because the conversion raw data to config is done at the end.
-* We subscribe to the event transfer_complete and when the transfer will be complete the helper class header2data
+* We subscribe (in make_header_receiver) to the event transfer_complete and when the transfer will be complete the helper class header2data
 * will automatically fill the config class. Because we are the first to subscribe, we are in the front, so no one
 * will be notify of the transfer complete before us (and so it's safe for them to use the config data).
 */
 namespace detail{
 template <class Data>
-class header2data
+struct header2data
 {
-public:
-	header2data(const boost::shared_ptr<core::header_mutable_buffer>& header_buf, Data& metadata)
-	: header_buf_(header_buf)
-	, metadata_(metadata)
-	{}
-
-	void load_data()
+	static void convert(const boost::shared_ptr<core::header_mutable_buffer>& header_buf, Data& metadata)
 	{
-		metadata_ << header_buf_->data();
+		metadata << header_buf->data();
 	}
 
-private:
-	boost::shared_ptr<core::header_mutable_buffer> header_buf_;
-	Data& metadata_;
+	typedef void result_type;
 };
 } // namespace detail
 
@@ -84,9 +76,7 @@ boost::shared_ptr<core::header_mutable_buffer::receiver_type> make_header_receiv
 	boost::shared_ptr<core::header_mutable_buffer> header = boost::make_shared<core::header_mutable_buffer>();
 	boost::shared_ptr<core::header_mutable_buffer::receiver_type> receiver = header->make_receiver(socket);
 
-	typedef detail::header2data<DataType> header2data;
-	boost::shared_ptr<header2data> h2c = boost::make_shared<header2data>(boost::cref(header), boost::ref(metadata));
-	receiver->on_event<transfer_complete>(boost::bind(&header2data::load_data, h2c));
+	receiver->on_event<transfer_complete>(boost::bind(detail::header2data<DataType>::convert, header, boost::ref(metadata)));
 	return receiver;
 }
 
