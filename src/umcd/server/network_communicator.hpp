@@ -44,10 +44,10 @@
 *
 * @see network_receiver network_sender network_transfer buffer_provider
 */
-template <class BufferProvider>
+template <class TransferOpCRTP, class BufferProvider>
 class network_communicator
 	: private boost::noncopyable
-	, public boost::enable_shared_from_this<network_communicator<BufferProvider> >
+	, public boost::enable_shared_from_this<network_communicator<TransferOpCRTP, BufferProvider> >
 {
 public:
 	typedef typename BufferProvider::buffer_type buffer_type;
@@ -89,7 +89,7 @@ protected:
 	network_communicator(){}
 
 private:
-	typedef network_communicator<BufferProvider> this_type;
+	typedef network_communicator<TransferOpCRTP, BufferProvider> this_type;
 
 	void update_bytes_transferred(std::size_t bytes_in_buffer);
 	bool has_error() const;
@@ -102,8 +102,8 @@ private:
 	bool has_error_;
 };
 
-template <class BufferProvider>
-network_communicator<BufferProvider>::network_communicator(const boost::shared_ptr<BufferProvider>& buffer_provider)
+template <class TransferOpCRTP, class BufferProvider>
+network_communicator<TransferOpCRTP, BufferProvider>::network_communicator(const boost::shared_ptr<BufferProvider>& buffer_provider)
 : buffer_provider_(buffer_provider)
 , bytes_transferred_(0)
 , bytes_chunk_transferred_(0)
@@ -116,53 +116,53 @@ network_communicator<BufferProvider>::network_communicator(const boost::shared_p
 	events_.on_event<transfer_error>(boost::bind(&this_type::on_error, this, _1));
 }
 
-template <class BufferProvider>
-void network_communicator<BufferProvider>::on_error(const boost::system::error_code&)
+template <class TransferOpCRTP, class BufferProvider>
+void network_communicator<TransferOpCRTP, BufferProvider>::on_error(const boost::system::error_code&)
 {
 	has_error_ = true;
 }
 
-template <class BufferProvider>
-std::size_t network_communicator<BufferProvider>::bytes_to_transfer() const
+template <class TransferOpCRTP, class BufferProvider>
+std::size_t network_communicator<TransferOpCRTP, BufferProvider>::bytes_to_transfer() const
 {
 	return buffer_provider_->bytes_to_transfer();
 }
 
-template <class BufferProvider>
-std::size_t network_communicator<BufferProvider>::bytes_transferred() const
+template <class TransferOpCRTP, class BufferProvider>
+std::size_t network_communicator<TransferOpCRTP, BufferProvider>::bytes_transferred() const
 {
 	return bytes_transferred_;
 }
 
-template <class BufferProvider>
-bool network_communicator<BufferProvider>::is_done() const
+template <class TransferOpCRTP, class BufferProvider>
+bool network_communicator<TransferOpCRTP, BufferProvider>::is_done() const
 {
 	return bytes_to_transfer() == bytes_transferred();
 }
 
-template <class BufferProvider>
-bool network_communicator<BufferProvider>::has_error() const
+template <class TransferOpCRTP, class BufferProvider>
+bool network_communicator<TransferOpCRTP, BufferProvider>::has_error() const
 {
 	return has_error_;
 }
 
-template <class BufferProvider>
-typename network_communicator<BufferProvider>::buffer_type 
-network_communicator<BufferProvider>::use_buffer() const
+template <class TransferOpCRTP, class BufferProvider>
+typename network_communicator<TransferOpCRTP, BufferProvider>::buffer_type 
+network_communicator<TransferOpCRTP, BufferProvider>::use_buffer() const
 {
 	return buffer_provider_->use_buffer();
 }
 
-template <class BufferProvider>
+template <class TransferOpCRTP, class BufferProvider>
 template <class Event, class F>
-boost::signals2::connection network_communicator<BufferProvider>::on_event(F f)
+boost::signals2::connection network_communicator<TransferOpCRTP, BufferProvider>::on_event(F f)
 {
 	return events_.on_event<Event>(f);
 }
 
 // We ignore the error, it will be handled by the on_chunk_complete operation.
-template <class BufferProvider>
-std::size_t network_communicator<BufferProvider>::is_transfer_complete(const boost::system::error_code& error,
+template <class TransferOpCRTP, class BufferProvider>
+std::size_t network_communicator<TransferOpCRTP, BufferProvider>::is_transfer_complete(const boost::system::error_code& error,
 	std::size_t bytes_in_buffer)
 {
 	update_bytes_transferred(bytes_in_buffer);
@@ -173,8 +173,8 @@ std::size_t network_communicator<BufferProvider>::is_transfer_complete(const boo
 		return 0;
 }
 
-template <class BufferProvider>
-void network_communicator<BufferProvider>::on_chunk_complete(const boost::system::error_code& error,
+template <class TransferOpCRTP, class BufferProvider>
+void network_communicator<TransferOpCRTP, BufferProvider>::on_chunk_complete(const boost::system::error_code& error,
 	std::size_t bytes_in_buffer)
 {
 	update_bytes_transferred(bytes_in_buffer);
@@ -194,12 +194,13 @@ void network_communicator<BufferProvider>::on_chunk_complete(const boost::system
 		{
 			// Prepare for the next chunk.
 			bytes_chunk_transferred_ = 0;
+			static_cast<TransferOpCRTP*>(this)->async_transfer_impl();
 		}
 	}
 }
 
-template <class BufferProvider>
-void network_communicator<BufferProvider>::update_bytes_transferred(std::size_t bytes_in_buffer)
+template <class TransferOpCRTP, class BufferProvider>
+void network_communicator<TransferOpCRTP, BufferProvider>::update_bytes_transferred(std::size_t bytes_in_buffer)
 {
 	bytes_transferred_ += (bytes_in_buffer - bytes_chunk_transferred_);
 	bytes_chunk_transferred_ = bytes_in_buffer;

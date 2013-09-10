@@ -27,10 +27,10 @@
 * @see network_sender network_receiver
 */
 template <class TransferOp, class BufferProvider>
-class network_transfer : public network_communicator<BufferProvider>
+class network_transfer : public network_communicator<network_transfer<TransferOp, BufferProvider>, BufferProvider>
 {
 public:
-	typedef network_communicator<BufferProvider> base_type;
+	typedef network_communicator<network_transfer<TransferOp, BufferProvider>, BufferProvider> base_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
@@ -39,43 +39,28 @@ public:
 	void async_transfer()
 	{
 		assert(static_cast<bool>(socket));
-		/** By default push to the back of the event handler queue, 
-		* so it will be called after the buffer has been changed.
-		* For this reason, don't put the on_event method in the constructor
-		* (Here we are sure that the user won't add event).
-		*/
-		this->template on_event<chunk_complete>(
-			boost::bind(&network_transfer::async_transfer_chunk_event, this, _1));
-		async_transfer_impl();
+		if(!this->is_done())
+			async_transfer_impl();
 	}
 
 protected:
 	network_transfer(const socket_ptr& socket, const boost::shared_ptr<BufferProvider>& buffer_provider)
 	: base_type(buffer_provider)
 	, socket_(socket)
-	{
-	}
+	{}
 
 	network_transfer(){}
 
-private:
+public:
 	/** Until the transfer is done, we relaunch the transfer operation.
+	* @note Can't be private due to the CRTP..
 	*/
 	void async_transfer_impl()
 	{
-		if(!this->is_done())
-		{
-			static_cast<TransferOp*>(this)->async_transfer(socket_, this->use_buffer());
-		}
+		static_cast<TransferOp*>(this)->async_transfer(socket_, this->use_buffer());
 	}
 
-	/** After a chunk has been received we want to continue receiving others (so we recall async_transfer_impl).
-	*/
-	void async_transfer_chunk_event(transfer_events&)
-	{
-		async_transfer_impl();
-	}
-
+private:
 	socket_ptr socket_;
 };
 
