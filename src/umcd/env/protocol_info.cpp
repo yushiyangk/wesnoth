@@ -27,6 +27,7 @@ std::size_t protocol_info::header_max_size() const
 void protocol_info::set_header_max_size(std::size_t header_size)
 {
 	header_max_size_ = header_size;
+	signal_(header_max_size_);
 }
 
 void protocol_info::on_header_max_size_change(boost::function<slot_type> slot_function)
