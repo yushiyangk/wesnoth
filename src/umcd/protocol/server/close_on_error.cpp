@@ -11,9 +11,9 @@
 
 	See the COPYING file for more details.
 */
-#include "umcd/protocol/close_on_error.hpp"
+#include "umcd/protocol/server/close_on_error.hpp"
+#include "umcd/protocol/core/close_on_error.hpp"
 #include "umcd/logger/asio_logger.hpp"
-#include <boost/asio.hpp>
 #include <cassert>
 
 namespace umcd{
@@ -24,9 +24,6 @@ void close_on_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socke
 	UMCD_LOG_IP_FUNCTION_TRACER(socket);
 	UMCD_LOG_IP(info, socket) << " -- unable to send data to the client (" << error.message() << "). Connection dropped.";
 	
-	typedef boost::asio::ip::tcp::socket socket_type;
-	boost::system::error_code unused_error;
-	socket->shutdown(socket_type::shutdown_both, unused_error);
-	socket->close(unused_error);
+	core::close_on_error(socket, error);
 }
 } // namespace umcd

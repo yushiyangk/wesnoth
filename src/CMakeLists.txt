@@ -1074,7 +1074,7 @@ set(umcd_lib_SRC
 	umcd/protocol/entry_point.cpp
 	umcd/protocol/header_data.cpp
 	umcd/protocol/error_sender.cpp
-	umcd/protocol/close_on_error.cpp
+	umcd/protocol/core/close_on_error.cpp
 	umcd/protocol/action_dispatcher.cpp
 	umcd/server/basic_server.cpp
 	umcd/server/multi_threaded/server_mt.cpp
@@ -1097,6 +1097,7 @@ set(umcd_lib_SRC
 
 set(umcd_SRC
 	umcd/umcd.cpp
+	umcd/protocol/server/close_on_error.cpp
 	loadscreen_empty.cpp
 )
 

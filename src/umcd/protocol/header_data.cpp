@@ -13,10 +13,12 @@
 */
 
 #include "umcd/protocol/header_data.hpp"
-#include "config.hpp"
-#include "serialization/parser.hpp"
 #include "umcd/env/protocol_info.hpp"
 #include "umcd/error.hpp"
+
+#include "config.hpp"
+#include "serialization/parser.hpp"
+
 #include <boost/make_shared.hpp>
 #include <boost/ref.hpp>
 
