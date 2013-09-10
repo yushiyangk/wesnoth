@@ -1230,6 +1230,7 @@ if(ENABLE_UMCD_TESTS)
 
 	set(umcd_test_SRC
 		tests/umcd/test_protocol.cpp
+		tests/umcd/send_receive_test.cpp
 		loadscreen_empty.cpp
 	)
 
