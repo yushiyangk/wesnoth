@@ -40,10 +40,11 @@ using namespace umcd;
 
 int main(int argc, char *argv[])
 {
+	bool logger_initialized = false;
 	try
 	{
 		server_options options(argc, argv);
-		if(!options.is_info())
+		if(options.has_required_options())
 		{
 			config cfg = options.read_config();
 
@@ -58,6 +59,7 @@ int main(int argc, char *argv[])
 			options.validate(cfg);
 
 			asio_logger::get().load(logging_info());
+			logger_initialized = true;
 
 			if(options.is_daemon())
 			{
@@ -93,6 +95,7 @@ int main(int argc, char *argv[])
 	{
 		UMCD_LOG(fatal) << e.what();
 	}
-	RUN_ONCE_LOGGER();
+	if(logger_initialized)
+		RUN_ONCE_LOGGER();
 	return 0;
 }

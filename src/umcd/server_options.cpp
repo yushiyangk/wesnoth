@@ -30,20 +30,20 @@ server_options::server_options(int argc, char* argv[]) :
 {
 	build_options_desc();
 
-	// Positional options (we don't need the option "-f" to specify the config file).
-	po::positional_options_description p;
-	p.add("file,f", -1);
-
 	// Parse the command line.
-	po::store(po::command_line_parser(argc, argv).options(options_desc_).positional(p).run(), vm_);
+	po::store(po::command_line_parser(argc, argv).options(options_desc_).run(), vm_);
 	po::notify(vm_);
 
 	// Print info.
-	if(vm_.count("version"))
+	if(vm_.count("help"))
+	{
+		std::cout << header_ << options_desc_ << std::endl;
+	}
+	else if(vm_.count("version"))
 	{
 		std::cout << version_ << std::endl;
 	}
-	if(vm_.count("help"))
+	else if(!has_required_options())
 	{
 		std::cout << header_ << options_desc_ << std::endl;
 	}
@@ -78,9 +78,9 @@ void server_options::build_options_desc()
 	config_file_options_.add(cmdline); 
 }
 
-bool server_options::is_info() const
+bool server_options::has_required_options() const
 {
-	return (vm_.count("version") || vm_.count("help")) && !vm_.count("file");
+	return vm_.count("file");
 }
 
 bool server_options::is_daemon() const

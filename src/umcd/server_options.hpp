@@ -38,9 +38,9 @@ public:
 	server_options(int argc, char* argv[]);
 
 	/**
-	@return True if the command line arguments has only requested version/help information. False if the server should be started.
+	* @return True if the command line arguments has at least the required options. False if the server should not be started.
 	*/
-	bool is_info() const;
+	bool has_required_options() const;
 	
 	/**
 	@return True if the server must be launched as a daemon. False if it must be launched as a frontend task.
