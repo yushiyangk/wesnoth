@@ -12,8 +12,8 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/protocol/entry_point.hpp"
-#include "umcd/protocol/action_dispatcher.hpp"
+#include "umcd/protocol/server/entry_point.hpp"
+#include "umcd/protocol/server/action_dispatcher.hpp"
 #include "umcd/logger/asio_logger.hpp"
 
 namespace umcd{

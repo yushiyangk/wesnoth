@@ -17,7 +17,7 @@ The license is not shipped with the Wesnoth client because this server can be re
 */
 
 #include "umcd/actions/request_license_action.hpp"
-#include "umcd/protocol/error_sender.hpp"
+#include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/protocol/header_data.hpp"
 #include "umcd/protocol/server/close_on_error.hpp"
 #include "umcd/error.hpp"

@@ -9,13 +9,13 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/protocol/action_dispatcher.hpp"
+#include "umcd/protocol/server/action_dispatcher.hpp"
 
 #include "umcd/actions/request_license_action.hpp"
 #include "umcd/actions/request_umc_upload_action.hpp"
 #include "umcd/protocol/header_data.hpp"
 #include "umcd/protocol/server/close_on_error.hpp"
-#include "umcd/protocol/error_sender.hpp"
+#include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/error.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include <boost/current_function.hpp>

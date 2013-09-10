@@ -12,7 +12,7 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/protocol/error_sender.hpp"
+#include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/protocol/header_data.hpp"
 #include "umcd/protocol/server/close_on_error.hpp"
 #include "umcd/special_packet.hpp"
