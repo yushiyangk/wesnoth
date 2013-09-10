@@ -33,6 +33,7 @@ namespace umcd{
 
 void request_license_action::execute(const socket_ptr& socket, const config& request)
 {
+	UMCD_LOG_IP(trace, socket) << BOOST_CURRENT_FUNCTION;
 	try
 	{
 		// (1) Validation of the request.
