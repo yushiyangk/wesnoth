@@ -23,13 +23,16 @@
 
 namespace umcd{
 
+typedef core::header_const_buffer::sender_type header_sender;
+typedef core::header_mutable_buffer::receiver_type header_receiver;
+
 /** Make a sender with a socket and the data to send. Subscribe to the transfer event to know
 * when the transfer is completed or in case of any other change (consult the transfer_event class).
 *
 * @tparam DataType Must be streamable to a header_data type, by overloading the operator >>(const DataType&, header_data&).
 */
 template <class DataType>
-boost::shared_ptr<core::header_const_buffer::sender_type> make_header_sender(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, const DataType& metadata);
+boost::shared_ptr<header_sender> make_header_sender(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, const DataType& metadata);
 
 /** Make a receiver with a socket and a storage in which we can receive data. 
 * Subscribe to the transfer event to know when the transfer is completed or in case 
@@ -39,7 +42,7 @@ boost::shared_ptr<core::header_const_buffer::sender_type> make_header_sender(con
 * @param metadata Must stay alive until you receive an event that notice the transfer ending (such as the completion or failure).
 */
 template <class DataType>
-boost::shared_ptr<core::header_mutable_buffer::receiver_type> make_header_receiver(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, DataType& metadata);
+boost::shared_ptr<header_receiver> make_header_receiver(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, DataType& metadata);
 
 /** The receiving is a bit more tricky because the conversion raw data to config is done at the end.
 * We subscribe (in make_header_receiver) to the event transfer_complete and when the transfer will be complete the helper class header2data
@@ -61,7 +64,7 @@ struct header2data
 
 // The sender factory.
 template <class DataType>
-boost::shared_ptr<core::header_const_buffer::sender_type> make_header_sender(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, const DataType& metadata)
+boost::shared_ptr<header_sender> make_header_sender(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, const DataType& metadata)
 {
 	core::header_data data;
 	metadata >> data;
@@ -71,10 +74,10 @@ boost::shared_ptr<core::header_const_buffer::sender_type> make_header_sender(con
 
 // The receiver factory.
 template <class DataType>
-boost::shared_ptr<core::header_mutable_buffer::receiver_type> make_header_receiver(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, DataType& metadata)
+boost::shared_ptr<header_receiver> make_header_receiver(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket, DataType& metadata)
 {
 	boost::shared_ptr<core::header_mutable_buffer> header = boost::make_shared<core::header_mutable_buffer>();
-	boost::shared_ptr<core::header_mutable_buffer::receiver_type> receiver = header->make_receiver(socket);
+	boost::shared_ptr<header_receiver> receiver = header->make_receiver(socket);
 
 	receiver->on_event<transfer_complete>(boost::bind(detail::header2data<DataType>::convert, header, boost::ref(metadata)));
 	return receiver;

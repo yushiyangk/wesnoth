@@ -25,7 +25,6 @@
 #include <iostream>
 
 using namespace umcd;
-using namespace umcd::core;
 
 std::size_t send_receive_test::test_num_ = 0;
 
@@ -44,7 +43,7 @@ void send_receive_test::async_launch(const std::string& data_to_send_filename, c
   config request;
   ::read(request, request_file);
 
-  boost::shared_ptr<header_const_buffer::sender_type> sender = make_header_sender(socket_, request);
+  boost::shared_ptr<header_sender> sender = make_header_sender(socket_, request);
   sender->on_event<transfer_complete>(boost::bind(&send_receive_test::async_receive, shared_from_this()));
   sender->on_event<transfer_error>(boost::bind(&send_receive_test::on_error, shared_from_this(), BOOST_CURRENT_FUNCTION, _1));
   sender->async_send();
@@ -52,7 +51,7 @@ void send_receive_test::async_launch(const std::string& data_to_send_filename, c
 
 void send_receive_test::async_receive()
 {
-	boost::shared_ptr<header_mutable_buffer::receiver_type> receiver = make_header_receiver(socket_, response_);
+	boost::shared_ptr<header_receiver> receiver = make_header_receiver(socket_, response_);
   receiver->on_event<transfer_complete>(boost::bind(&send_receive_test::on_receive_complete, shared_from_this()));
   receiver->on_event<transfer_error>(boost::bind(&send_receive_test::on_error, shared_from_this(), BOOST_CURRENT_FUNCTION, _1));
   receiver->async_receive();

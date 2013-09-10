@@ -24,7 +24,6 @@
 #include <iostream>
 
 using namespace umcd;
-using namespace umcd::core;
 
 static void launch_test_suite(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket)
 {

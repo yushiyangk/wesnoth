@@ -24,7 +24,7 @@ namespace umcd{
 void async_send_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socket, const boost::system::error_condition& error)
 {
 	UMCD_LOG_IP_FUNCTION_TRACER(socket);
-	boost::shared_ptr<core::header_const_buffer::sender_type> sender = make_header_sender(socket, make_error_packet(error.message()));
+	boost::shared_ptr<header_sender> sender = make_header_sender(socket, make_error_packet(error.message()));
 	sender->on_event<transfer_error>(boost::bind(&close_on_error, socket, _1));
 	sender->async_send();
 }
