@@ -25,14 +25,12 @@
 using namespace umcd;
 using namespace umcd::core;
 
-void on_failure(const boost::system::error_code& error);
-void on_failure(const boost::system::error_code& error)
+static void on_failure(const boost::system::error_code& error)
 {
   std::cout << "error: " << error.message() << std::endl;
 }
 
-void on_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket);
-void on_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket)
+static void on_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket)
 {
   std::cout << "connected to " << socket->remote_endpoint() << std::endl;
 
@@ -44,8 +42,7 @@ void on_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket)
   sender->async_send();
 }
 
-void on_connect(const std::string& host_ip);
-void on_connect(const std::string& host_ip)
+static void on_connect(const std::string& host_ip)
 {
   std::cout << "Trying to connect at " << host_ip << std::endl;
 }
