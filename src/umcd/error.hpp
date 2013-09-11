@@ -24,6 +24,7 @@ enum error
 	invalid_packet,
 	invalid_packet_name,
 	request_header_too_large,
+	internal_error,
 	num_error
 };
 } // namespace umcd
