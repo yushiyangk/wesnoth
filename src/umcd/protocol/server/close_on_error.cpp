@@ -22,7 +22,7 @@ void close_on_error(const boost::shared_ptr<boost::asio::ip::tcp::socket> &socke
 	assert(static_cast<bool>(error));
 	assert(static_cast<bool>(socket));
 	UMCD_LOG_IP_FUNCTION_TRACER(socket);
-	UMCD_LOG_IP(info, socket) << " -- unable to send data to the client (" << error.message() << "). Connection dropped.";
+	UMCD_LOG_IP(info, socket) << "unable to send data to the client (" << error.message() << "). Connection dropped.";
 	
 	core::close_on_error(socket, error);
 }
