@@ -13,8 +13,6 @@
 */
 
 #include "tests/umcd/send_receive_test.hpp"
-#include "umcd/client/client.hpp"
-#include "umcd/protocol/make_header.hpp"
 #include "config.hpp"
 #include "game_config.hpp"
 #include "serialization/parser.hpp"
@@ -23,30 +21,48 @@
 #include <boost/make_shared.hpp>
 #include <iostream>
 
-using namespace umcd;
-
-static void launch_test_suite(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket)
+static void launch_test(boost::asio::io_service &io_service
+  , const std::string& test_name
+  , const std::string& data_to_send_filename
+  , const std::string& expected_schema_filename)
 {
-  boost::shared_ptr<send_receive_test> test_empty_license = boost::make_shared<send_receive_test>("empty license request", boost::cref(socket));
-  test_empty_license->async_launch(
-      game_config::path + "data/umcd/tests/request_license/request_license_empty_lang.cfg",
-      game_config::path + "data/umcd/protocol_schema/request_license_reply.cfg");
+  boost::shared_ptr<send_receive_test> test = boost::make_shared<send_receive_test>(
+      test_name
+    , data_to_send_filename
+    , expected_schema_filename);
+  test->async_launch(io_service);
 }
 
-static void on_failure(const boost::system::error_code& error)
+static void launch_license_request_test_suite(boost::asio::io_service& io_service)
 {
-  std::cout << "error: " << error.message() << std::endl;
+  launch_test(io_service
+    , "empty license request"
+    , game_config::path + "data/umcd/tests/request_license/request_license_empty_lang.cfg"
+    , game_config::path + "data/umcd/protocol_schema/request_license_reply.cfg");
+
+  launch_test(io_service
+    , "english license request"
+    , game_config::path + "data/umcd/tests/request_license/request_license_english.cfg"
+    , game_config::path + "data/umcd/protocol_schema/request_license_reply.cfg");
 }
 
-static void on_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket)
+static void launch_common_request_test_suite(boost::asio::io_service& io_service)
 {
-  std::cout << "connected to " << socket->remote_endpoint() << std::endl;
-  launch_test_suite(socket);
+  launch_test(io_service
+    , "bad request name"
+    , game_config::path + "data/umcd/tests/common/bad_request_name.cfg"
+    , game_config::path + "data/umcd/protocol_schema/error_reply.cfg");
+
+  launch_test(io_service
+    , "empty request"
+    , game_config::path + "data/umcd/tests/common/empty_reply.cfg"
+    , game_config::path + "data/umcd/protocol_schema/error_reply.cfg");
 }
 
-static void on_connect(const std::string& host_ip)
+static void launch_test_suite(boost::asio::io_service& io_service)
 {
-  std::cout << "Trying to connect at " << host_ip << std::endl;
+  launch_license_request_test_suite(io_service);
+  launch_common_request_test_suite(io_service);
 }
 
 int main(int argc, char* argv[])
@@ -61,11 +77,7 @@ int main(int argc, char* argv[])
     game_config::path += '/';
 
   boost::asio::io_service io_service;
-  client c(io_service);
-  c.on_event<try_connecting_with_ip>(on_connect);
-  c.on_event<connection_success>(on_success);
-  c.on_event<connection_failure>(on_failure);
-  c.async_connect("localhost", "12522");
+  launch_test_suite(io_service);
   io_service.run();
 
   std::cout << "quit\n";

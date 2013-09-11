@@ -27,15 +27,22 @@ class send_receive_test :
   public boost::enable_shared_from_this<send_receive_test>
 {
 public:
-  send_receive_test(const std::string& test_name, const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket);
+  send_receive_test(const std::string& test_name
+    , const std::string& data_to_send_filename
+    , const std::string& expected_schema_filename);
 
   /**
   * @pre You should not call this function more than once in a multithread environment 
   * because the socket member is unsafe when shared.
   */
-  void async_launch(const std::string& data_to_send_filename, const std::string& expected_schema_filename);
+  void async_launch(boost::asio::io_service& io_service);
 
 private:
+  void on_connection_failure(const boost::system::error_code& error);
+  void on_try_to_connect(const std::string& host_ip);
+  void on_connection_success(const boost::shared_ptr<boost::asio::ip::tcp::socket>& socket);
+
+  void begin_transfer();
   void async_receive();
   void on_receive_complete();
   void on_error(const std::string &from_function, const boost::system::error_code& error);
@@ -45,12 +52,12 @@ private:
 
   typedef schema_validation::schema_validator validator_type;
 
-  boost::shared_ptr<boost::asio::ip::tcp::socket> socket_;
+  std::string data_to_send_filename_;
+  std::string expected_schema_filename_;
   std::string test_name_;
   std::size_t test_no_;
   config response_;
-  std::string data_to_send_filename_;
-  std::string expected_schema_filename_;
+  boost::shared_ptr<boost::asio::ip::tcp::socket> socket_;
 
   static std::size_t test_num_;
 };
