@@ -23,6 +23,7 @@ class config;
 class otl_connect;
 namespace pod{
 	struct addon_type;
+	struct language;
 }
 namespace umcd{
 
@@ -37,9 +38,11 @@ public:
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 	const config& get_info(const config& metadata);
+	const config& get_lang(const config& metadata);
 
 	virtual void execute(const socket_ptr& socket, const config& request);
 	pod::addon_type retreive_addon_type_by_name(otl_connect& db, const std::string& addon_type_name);
+	pod::language retreive_language_by_name(otl_connect& db, const std::string& language_name);
 	virtual ~request_umc_upload_action();
 };
 

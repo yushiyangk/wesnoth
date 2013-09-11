@@ -21,7 +21,8 @@
 #include "umcd/otl/otl.hpp"
 #include "filesystem.hpp"
 #include "config.hpp"
-#include "addon_type.hpp"
+#include "umcd/pod/addon_type.hpp"
+#include "umcd/pod/language.hpp"
 
 namespace umcd{
 
@@ -30,16 +31,21 @@ const config& request_umc_upload_action::get_info(const config& metadata)
 	return metadata.child("request_umc_upload").child("umc_configuration").child("info");
 }
 
+const config& request_umc_upload_action::get_lang(const config& metadata)
+{
+	return metadata.child("request_umc_upload").child("umc_configuration").child("language");
+}
+
 pod::addon_type request_umc_upload_action::retreive_addon_type_by_name(otl_connect& db, const std::string& addon_type_name)
 {
 	pod::addon_type addon_type;
 
-	std::string select_addon_type_request = 
+	std::string select_addon_type_query = 
 			"select * from addon_type where name = :addon_type_name<char[" 
 		+ boost::lexical_cast<std::string>(addon_type_name.size()+1) 
 		+ "]>";
 	otl_stream select_addon_type(60
-		, select_addon_type_request.c_str()
+		, select_addon_type_query.c_str()
 		, db);
 
 	select_addon_type << addon_type_name;
@@ -50,10 +56,36 @@ pod::addon_type request_umc_upload_action::retreive_addon_type_by_name(otl_conne
 	}
 	else
 	{
-		throw std::runtime_error("The field \"type\" in the upload request has not been checked "
-														 "by the WML schema and thus cannot be found in the database.");
+		throw std::runtime_error("The field \"type\" in table \"addon_type\" (" + addon_type_name + ") in the upload request has not "
+														 "been checked by the WML schema and thus cannot be found in the database.");
 	}
 	return addon_type;
+}
+
+pod::language request_umc_upload_action::retreive_language_by_name(otl_connect& db, const std::string& language_name)
+{
+	pod::language language;
+
+	std::string select_language_query = 
+			"select * from language where name = :language_name<char[" 
+		+ boost::lexical_cast<std::string>(language_name.size()+1) 
+		+ "]>";
+	otl_stream select_language(60
+		, select_language_query.c_str()
+		, db);
+
+	select_language << language_name;
+
+	if(!select_language.eof())
+	{
+		select_language >> language.value >> language.name;
+	}
+	else
+	{
+		throw std::runtime_error("The field \"type\" in table \"language\" (" + language_name + ") in the upload "
+														 "request has not been checked by the WML schema and thus cannot be found in the database.");
+	}
+	return language;
 }
 
 void request_umc_upload_action::execute(const socket_ptr& socket, const config& request)
@@ -61,12 +93,15 @@ void request_umc_upload_action::execute(const socket_ptr& socket, const config& 
 	UMCD_LOG_IP(trace, socket) << BOOST_CURRENT_FUNCTION;
 
 	config upload_info = get_info(request);
+	config upload_lang = get_lang(request);
 	otl_connect &db = database().db();
 
 	try
 	{
 		pod::addon_type addon_type = retreive_addon_type_by_name(db, upload_info["type"].str());
+		pod::language language = retreive_language_by_name(db, upload_lang["native_language"].str());
 		std::cout << addon_type.name.data() << std::endl;
+		std::cout << language.name.data() << std::endl;
 	}
 	catch(const std::exception& e)
 	{
