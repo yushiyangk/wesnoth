@@ -20,7 +20,10 @@
 #include <boost/asio.hpp>
 
 class config;
-
+class otl_connect;
+namespace pod{
+	struct addon_type;
+}
 namespace umcd{
 
 /** Analyse the request (pbl file) and if it seems correct, tell the client to send
@@ -36,6 +39,7 @@ public:
 	const config& get_info(const config& metadata);
 
 	virtual void execute(const socket_ptr& socket, const config& request);
+	pod::addon_type retreive_addon_type_by_name(otl_connect& db, const std::string& addon_type_name);
 	virtual ~request_umc_upload_action();
 };
 
