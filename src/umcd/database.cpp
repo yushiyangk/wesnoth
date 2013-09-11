@@ -27,13 +27,14 @@ database::otl_initializer::otl_initializer()
 	otl_connect::otl_initialize();
 }
 
-database::database(const database_info& db_info)
+database::database()
 {
+	database_info db_info;
 	try
 	{
 		db_.rlogon(boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str());
 	}
-	catch(otl_exception& e)
+	catch(const otl_exception& e)
 	{
 		throw std::runtime_error(boost::str(
 			boost::format("Database error message: %1%\n"
@@ -41,4 +42,10 @@ database::database(const database_info& db_info)
 			% e.msg % e.stm_text));
 	}
 }
+
+otl_connect& database::db()
+{
+	return db_;
+}
+
 } // namespace umcd

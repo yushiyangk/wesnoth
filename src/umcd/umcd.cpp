@@ -71,9 +71,6 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			database_info db_info;
-			database db(db_info);
-
 			server_mt addon_server(
 				server_core(),
 				protocol_entry_point

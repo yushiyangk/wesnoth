@@ -19,12 +19,11 @@
 
 namespace umcd{
 
-class database_info;
-
 class database
 {
 public:
-	database(const database_info& db_info);
+	database();
+	otl_connect& db();
 
 private:
 	struct otl_initializer
