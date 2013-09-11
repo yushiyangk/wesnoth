@@ -20,7 +20,7 @@ namespace umcd{
 static config make_special_packet(const std::string& message, const std::string& tag)
 {
 	config packet(tag);
-	packet.child(tag)["text"] = message;
+	packet.child(tag)["text"] = "\"" + message + "\"";
 	return packet;
 }
 
