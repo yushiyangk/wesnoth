@@ -33,19 +33,6 @@ static void launch_test(boost::asio::io_service &io_service
   test->async_launch(io_service);
 }
 
-static void launch_license_request_test_suite(boost::asio::io_service& io_service)
-{
-  launch_test(io_service
-    , "empty license request"
-    , game_config::path + "data/umcd/tests/request_license/request_license_empty_lang.cfg"
-    , game_config::path + "data/umcd/protocol_schema/request_license_reply.cfg");
-
-  launch_test(io_service
-    , "english license request"
-    , game_config::path + "data/umcd/tests/request_license/request_license_english.cfg"
-    , game_config::path + "data/umcd/protocol_schema/request_license_reply.cfg");
-}
-
 static void launch_common_request_test_suite(boost::asio::io_service& io_service)
 {
   launch_test(io_service
@@ -59,10 +46,32 @@ static void launch_common_request_test_suite(boost::asio::io_service& io_service
     , game_config::path + "data/umcd/protocol_schema/error_reply.cfg");
 }
 
+static void launch_license_request_test_suite(boost::asio::io_service& io_service)
+{
+  launch_test(io_service
+    , "empty license request"
+    , game_config::path + "data/umcd/tests/request_license/request_license_empty_lang.cfg"
+    , game_config::path + "data/umcd/protocol_schema/request_license_reply.cfg");
+
+  launch_test(io_service
+    , "english license request"
+    , game_config::path + "data/umcd/tests/request_license/request_license_english.cfg"
+    , game_config::path + "data/umcd/protocol_schema/request_license_reply.cfg");
+}
+
+static void launch_upload_request_test_suite(boost::asio::io_service& io_service)
+{
+  launch_test(io_service
+    , "upload new UMC"
+    , game_config::path + "data/umcd/tests/request_umc_upload/request_umc_upload_basic.cfg"
+    , "");
+}
+
 static void launch_test_suite(boost::asio::io_service& io_service)
 {
-  launch_license_request_test_suite(io_service);
   launch_common_request_test_suite(io_service);
+  launch_license_request_test_suite(io_service);
+  launch_upload_request_test_suite(io_service);
 }
 
 int main(int argc, char* argv[])
