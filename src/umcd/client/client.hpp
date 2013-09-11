@@ -18,10 +18,13 @@
 #include "umcd/client/client_connection_events.hpp"
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 namespace umcd{
 
-class client : public boost::noncopyable
+class client : 
+	  public boost::enable_shared_from_this<client>
+	, public boost::noncopyable
 {
 private:
 	typedef boost::asio::ip::tcp::resolver resolver_type;
@@ -41,7 +44,7 @@ public:
 		// into a list of endpoints.
 		boost::asio::ip::tcp::resolver::query query(host, service);
 		resolver_.async_resolve(query,
-			boost::bind(&client::handle_resolve, this,
+			boost::bind(&client::handle_resolve, shared_from_this(),
 				boost::asio::placeholders::error,
 				boost::asio::placeholders::iterator));
 	}
@@ -83,8 +86,8 @@ private:
 		{
 			boost::asio::async_connect(*socket_
 				, endpoint_iterator
-				, boost::bind(&client::before_connect, this, _1, _2)
-				, boost::bind(&client::handle_connect, this, _1, _2));
+				, boost::bind(&client::before_connect, shared_from_this(), _1, _2)
+				, boost::bind(&client::handle_connect, shared_from_this(), _1, _2));
 		}
 		else
 		{
