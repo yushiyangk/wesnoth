@@ -65,6 +65,11 @@ static void launch_upload_request_test_suite(boost::asio::io_service& io_service
     , "upload new UMC"
     , game_config::path + "data/umcd/tests/request_umc_upload/request_umc_upload_basic.cfg"
     , "");
+
+  launch_test(io_service
+    , "upload UMC update with bad ID"
+    , game_config::path + "data/umcd/tests/request_umc_upload/request_umc_upload_bad_id.cfg"
+    , game_config::path + "data/umcd/protocol_schema/error_reply.cfg");
 }
 
 static void launch_test_suite(boost::asio::io_service& io_service)

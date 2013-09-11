@@ -70,3 +70,4 @@ uninstall.vcproj
 Project.ncb
 Project.suo
 *.vcproj.*.user
+!umcd/tests
