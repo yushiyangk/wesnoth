@@ -37,7 +37,8 @@
 			"\n\tDatabase error message: %1%\n"							\
 			"\tDatabase SQL statement: %2%\n"								\
 			"\tDatabase SQL state message: %3%\n"						\
-			"\tDatabase variable: %4%"));										\
+			"\tDatabase variable: %4%")											\
+		% this->msg % stm_text % this->sqlstate % var_info); \
 		return tmp_buf.c_str();														\
 	}
 
