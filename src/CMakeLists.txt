@@ -1069,7 +1069,6 @@ set(wesnoth-schema_validator-dependencies_SRC
 )
 
 set(umcd_lib_SRC
-	umcd/special_packet.cpp
 	umcd/error.cpp
 	umcd/protocol/core/header_const_buffer.cpp
 	umcd/protocol/core/header_mutable_buffer.cpp
@@ -1099,6 +1098,7 @@ set(umcd_SRC
 	umcd/actions/request_license_action.cpp
 	umcd/actions/request_umc_upload_action.cpp
 	umcd/actions/basic_action.cpp
+	umcd/protocol/server/special_packet.cpp
 	umcd/protocol/server/error_sender.cpp
 	umcd/protocol/server/entry_point.cpp
 	umcd/protocol/server/close_on_error.cpp

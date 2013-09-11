@@ -12,7 +12,7 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/special_packet.hpp"
+#include "umcd/protocol/server/special_packet.hpp"
 #include "config.hpp"
 
 namespace umcd{

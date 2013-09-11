@@ -546,7 +546,6 @@ if env["host"] in ["x86_64-nacl", "i686-nacl"]:
 client_env.WesnothProgram("wesnoth", wesnoth_objects, have_client_prereqs)
 
 libumcd_sources = Split("""
-    umcd/special_packet.cpp
     umcd/error.cpp
     umcd/protocol/core/header_const_buffer.cpp
     umcd/protocol/core/header_mutable_buffer.cpp
@@ -575,6 +574,7 @@ umcd_sources = Split("""
     umcd/actions/request_license_action.cpp
     umcd/actions/request_umc_upload_action.cpp
     umcd/actions/basic_action.cpp
+    umcd/protocol/server/special_packet.cpp
     umcd/protocol/server/error_sender.cpp
     umcd/protocol/server/entry_point.cpp
     umcd/protocol/server/close_on_error.cpp

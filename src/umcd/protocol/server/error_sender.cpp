@@ -15,7 +15,7 @@
 #include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/protocol/make_header.hpp"
 #include "umcd/protocol/server/close_on_error.hpp"
-#include "umcd/special_packet.hpp"
+#include "umcd/protocol/server/special_packet.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include "config.hpp"
 
