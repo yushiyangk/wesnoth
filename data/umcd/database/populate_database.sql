@@ -8,3 +8,8 @@ INSERT INTO addon_type (value,name) VALUES
 ('','RPG_MP'),
 ('','MEDIA'),
 ('','OTHER');
+
+INSERT INTO language (value, name) VALUES
+('', 'en_GB'),
+('', 'en_US'),
+('', 'es_ES');

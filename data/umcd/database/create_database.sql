@@ -15,7 +15,7 @@
 CREATE TABLE addon (
   id int unsigned NOT NULL AUTO_INCREMENT,
   type smallint unsigned NOT NULL,
-  email varchar(254) NOT NULL, -- see RFC Erratum: http://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
+  email varchar(254) NOT NULL, -- why 254? see RFC Erratum: http://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
   password varchar(256) NOT NULL,
   native_language smallint unsigned NOT NULL,
   CONSTRAINT pk_Addon PRIMARY KEY (id)
