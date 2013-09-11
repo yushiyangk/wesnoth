@@ -15,17 +15,32 @@
 #ifndef UMCD_OTL_HPP
 #define UMCD_OTL_HPP
 
-// You must install unixODBC: sudo apt-get install unixodbc-dev
-
 #define OTL_ODBC
 
 // Use ODBC_UNIX if we are on Unix.
+// You must install unixODBC: sudo apt-get install unixodbc-dev
 #if defined(unix) || defined(__unix) || defined(__unix__)
 	#define OTL_ODBC_UNIX
 #endif
+
 // Enable the use of the STL
 #define OTL_STL
-#define OTL_EXCEPTION_IS_DERIVED_FROM_STD_EXCEPTION
+
+#include <boost/format.hpp>
+// Derive otl_exception from std::exception
+#define OTL_EXCEPTION_DERIVED_FROM std::exception
+#define OTL_EXCEPTION_HAS_MEMBERS											\
+	mutable std::string tmp_buf;												\
+	virtual const char* what() const throw()						\
+	{																										\
+		tmp_buf = boost::str(boost::format(								\
+			"\n\tDatabase error message: %1%\n"							\
+			"\tDatabase SQL statement: %2%\n"								\
+			"\tDatabase SQL state message: %3%\n"						\
+			"\tDatabase variable: %4%"));										\
+		return tmp_buf.c_str();														\
+	}
+
 
 #ifdef HAVE_CXX11
 	#define OTL_CPP_11_ON
