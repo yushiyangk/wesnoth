@@ -18,10 +18,12 @@
 #include "umcd/actions/basic_action.hpp"
 #include "serialization/schema_validator.hpp"
 #include <boost/asio.hpp>
+#include <boost/optional.hpp>
 
 class config;
 class otl_connect;
 namespace pod{
+	struct addon;
 	struct addon_type;
 	struct language;
 }
@@ -37,13 +39,21 @@ public:
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
+	virtual void execute(const socket_ptr& socket, const config& request);
+	virtual ~request_umc_upload_action();
+
+private:
+	/** Helper to get the info section in the metadata.
+	*/
 	const config& get_info(const config& metadata);
+	/** Helper to get the language section in the metadata.
+	*/
 	const config& get_lang(const config& metadata);
 
-	virtual void execute(const socket_ptr& socket, const config& request);
+	// Database queries.
 	pod::addon_type retreive_addon_type_by_name(otl_connect& db, const std::string& addon_type_name);
 	pod::language retreive_language_by_name(otl_connect& db, const std::string& language_name);
-	virtual ~request_umc_upload_action();
+	boost::optional<pod::addon> retreive_addon_by_id(otl_connect& db, boost::uint32_t id);
 };
 
 } // namespace umcd

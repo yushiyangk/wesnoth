@@ -23,6 +23,7 @@
 #include "config.hpp"
 #include "umcd/pod/addon_type.hpp"
 #include "umcd/pod/language.hpp"
+#include "umcd/pod/addon.hpp"
 
 namespace umcd{
 
@@ -88,6 +89,25 @@ pod::language request_umc_upload_action::retreive_language_by_name(otl_connect& 
 	return language;
 }
 
+boost::optional<pod::addon> request_umc_upload_action::retreive_addon_by_id(otl_connect& db, boost::uint32_t id)
+{
+	boost::optional<pod::addon> addon;
+
+	std::string select_addon_query = "select * from addon where id = :id<unsigned>";
+	otl_stream select_addon(60
+		, select_addon_query.c_str()
+		, db);
+
+	select_addon << id;
+
+	if(!select_addon.eof())
+	{
+		addon = pod::addon();
+		select_addon >> addon->id >> addon->type >> addon->email >> addon->password >> addon->native_language;
+	}
+	return addon;
+}
+
 void request_umc_upload_action::execute(const socket_ptr& socket, const config& request)
 {
 	UMCD_LOG_IP(trace, socket) << BOOST_CURRENT_FUNCTION;
@@ -98,10 +118,23 @@ void request_umc_upload_action::execute(const socket_ptr& socket, const config& 
 
 	try
 	{
-		pod::addon_type addon_type = retreive_addon_type_by_name(db, upload_info["type"].str());
-		pod::language language = retreive_language_by_name(db, upload_lang["native_language"].str());
-		std::cout << addon_type.name.data() << std::endl;
-		std::cout << language.name.data() << std::endl;
+		// It should be an update.
+		if(upload_info.has_attribute("id"))
+		{
+			boost::optional<pod::addon> addon = retreive_addon_by_id(db, upload_info["id"].to_unsigned());
+			if(!addon)
+			{
+				UMCD_LOG_IP(debug, socket) << "User trying to update an unknown UMC (search by id).";
+				async_send_error(socket, make_error_condition(bad_umc_id));
+			}
+		}
+		else
+		{
+			pod::addon_type addon_type = retreive_addon_type_by_name(db, upload_info["type"].str());
+			pod::language language = retreive_language_by_name(db, upload_lang["native_language"].str());
+			std::cout << addon_type.name.data() << std::endl;
+			std::cout << language.name.data() << std::endl;
+		}
 	}
 	catch(const std::exception& e)
 	{
