@@ -47,7 +47,6 @@ void request_license_action::execute(const socket_ptr& socket, const config& req
 		sender->on_event<transfer_error>(boost::bind(&close_on_error, socket, _1));
 		sender->async_send();
 	}
-
 }
 
 request_license_action::~request_license_action(){}
