@@ -17,16 +17,14 @@ The license is not shipped with the Wesnoth client because this server can be re
 */
 
 #include "umcd/actions/request_license_action.hpp"
-#include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/protocol/make_header.hpp"
 #include "umcd/protocol/server/close_on_error.hpp"
-#include "umcd/error.hpp"
-#include "umcd/env/server_info.hpp"
 #include "umcd/logger/asio_logger.hpp"
+#include "umcd/env/server_info.hpp"
+#include "umcd/error.hpp"
+
 #include "filesystem.hpp"
 #include "config.hpp"
-#include "serialization/parser.hpp"
-#include "wml_exception.hpp"
 #include <boost/current_function.hpp>
 
 namespace umcd{
@@ -34,16 +32,11 @@ namespace umcd{
 void request_license_action::execute(const socket_ptr& socket, const config& request)
 {
 	UMCD_LOG_IP(trace, socket) << BOOST_CURRENT_FUNCTION;
-	try
-	{
-		// (1) Validation of the request.
-		server_info info;
-		std::string validator_filename = info.wesnoth_dir() + get_umcd_protocol_schema_dir() + "/request_license.cfg";
-		validator_type validator(validator_filename);
-		config dummy;
-		::read(dummy, request.to_string(), &validator);
-		UMCD_LOG_IP(debug, socket) << BOOST_CURRENT_FUNCTION << " -- request validated.";
 
+	// (1) Validation of the request.
+	if(validate(socket, request, "/request_license.cfg"))
+	{
+		server_info info;
 		// (2) Creation of the reply.
 		// NOTE: We don't use the COPYING file because the " are not double quoted, instead we use a preformatted license file with " replaced by "".
 		config reply("request_license");
@@ -54,11 +47,7 @@ void request_license_action::execute(const socket_ptr& socket, const config& req
 		sender->on_event<transfer_error>(boost::bind(&close_on_error, socket, _1));
 		sender->async_send();
 	}
-	catch(const twml_exception& e)
-	{
-		UMCD_LOG_IP(error, socket) << " -- invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.dev_message << ")";
-		async_send_error(socket, make_error_condition(invalid_packet));
-	}
+
 }
 
 request_license_action::~request_license_action(){}

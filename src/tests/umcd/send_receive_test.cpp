@@ -96,7 +96,7 @@ void send_receive_test::on_receive_complete()
 		validator_type validator(expected_schema_filename_);
 		validator.validate(response_, "", 0, "");
 		success_printer();
-		std::cerr << test_no_str() << " Response received:\n" << response_.to_string() << std::endl;
+		//std::cerr << test_no_str() << " Response received:\n" << response_.to_string() << std::endl;
 	}
 	catch(const twml_exception& e)
 	{

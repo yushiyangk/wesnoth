@@ -1067,14 +1067,19 @@ set(wesnoth-schema_validator-dependencies_SRC
 )
 
 set(umcd_lib_SRC
-	umcd/server_options.cpp
 	umcd/special_packet.cpp
 	umcd/error.cpp
-	umcd/database.cpp
 	umcd/protocol/core/header_const_buffer.cpp
 	umcd/protocol/core/header_mutable_buffer.cpp
 	umcd/protocol/core/header_data_stream.cpp
 	umcd/protocol/core/close_on_error.cpp
+	${wesnoth-schema_validator-dependencies_SRC}
+)
+
+set(umcd_SRC
+	umcd/umcd.cpp
+	umcd/server_options.cpp
+	umcd/database.cpp
 	umcd/server/basic_server.cpp
 	umcd/server/multi_threaded/server_mt.cpp
 	umcd/logger/logger.cpp
@@ -1091,15 +1096,11 @@ set(umcd_lib_SRC
 	umcd/env/server_core.cpp
 	umcd/actions/request_license_action.cpp
 	umcd/actions/request_umc_upload_action.cpp
-	${wesnoth-schema_validator-dependencies_SRC}
-)
-
-set(umcd_SRC
-	umcd/umcd.cpp
+	umcd/actions/basic_action.cpp
+	umcd/protocol/server/error_sender.cpp
+	umcd/protocol/server/entry_point.cpp
 	umcd/protocol/server/close_on_error.cpp
 	umcd/protocol/server/action_dispatcher.cpp
-	umcd/protocol/server/entry_point.cpp
-	umcd/protocol/server/error_sender.cpp
 	loadscreen_empty.cpp
 )
 

@@ -21,7 +21,6 @@
 #define UMCD_REQUEST_LICENSE_ACTION_HPP
 
 #include "umcd/actions/basic_action.hpp"
-#include "serialization/schema_validator.hpp"
 
 class config;
 
@@ -33,8 +32,6 @@ namespace umcd{
 class request_license_action : 
   public basic_action_crtp<request_license_action>
 {
-	typedef schema_validation::schema_validator validator_type;
-
 public:
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;

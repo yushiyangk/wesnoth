@@ -19,6 +19,7 @@
 #ifndef UMCD_BASIC_ACTION_HPP
 #define UMCD_BASIC_ACTION_HPP
 
+#include "serialization/schema_validator.hpp"
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
@@ -31,6 +32,9 @@ namespace umcd{
 */
 class basic_action
 {
+private:
+	typedef schema_validation::schema_validator validator_type;
+
 public:
 	typedef basic_action this_type;
 	typedef boost::asio::ip::tcp::socket socket_type;
@@ -40,6 +44,8 @@ public:
 	* socket to send the response.
 	*/
 	virtual void execute(const socket_ptr& socket, const config& request) = 0;
+
+	virtual bool validate(const socket_ptr& socket, const config& request, const std::string& validation_filename);
 
 	/** Create an action of the current sub-type.
 	*/

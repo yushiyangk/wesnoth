@@ -574,6 +574,7 @@ umcd_sources = Split("""
     umcd/env/server_core.cpp
     umcd/actions/request_license_action.cpp
     umcd/actions/request_umc_upload_action.cpp
+    umcd/actions/basic_action.cpp
     umcd/protocol/server/error_sender.cpp
     umcd/protocol/server/entry_point.cpp
     umcd/protocol/server/close_on_error.cpp
