@@ -29,17 +29,10 @@ database::otl_initializer::otl_initializer()
 
 database::database()
 {
-	database_info db_info;
-	try
+	if(!db_.connected)
 	{
+		database_info db_info;
 		db_.rlogon(boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str());
-	}
-	catch(const otl_exception& e)
-	{
-		throw std::runtime_error(boost::str(
-			boost::format("Database error message: %1%\n"
-										"Database SQL state message: %2%") 
-			% e.msg % e.stm_text));
 	}
 }
 
