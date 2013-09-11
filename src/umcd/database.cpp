@@ -24,7 +24,7 @@ otl_connect database::db_;
 
 database::otl_initializer::otl_initializer()
 {
-	otl_connect::otl_initialize();
+	otl_connect::otl_initialize(1);
 }
 
 database::database()
