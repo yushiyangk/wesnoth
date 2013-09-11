@@ -1039,16 +1039,18 @@ add_custom_command(
 	OUTPUT
 		${CMAKE_CURRENT_BINARY_DIR}/sql.stamp
 	COMMAND
+		${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/src/umcd/pod
+	COMMAND
 		${EXECUTABLE_OUTPUT_PATH}/sql2cpp
 			-h ${CMAKE_SOURCE_DIR}/data/umcd/license_header.txt
 			-s ${CMAKE_SOURCE_DIR}/data/umcd/database/create_database.sql
-			-d ${CMAKE_CURRENT_BINARY_DIR}
+			-d ${CMAKE_SOURCE_DIR}/src/umcd/pod
 	COMMAND
 		${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/sql.stamp
 	DEPENDS
 		sql2cpp
 		${CMAKE_SOURCE_DIR}/data/umcd/database/create_database.sql
-		${CMAKE_SOURCE_DIR}/data/umcd/license.txt
+		${CMAKE_SOURCE_DIR}/data/umcd/license_header.txt
 	COMMENT
 		"Generating SQL schema based headers."
 )
