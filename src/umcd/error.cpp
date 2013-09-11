@@ -21,7 +21,8 @@ boost::array<std::string, num_error> error_category::error_messages = {{
 	"The packet you sent has an invalid name. It could be a protocol bug and administrators have been contacted, the problem should be fixed soon.", // invalid_packet_name
 	"The request you sent is too large. It can happens if you try to send a really large pbl file, you can claim help on IRC, and we'll find a solution.", // request_header_too_large
 	"The server has encountered an unexpected error and your request cannot be processed.\n Congratz, you found a bug.", // internal_error
-	"The ID inside your pbl file is unknown. No UMC found with this id." // bad_umc_id
+	"The ID inside your pbl file is unknown. No UMC found with this id.", // bad_umc_id
+	"A field in your request is longer in size than allowed." // field_too_long
 }};
 
 const char* error_category::name() const

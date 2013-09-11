@@ -26,6 +26,7 @@ enum error
 	request_header_too_large,
 	internal_error,
 	bad_umc_id,
+	field_too_long,
 	num_error
 };
 } // namespace umcd
