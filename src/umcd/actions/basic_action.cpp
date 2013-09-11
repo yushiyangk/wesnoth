@@ -39,7 +39,7 @@ bool basic_action::validate(const socket_ptr& socket, const config& request, con
 	}
 	catch(const twml_exception& e)
 	{
-		UMCD_LOG_IP(error, socket) << " -- invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.dev_message << ")";
+		UMCD_LOG_IP(error, socket) << "invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.dev_message << ")";
 		async_send_error(socket, make_error_condition(invalid_packet));
 	}
 	return false;

@@ -112,44 +112,47 @@ void request_umc_upload_action::execute(const socket_ptr& socket, const config& 
 {
 	UMCD_LOG_IP(trace, socket) << BOOST_CURRENT_FUNCTION;
 
-	config upload_info = get_info(request);
-	config upload_lang = get_lang(request);
-	otl_connect &db = database().db();
-
-	try
+	if(validate(socket, request, "/request_umc_upload.cfg"))
 	{
-		// The ID is in the request so we guess the user want to update a UMC.
-		if(upload_info.has_attribute("id"))
+		config upload_info = get_info(request);
+		config upload_lang = get_lang(request);
+		otl_connect &db = database().db();
+
+		try
 		{
-			boost::optional<pod::addon> addon = retreive_addon_by_id(db, upload_info["id"].to_unsigned());
-			if(!addon)
+			// The ID is in the request so we guess the user want to update a UMC.
+			if(upload_info.has_attribute("id"))
 			{
-				UMCD_LOG_IP(debug, socket) << "User trying to update an unknown UMC (search by id).";
-				async_send_error(socket, make_error_condition(bad_umc_id));
+				boost::optional<pod::addon> addon = retreive_addon_by_id(db, upload_info["id"].to_unsigned());
+				if(!addon)
+				{
+					UMCD_LOG_IP(debug, socket) << "User trying to update an unknown UMC (search by id).";
+					async_send_error(socket, make_error_condition(bad_umc_id));
+				}
 			}
-		}
-		// The ID is not in the request. It's a new UMC.
-		else
-		{
-			pod::addon addon;
-			addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
-			addon.native_language = retreive_language_by_name(db, upload_lang["native_language"].str()).value;
-			std::string email = upload_info["email"].str();
-			std::string password = upload_info["password"].str();
-			if(email.size() > addon.email.size())
-				async_send_error(socket, make_error_condition(field_too_long), "email");
-			else if(password.size() > addon.password.size())
-				async_send_error(socket, make_error_condition(field_too_long), "password");
+			// The ID is not in the request. It's a new UMC.
 			else
 			{
-				//create_addon()
+				pod::addon addon;
+				addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
+				addon.native_language = retreive_language_by_name(db, upload_lang["native_language"].str()).value;
+				std::string email = upload_info["email"].str();
+				std::string password = upload_info["password"].str();
+				if(email.size() > addon.email.size())
+					async_send_error(socket, make_error_condition(field_too_long), "email");
+				else if(password.size() > addon.password.size())
+					async_send_error(socket, make_error_condition(field_too_long), "password");
+				else
+				{
+					//create_addon()
+				}
 			}
 		}
-	}
-	catch(const std::exception& e)
-	{
-		UMCD_LOG_IP(fatal, socket) << e.what();
-		async_send_error(socket, make_error_condition(internal_error));
+		catch(const std::exception& e)
+		{
+			UMCD_LOG_IP(fatal, socket) << e.what();
+			async_send_error(socket, make_error_condition(internal_error));
+		}
 	}
 }
 
