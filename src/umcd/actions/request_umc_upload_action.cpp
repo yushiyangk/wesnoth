@@ -16,7 +16,7 @@
 #include "umcd/env/server_info.hpp"
 #include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/logger/asio_logger.hpp"
-#include "umcd/database.hpp"
+#include "umcd/database/database.hpp"
 #include "umcd/error.hpp"
 #include "umcd/otl/otl.hpp"
 #include "filesystem.hpp"

@@ -1081,7 +1081,7 @@ set(umcd_lib_SRC
 set(umcd_SRC
 	umcd/umcd.cpp
 	umcd/server_options.cpp
-	umcd/database.cpp
+	umcd/database/database.cpp
 	umcd/server/basic_server.cpp
 	umcd/server/multi_threaded/server_mt.cpp
 	umcd/logger/logger.cpp

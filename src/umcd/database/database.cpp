@@ -12,7 +12,7 @@
 	See the COPYING file for more details.
 */
 
-#include "umcd/database.hpp"
+#include "umcd/database/database.hpp"
 #include "umcd/env/database_info.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include <boost/format.hpp>

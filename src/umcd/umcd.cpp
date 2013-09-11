@@ -23,7 +23,6 @@
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
 #include "umcd/protocol/core/header_mutable_buffer.hpp"
-#include "umcd/database.hpp"
 
 #include "wml_exception.hpp"
 #include "config.hpp"
