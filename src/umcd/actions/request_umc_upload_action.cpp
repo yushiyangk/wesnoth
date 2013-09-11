@@ -118,7 +118,7 @@ void request_umc_upload_action::execute(const socket_ptr& socket, const config& 
 
 	try
 	{
-		// It should be an update.
+		// The ID is in the request so we guess the user want to update a UMC.
 		if(upload_info.has_attribute("id"))
 		{
 			boost::optional<pod::addon> addon = retreive_addon_by_id(db, upload_info["id"].to_unsigned());
@@ -128,12 +128,22 @@ void request_umc_upload_action::execute(const socket_ptr& socket, const config& 
 				async_send_error(socket, make_error_condition(bad_umc_id));
 			}
 		}
+		// The ID is not in the request. It's a new UMC.
 		else
 		{
-			pod::addon_type addon_type = retreive_addon_type_by_name(db, upload_info["type"].str());
-			pod::language language = retreive_language_by_name(db, upload_lang["native_language"].str());
-			std::cout << addon_type.name.data() << std::endl;
-			std::cout << language.name.data() << std::endl;
+			pod::addon addon;
+			addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
+			addon.native_language = retreive_language_by_name(db, upload_lang["native_language"].str()).value;
+			std::string email = upload_info["email"].str();
+			std::string password = upload_info["password"].str();
+			if(email.size() > addon.email.size())
+				async_send_error(socket, make_error_condition(field_too_long), "email");
+			else if(password.size() > addon.password.size())
+				async_send_error(socket, make_error_condition(field_too_long), "password");
+			else
+			{
+				//create_addon()
+			}
 		}
 	}
 	catch(const std::exception& e)
