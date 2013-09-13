@@ -50,9 +50,8 @@ struct is_error_code_enum<umcd::error>
 namespace umcd{
 class error_category : public boost::system::error_category
 {
-	static boost::array<std::string, num_error> error_messages;
+	static const boost::array<std::string, num_error> error_messages;
 public:
-	error_category(){}
 	const char* name() const;
 	std::string message(int ev) const;
 };

@@ -16,7 +16,7 @@
 
 namespace umcd{
 
-boost::array<std::string, num_error> error_category::error_messages = {{
+const boost::array<std::string, num_error> error_category::error_messages = {{
 	"The packet you sent is invalid. It could be a protocol bug and administrators have been contacted, the problem should be fixed soon.", // invalid_packet
 	"The packet you sent has an invalid name. It could be a protocol bug and administrators have been contacted, the problem should be fixed soon.", // invalid_packet_name
 	"The request you sent is too large. It can happens if you try to send a really large pbl file, you can claim help on IRC, and we'll find a solution.", // request_header_too_large
