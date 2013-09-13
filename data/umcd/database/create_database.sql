@@ -7,6 +7,8 @@
 -- CREATE DATABASE IF NOT EXISTS umcd;
 -- USE umcd;
 
+-- Note: Don't use unsigned smallint because OTL can't deal with it.
+
 -- ---
 -- Table 'Addon'
 -- 
@@ -14,10 +16,10 @@
 
 CREATE TABLE addon (
   id int unsigned NOT NULL AUTO_INCREMENT,
-  type smallint unsigned NOT NULL,
+  type int unsigned NOT NULL,
   email varchar(254) NOT NULL, -- why 254? see RFC Erratum: http://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
   password varchar(256) NOT NULL,
-  native_language smallint unsigned NOT NULL,
+  native_language int unsigned NOT NULL,
   CONSTRAINT pk_Addon PRIMARY KEY (id)
 );
 
@@ -27,7 +29,7 @@ CREATE TABLE addon (
 -- ---
     
 CREATE TABLE addon_type (
-  value smallint unsigned NOT NULL AUTO_INCREMENT,
+  value int unsigned NOT NULL AUTO_INCREMENT,
   name varchar(50) NOT NULL UNIQUE,
   CONSTRAINT pk_AddonType PRIMARY KEY (value)
 );
@@ -102,7 +104,7 @@ CREATE TABLE dependencies (
 -- ---
     
 CREATE TABLE language (
-  value smallint unsigned NOT NULL AUTO_INCREMENT,
+  value int unsigned NOT NULL AUTO_INCREMENT,
   name varchar(50) NOT NULL UNIQUE,
   CONSTRAINT pk_Language PRIMARY KEY (value)
 );
@@ -114,7 +116,7 @@ CREATE TABLE language (
     
 CREATE TABLE translation (
   id int unsigned NOT NULL AUTO_INCREMENT,
-  language smallint unsigned NOT NULL,
+  language int unsigned NOT NULL,
   translated_addon int unsigned NOT NULL,
   path_to_po_file varchar(512) NOT NULL UNIQUE,
   fuzzy int unsigned NOT NULL,

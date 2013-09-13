@@ -28,6 +28,11 @@
 
 namespace umcd{
 
+static std::string char_array_str(const std::string& data)
+{
+	return "char[" + boost::lexical_cast<std::string>(data.size()+1) + "]";
+}
+
 const config& request_umc_upload_action::get_info(const config& metadata)
 {
 	return metadata.child("request_umc_upload").child("umc_configuration").child("info");
@@ -40,17 +45,20 @@ const config& request_umc_upload_action::get_lang(const config& metadata)
 
 pod::addon_type request_umc_upload_action::retreive_addon_type_by_name(otl_connect& db, const std::string& addon_type_name)
 {
+	UMCD_LOG_FUNCTION_TRACER();
 	pod::addon_type addon_type;
 
 	std::string select_addon_type_query = 
-			"select * from addon_type where name = :addon_type_name<char[" 
-		+ boost::lexical_cast<std::string>(addon_type_name.size()+1) 
-		+ "]>";
+				"select * from addon_type where name = :addon_type_name<"
+			+ char_array_str(addon_type_name) + ">";
+
+	UMCD_LOG(debug) << select_addon_type_query;
+
 	otl_stream select_addon_type(60
 		, select_addon_type_query.c_str()
 		, db);
 
-	select_addon_type << addon_type_name;
+	select_addon_type << addon_type_name.c_str();
 
 	if(!select_addon_type.eof())
 	{
@@ -66,17 +74,20 @@ pod::addon_type request_umc_upload_action::retreive_addon_type_by_name(otl_conne
 
 pod::language request_umc_upload_action::retreive_language_by_name(otl_connect& db, const std::string& language_name)
 {
+	UMCD_LOG_FUNCTION_TRACER();
 	pod::language language;
 
 	std::string select_language_query = 
-			"select * from language where name = :language_name<char[" 
-		+ boost::lexical_cast<std::string>(language_name.size()+1) 
-		+ "]>";
+			"select * from language where name = :language_name<"
+		+ char_array_str(language_name) + ">";
+
+	UMCD_LOG(debug) << select_language_query;
+
 	otl_stream select_language(60
 		, select_language_query.c_str()
 		, db);
 
-	select_language << language_name;
+	select_language << language_name.c_str();
 
 	if(!select_language.eof())
 	{
@@ -92,12 +103,15 @@ pod::language request_umc_upload_action::retreive_language_by_name(otl_connect& 
 
 boost::optional<pod::addon> request_umc_upload_action::retreive_addon_by_id(otl_connect& db, boost::uint32_t id)
 {
+	UMCD_LOG_FUNCTION_TRACER();
 	boost::optional<pod::addon> addon;
 
 	std::string select_addon_query = "select * from addon where id = :id<unsigned>";
 	otl_stream select_addon(60
 		, select_addon_query.c_str()
 		, db);
+
+	UMCD_LOG(debug) << select_addon_query;
 
 	select_addon << id;
 
@@ -111,6 +125,7 @@ boost::optional<pod::addon> request_umc_upload_action::retreive_addon_by_id(otl_
 
 void request_umc_upload_action::update_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request)
 {
+	UMCD_LOG_IP_FUNCTION_TRACER(socket);
 	const config& upload_info = get_info(request);
 	otl_connect& db = db_connection->get();
 	try
@@ -129,8 +144,25 @@ void request_umc_upload_action::update_umc(const boost::shared_ptr<connection_in
 	}
 }
 
+void request_umc_upload_action::add_addon(otl_connect& db, const pod::addon& addon)
+{
+	UMCD_LOG_FUNCTION_TRACER();
+	std::string insert_addon_query = "insert into addon (type, email, password, native_language) values("
+		":type<unsigned>,"
+		":email<" + char_array_str(addon.email) + ">,"
+		":password<" + char_array_str(addon.password) + ">,"
+		":native_language<unsigned>)";
+
+	otl_stream insert_addon(100
+		, insert_addon_query.c_str()
+		, db);
+
+	insert_addon << addon.type << addon.email << addon.password << addon.native_language;
+}
+
 void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request)
 {
+	UMCD_LOG_IP_FUNCTION_TRACER(socket);
 	const config& upload_info = get_info(request);
 	const config& upload_lang = get_lang(request);
 
@@ -138,18 +170,11 @@ void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_in
 	try
 	{
 		pod::addon addon;
-		addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
 		addon.native_language = retreive_language_by_name(db, upload_lang["native_language"].str()).value;
-		std::string email = upload_info["email"].str();
-		std::string password = upload_info["password"].str();
-		if(email.size() > addon.email.size())
-			async_send_error(socket, make_error_condition(field_too_long), "email");
-		else if(password.size() > addon.password.size())
-			async_send_error(socket, make_error_condition(field_too_long), "password");
-		else
-		{
-			//create_addon()
-		}
+		addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
+		addon.email = upload_info["email"].str();
+		addon.password = upload_info["password"].str();
+		add_addon(db, addon);
 	}
 	catch(const std::exception& e)
 	{
@@ -158,9 +183,10 @@ void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_in
 	}
 }
 
-void request_umc_upload_action::on_db_timeout(const socket_ptr&)
+void request_umc_upload_action::on_db_timeout(const socket_ptr& socket)
 {
-
+	UMCD_LOG_IP(warning, socket) << "The database timed out before handling the query in a reasonnable time.";
+	async_send_error(socket, make_error_condition(internal_error));
 }
 
 void request_umc_upload_action::execute(const socket_ptr& socket, const config& request)

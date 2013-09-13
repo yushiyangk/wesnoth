@@ -49,9 +49,9 @@ void type2string_visitor::visit(const sql::type::date&)
 	res_ = "boost::posix_time::ptime";
 }
 
-void type2string_visitor::visit(const sql::type::varchar& v)
+void type2string_visitor::visit(const sql::type::varchar&)
 {
-	res_ = "boost::array<char, " + boost::lexical_cast<std::string>(v.length) + ">";
+	res_ = "std::string";
 }
 
 // Class type2header_visitor.
@@ -82,7 +82,7 @@ void type2header_visitor::visit(const sql::type::date&)
 
 void type2header_visitor::visit(const sql::type::varchar&)
 {
-	res_ = "#include <boost/array.hpp>";
+	res_ = "#include <string>";
 }
 
 } // namespace cpp

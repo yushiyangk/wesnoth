@@ -42,46 +42,26 @@
 		return tmp_buf.c_str();														\
 	}
 
+#define OTL_STREAM_THROWS_NOT_CONNECTED_TO_DATABASE_EXCEPTION
 
 #ifdef HAVE_CXX11
 	#define OTL_CPP_11_ON
 #endif
-
-// Extends the list of supported numeric data type.
-#include <boost/cstdint.hpp>
-#include <boost/lexical_cast.hpp>
-#include <cassert>
-
-// Extends for the boost::uint16_t.
-#define OTL_NUMERIC_TYPE_1 boost::uint16_t
-#define OTL_NUMERIC_TYPE_1_ID "uint16_t"
-#define OTL_NUMERIC_TYPE_1_STR_SIZE 7
-#define OTL_STR_TO_NUMERIC_TYPE_1(str,n)			\
-{																							\
-	n = boost::lexical_cast<boost::uint16_t> 		\
-		(str, OTL_NUMERIC_TYPE_1_STR_SIZE);				\
-}
-
-#define OTL_NUMERIC_TYPE_1_TO_STR(n, str)			\
-{																													\
-	std::string tmp = boost::lexical_cast<std::string>(n);	\
-	assert(tmp.size() < OTL_NUMERIC_TYPE_1_STR_SIZE);				\
-	std::copy(tmp.begin(), tmp.end(), str);									\
-}
 
 // Catch beyond-the-end-of-file read error.
 #define OTL_PARANOID_EOF
 
 #include "umcd/otl/otlv4.h"
 
+#include <boost/array.hpp>
 // Specializing stream operator >> and << for the boost array.
-template <size_t N>
+template <std::size_t N>
 otl_stream& operator>>(otl_stream& s, boost::array<char, N>& a)
 {
 	return s >> a.elems;
 }
 
-template <size_t N>
+template <std::size_t N>
 otl_stream& operator<<(otl_stream& s, boost::array<char, N>& a)
 {
 	return s << a.elems;
