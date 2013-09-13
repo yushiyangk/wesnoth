@@ -13,7 +13,6 @@
 */
 
 #include "umcd/server/basic_server.hpp"
-#include "umcd/logger/asio_logger.hpp"
 #include <boost/make_shared.hpp>
 #include <boost/current_function.hpp>
 
