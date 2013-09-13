@@ -15,11 +15,10 @@
 #ifndef SERVER_BASIC_SERVER_HPP
 #define SERVER_BASIC_SERVER_HPP
 
-#include "umcd/env/server_core.hpp"
-
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/function.hpp>
+#include <string>
 
 class basic_server : boost::noncopyable
 {
@@ -28,7 +27,7 @@ public:
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 public:
-	basic_server(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler);
+	basic_server(const std::string& service, const boost::function<void(const socket_ptr&)> &request_handler);
 	void run();
 	boost::asio::io_service& io_service();
 

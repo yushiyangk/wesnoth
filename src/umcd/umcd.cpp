@@ -22,6 +22,7 @@
 #include "umcd/env/environment_loader.hpp"
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
+#include "umcd/env/server_core.hpp"
 #include "umcd/protocol/core/header_mutable_buffer.hpp"
 #include "umcd/database/database.hpp"
 
@@ -73,8 +74,10 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			server_core core;
 			server_mt addon_server(
-				server_core(),
+				core.threads(),
+				core.port(),
 				protocol_entry_point
 			);
 

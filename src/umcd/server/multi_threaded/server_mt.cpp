@@ -18,10 +18,10 @@
 #include <boost/make_shared.hpp>
 #include <stdexcept>
 
-server_mt::server_mt(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler)
-: base_type(server_config, request_handler)
+server_mt::server_mt(std::size_t threads, const std::string& service, const boost::function<void(const socket_ptr&)> &request_handler)
+: base_type(service, request_handler)
+, thread_pool_size_(threads)
 {
-	thread_pool_size_ = server_config.threads();
 	if(thread_pool_size_ == 0)
 	{
 		thread_pool_size_ = boost::thread::hardware_concurrency();

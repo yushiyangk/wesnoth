@@ -17,7 +17,7 @@
 #include <boost/make_shared.hpp>
 #include <boost/current_function.hpp>
 
-basic_server::basic_server(const umcd::server_core& server_config, const boost::function<void(const socket_ptr&)> &request_handler)
+basic_server::basic_server(const std::string& service, const boost::function<void(const socket_ptr&)> &request_handler)
 : io_service_()
 , acceptor_(io_service_)
 , request_handler_(request_handler)
@@ -25,10 +25,9 @@ basic_server::basic_server(const umcd::server_core& server_config, const boost::
 {
 	using namespace boost::asio::ip;
 
-	// Find an endpoint on the port specified, if none found, throw a runtime_error exception.
-	std::string port = server_config.port();
+	// Find an endpoint on the service specified, if none found, throw a runtime_error exception.
 	tcp::resolver resolver(io_service_);
-	tcp::resolver::query query(port, tcp::resolver::query::address_configured);
+	tcp::resolver::query query(service, tcp::resolver::query::address_configured);
 	tcp::resolver::iterator endpoint_iter = resolver.resolve(query);
 	tcp::resolver::iterator endpoint_end;
 
