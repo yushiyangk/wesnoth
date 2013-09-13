@@ -17,11 +17,14 @@
 #include <boost/make_shared.hpp>
 #include <boost/current_function.hpp>
 
-basic_server::basic_server(const std::string& service, const boost::function<void(const socket_ptr&)> &request_handler)
+basic_server::basic_server(const boost::function<void(const socket_ptr&)> &request_handler)
 : io_service_()
 , acceptor_(io_service_)
 , request_handler_(request_handler)
-, server_on_(true)
+, server_on_(false)
+{}
+
+void basic_server::start(const std::string& service)
 {
 	using namespace boost::asio::ip;
 
@@ -51,12 +54,12 @@ basic_server::basic_server(const std::string& service, const boost::function<voi
 	{
 		throw std::runtime_error("No endpoints found - Check the status of your network interfaces.\n");
 	}
+	server_on_ = true;
 	start_accept();
 }
 
 void basic_server::run()
 {
-	UMCD_LOG_FUNCTION_TRACER();
 	while(server_on_)
 	{
 		try
@@ -76,7 +79,6 @@ void basic_server::run()
 
 void basic_server::start_accept()
 {
-	UMCD_LOG_FUNCTION_TRACER();
 	socket_ptr socket = boost::make_shared<socket_type>(boost::ref(io_service_));
 	acceptor_.async_accept(*socket,
 		boost::bind(&basic_server::handle_accept, this, socket, boost::asio::placeholders::error)

@@ -77,9 +77,9 @@ int main(int argc, char *argv[])
 			server_core core;
 			server_mt addon_server(
 				core.threads(),
-				core.port(),
 				protocol_entry_point
 			);
+			addon_server.start(core.port());
 
 			// Launch logger.
 			asio_logger logger(boost::ref(addon_server.io_service()), boost::posix_time::milliseconds(500));

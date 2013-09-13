@@ -27,7 +27,8 @@ public:
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 public:
-	basic_server(const std::string& service, const boost::function<void(const socket_ptr&)> &request_handler);
+	basic_server(const boost::function<void(const socket_ptr&)> &request_handler);
+	void start(const std::string& service);
 	void run();
 	boost::asio::io_service& io_service();
 

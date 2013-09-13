@@ -18,8 +18,8 @@
 #include <boost/make_shared.hpp>
 #include <stdexcept>
 
-server_mt::server_mt(std::size_t threads, const std::string& service, const boost::function<void(const socket_ptr&)> &request_handler)
-: base_type(service, request_handler)
+server_mt::server_mt(std::size_t threads, const boost::function<void(const socket_ptr&)> &request_handler)
+: base_type(request_handler)
 , thread_pool_size_(threads)
 {
 	if(thread_pool_size_ == 0)
