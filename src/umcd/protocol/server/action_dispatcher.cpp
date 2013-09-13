@@ -49,7 +49,7 @@ void action_dispatcher::dispatch()
 		config::all_children_itors range = header_metadata_.all_children_range();
 		if(range.first == range.second)
 		{
-		  UMCD_LOG_IP(error, socket_) << "invalid request at " << BOOST_CURRENT_FUNCTION << " (Request name not found).";
+		  UMCD_LOG_IP(warning, socket_) << "invalid request at " << BOOST_CURRENT_FUNCTION << " (Request name not found).";
 			async_send_error(socket_, make_error_condition(invalid_packet_name));
 		}
 		else
@@ -64,7 +64,7 @@ void action_dispatcher::dispatch()
 	}
 	catch(const std::exception& e)
 	{
-		UMCD_LOG_IP(error, socket_) << "invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.what() << ").";
+		UMCD_LOG_IP(warning, socket_) << "invalid request at " << BOOST_CURRENT_FUNCTION << " (" << e.what() << ").";
 		async_send_error(socket_, make_error_condition(invalid_packet));
 	}
 }
