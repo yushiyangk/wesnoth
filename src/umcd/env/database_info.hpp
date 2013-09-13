@@ -27,6 +27,8 @@ public:
 	const std::string& dsn() const;
 	const std::string& user() const;
 	const std::string& password() const;
+	std::size_t num_connection() const;
+	std::size_t timeout_seconds() const;
 
 protected:
 	friend class environment_loader;
@@ -34,11 +36,15 @@ protected:
 	void set_dsn(const std::string& dsn);
 	void set_user(const std::string& user);
 	void set_password(const std::string& password);
+	void set_num_connection(std::size_t num_connection);
+	void set_timeout_seconds(std::size_t timeout_seconds);
 
 private:
 	static std::string dsn_;
 	static std::string user_;
 	static std::string password_;
+	static std::size_t num_connection_;
+	static std::size_t timeout_seconds_;
 };
 
 } // namespace umcd

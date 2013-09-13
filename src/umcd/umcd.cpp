@@ -51,7 +51,7 @@ static void start_success_handler(const boost::asio::ip::tcp::endpoint& message)
 
 static void start_failure_handler()
 {
-	throw std::runtime_error("No endpoints found - Check the status of your network interfaces.\n");
+	throw std::runtime_error("No endpoints found - Check the status of your network interfaces.");
 }
 
 static void on_run_exception_handler(const std::exception& e)

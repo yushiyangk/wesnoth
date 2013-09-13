@@ -46,6 +46,8 @@ void environment_loader::load_database_info(const config& cfg)
 	dc.set_dsn(cfg["dsn"]);
 	dc.set_user(cfg["user"]);
 	dc.set_password(cfg["password"]);
+	dc.set_num_connection(cfg["num_connection"]);
+	dc.set_timeout_seconds(cfg["timeout_seconds"]);
 }
 
 void environment_loader::load_server_info(const config& cfg)

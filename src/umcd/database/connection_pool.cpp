@@ -18,6 +18,7 @@
 #include "umcd/boost/thread/lock_guard.hpp"
 #include <boost/make_shared.hpp>
 #include <boost/bind.hpp>
+#include <cassert>
 
 namespace umcd{
 
@@ -29,6 +30,7 @@ connection_pool::connection_pool(std::size_t pool_size
 , wait_connection_timeout_(wait_connection_timeout)
 , db_connect_info_(db_connect_info)
 {
+	assert(pool_size > 0);
 	for(std::size_t i = 0; i < pool_.size(); ++i)
 	{
 		connection_availability_.push_back(i);

@@ -17,6 +17,7 @@
 #include "umcd/logger/asio_logger.hpp"
 #include <boost/format.hpp>
 #include <cassert>
+#include <iostream>
 
 namespace umcd{
 
@@ -39,8 +40,8 @@ void database::dispatch_query(boost::asio::io_service &io_service
 void database::init_db(const database_info& db_info)
 {
 	connection_pool_ = boost::make_shared<connection_pool>(
-			3
-		, boost::posix_time::seconds(5)
+			db_info.num_connection()
+		, boost::posix_time::seconds(db_info.timeout_seconds())
 		, boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str()
 	);
 }
@@ -52,6 +53,5 @@ void dispatch_query(boost::asio::io_service &io_service
 	database db;
 	db.dispatch_query(io_service, query, on_timeout);
 }
-
 
 } // namespace umcd

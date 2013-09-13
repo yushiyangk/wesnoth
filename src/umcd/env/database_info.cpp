@@ -19,6 +19,8 @@ namespace umcd{
 std::string database_info::dsn_;
 std::string database_info::user_;
 std::string database_info::password_;
+std::size_t database_info::num_connection_;
+std::size_t database_info::timeout_seconds_;
 
 const std::string& database_info::dsn() const
 {
@@ -35,6 +37,16 @@ const std::string& database_info::password() const
 	return password_;
 }
 
+std::size_t database_info::num_connection() const
+{
+	return num_connection_;
+}
+
+std::size_t database_info::timeout_seconds() const
+{
+	return timeout_seconds_;
+}
+
 void database_info::set_dsn(const std::string& dsn)
 {
 	dsn_ = dsn;
@@ -48,6 +60,16 @@ void database_info::set_user(const std::string& user)
 void database_info::set_password(const std::string& password)
 {
 	password_ = password;
+}
+
+void database_info::set_num_connection(std::size_t num_connection)
+{
+	num_connection_ = num_connection;
+}
+
+void database_info::set_timeout_seconds(std::size_t timeout_seconds)
+{
+	timeout_seconds_ = timeout_seconds;
 }
 
 } // namespace umcd
