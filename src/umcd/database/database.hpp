@@ -16,14 +16,20 @@
 #define UMCD_DATABASE_HPP
 
 #include "umcd/otl/otl.hpp"
+#include "umcd/database/connection_pool.hpp"
 
 namespace umcd{
+
+class database_info;
 
 class database
 {
 public:
-	database();
-	otl_connect& db();
+	void dispatch_query(boost::asio::io_service &io_service
+		, connection_pool::query_function_type query
+		, connection_pool::timeout_function_type on_timeout);
+
+	static void init_db(const database_info& db_info);
 
 private:
 	struct otl_initializer
@@ -31,8 +37,12 @@ private:
 		otl_initializer();
 	};
 	static otl_initializer otl_initializer_;
-	static otl_connect db_;
+	static boost::shared_ptr<connection_pool> connection_pool_;
 };
+
+void dispatch_query(boost::asio::io_service &io_service
+	, connection_pool::query_function_type query
+	, connection_pool::timeout_function_type on_timeout);
 
 } // namespace umcd
 

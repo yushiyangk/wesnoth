@@ -16,29 +16,42 @@
 #include "umcd/env/database_info.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include <boost/format.hpp>
+#include <cassert>
 
 namespace umcd{
 
 database::otl_initializer database::otl_initializer_;
-otl_connect database::db_;
+boost::shared_ptr<connection_pool> database::connection_pool_;
 
 database::otl_initializer::otl_initializer()
 {
 	otl_connect::otl_initialize(1);
 }
 
-database::database()
+void database::dispatch_query(boost::asio::io_service &io_service
+	, connection_pool::query_function_type query
+	, connection_pool::timeout_function_type on_timeout)
 {
-	if(!db_.connected)
-	{
-		database_info db_info;
-		db_.rlogon(boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str());
-	}
+	assert(static_cast<bool>(connection_pool_));
+	connection_pool_->dispatch_query(io_service, query, on_timeout);
 }
 
-otl_connect& database::db()
+void database::init_db(const database_info& db_info)
 {
-	return db_;
+	connection_pool_ = boost::make_shared<connection_pool>(
+			3
+		, boost::posix_time::seconds(5)
+		, boost::str(boost::format("UID=%1%;PWD=%2%;DSN=%3%") % db_info.user() % db_info.password() % db_info.dsn()).c_str()
+	);
 }
+
+void dispatch_query(boost::asio::io_service &io_service
+	, connection_pool::query_function_type query
+	, connection_pool::timeout_function_type on_timeout)
+{
+	database db;
+	db.dispatch_query(io_service, query, on_timeout);
+}
+
 
 } // namespace umcd

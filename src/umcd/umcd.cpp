@@ -23,6 +23,7 @@
 #include "umcd/env/database_info.hpp"
 #include "umcd/env/protocol_info.hpp"
 #include "umcd/protocol/core/header_mutable_buffer.hpp"
+#include "umcd/database/database.hpp"
 
 #include "wml_exception.hpp"
 #include "config.hpp"
@@ -59,6 +60,8 @@ int main(int argc, char *argv[])
 
 			asio_logger::get().load(logging_info());
 			logger_initialized = true;
+
+			database::init_db(database_info());
 
 			if(options.is_daemon())
 			{

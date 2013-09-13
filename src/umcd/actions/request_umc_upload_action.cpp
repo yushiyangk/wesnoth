@@ -17,6 +17,7 @@
 #include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include "umcd/database/database.hpp"
+#include "umcd/database/connection_instance.hpp"
 #include "umcd/error.hpp"
 #include "umcd/otl/otl.hpp"
 #include "filesystem.hpp"
@@ -108,50 +109,83 @@ boost::optional<pod::addon> request_umc_upload_action::retreive_addon_by_id(otl_
 	return addon;
 }
 
+void request_umc_upload_action::update_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request)
+{
+	const config& upload_info = get_info(request);
+	otl_connect& db = db_connection->get();
+	try
+	{
+		boost::optional<pod::addon> addon = retreive_addon_by_id(db, upload_info["id"].to_unsigned());
+		if(!addon)
+		{
+			UMCD_LOG_IP(debug, socket) << "User trying to update an unknown UMC (search by id).";
+			async_send_error(socket, make_error_condition(bad_umc_id));
+		}
+	}
+	catch(const std::exception& e)
+	{
+		UMCD_LOG_IP(fatal, socket) << e.what();
+		async_send_error(socket, make_error_condition(internal_error));
+	}
+}
+
+void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request)
+{
+	const config& upload_info = get_info(request);
+	const config& upload_lang = get_lang(request);
+
+	otl_connect& db = db_connection->get();
+	try
+	{
+		pod::addon addon;
+		addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
+		addon.native_language = retreive_language_by_name(db, upload_lang["native_language"].str()).value;
+		std::string email = upload_info["email"].str();
+		std::string password = upload_info["password"].str();
+		if(email.size() > addon.email.size())
+			async_send_error(socket, make_error_condition(field_too_long), "email");
+		else if(password.size() > addon.password.size())
+			async_send_error(socket, make_error_condition(field_too_long), "password");
+		else
+		{
+			//create_addon()
+		}
+	}
+	catch(const std::exception& e)
+	{
+		UMCD_LOG_IP(fatal, socket) << e.what();
+		async_send_error(socket, make_error_condition(internal_error));
+	}
+}
+
+void request_umc_upload_action::on_db_timeout(const socket_ptr&)
+{
+
+}
+
 void request_umc_upload_action::execute(const socket_ptr& socket, const config& request)
 {
 	UMCD_LOG_IP(trace, socket) << BOOST_CURRENT_FUNCTION;
 
 	if(validate(socket, request, "/request_umc_upload.cfg"))
 	{
-		config upload_info = get_info(request);
-		config upload_lang = get_lang(request);
-		otl_connect &db = database().db();
+		const config& upload_info = get_info(request);
 
-		try
+		// The ID is in the request so we guess the user want to update a UMC.
+		if(upload_info.has_attribute("id"))
 		{
-			// The ID is in the request so we guess the user want to update a UMC.
-			if(upload_info.has_attribute("id"))
-			{
-				boost::optional<pod::addon> addon = retreive_addon_by_id(db, upload_info["id"].to_unsigned());
-				if(!addon)
-				{
-					UMCD_LOG_IP(debug, socket) << "User trying to update an unknown UMC (search by id).";
-					async_send_error(socket, make_error_condition(bad_umc_id));
-				}
-			}
-			// The ID is not in the request. It's a new UMC.
-			else
-			{
-				pod::addon addon;
-				addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
-				addon.native_language = retreive_language_by_name(db, upload_lang["native_language"].str()).value;
-				std::string email = upload_info["email"].str();
-				std::string password = upload_info["password"].str();
-				if(email.size() > addon.email.size())
-					async_send_error(socket, make_error_condition(field_too_long), "email");
-				else if(password.size() > addon.password.size())
-					async_send_error(socket, make_error_condition(field_too_long), "password");
-				else
-				{
-					//create_addon()
-				}
-			}
+			dispatch_query(socket->get_io_service()
+				, boost::bind(&request_umc_upload_action::update_umc, shared_from_this(), _1, socket, request)
+				, boost::bind(&request_umc_upload_action::on_db_timeout, shared_from_this(), socket)
+			);
 		}
-		catch(const std::exception& e)
+		// The ID is not in the request. It's a new UMC.
+		else
 		{
-			UMCD_LOG_IP(fatal, socket) << e.what();
-			async_send_error(socket, make_error_condition(internal_error));
+			dispatch_query(socket->get_io_service()
+				, boost::bind(&request_umc_upload_action::create_umc, shared_from_this(), _1, socket, request)
+				, boost::bind(&request_umc_upload_action::on_db_timeout, shared_from_this(), socket)
+			);
 		}
 	}
 }

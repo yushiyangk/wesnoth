@@ -19,6 +19,8 @@
 #include "serialization/schema_validator.hpp"
 #include <boost/asio.hpp>
 #include <boost/optional.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 class config;
 class otl_connect;
@@ -29,11 +31,14 @@ namespace pod{
 }
 namespace umcd{
 
+class connection_instance;
+
 /** Analyse the request (pbl file) and if it seems correct, tell the client to send
 * the compressed UMC file.
 */
 class request_umc_upload_action 
 : public basic_action_crtp<request_umc_upload_action>
+, public boost::enable_shared_from_this<request_umc_upload_action>
 {
 public:
 	typedef boost::asio::ip::tcp::socket socket_type;
@@ -49,6 +54,10 @@ private:
 	/** Helper to get the language section in the metadata.
 	*/
 	const config& get_lang(const config& metadata);
+
+	void on_db_timeout(const socket_ptr& socket);
+	void update_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request);
+	void create_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request);
 
 	// Database queries.
 	pod::addon_type retreive_addon_type_by_name(otl_connect& db, const std::string& addon_type_name);
