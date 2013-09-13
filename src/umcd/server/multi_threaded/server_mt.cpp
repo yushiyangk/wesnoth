@@ -18,17 +18,16 @@
 #include <boost/make_shared.hpp>
 #include <stdexcept>
 
-server_mt::server_mt(std::size_t threads, const boost::function<void(const socket_ptr&)> &request_handler)
-: base_type(request_handler)
-, thread_pool_size_(threads)
+server_mt::server_mt(std::size_t threads)
+: thread_pool_size_(threads)
 {
 	if(thread_pool_size_ == 0)
 	{
 		thread_pool_size_ = boost::thread::hardware_concurrency();
 		if(thread_pool_size_ == 0)
 		{
-			throw std::runtime_error("Your system doesn't give information about the number of cores available.\n"
-															 "Choose another value than 0 in the \"thread_pool_size\" property.\n");
+			throw std::runtime_error("The system doesn't give information about the number of cores available.\n"
+															 "Can't start the server with 0 thread.");
 		}
 	}
 }

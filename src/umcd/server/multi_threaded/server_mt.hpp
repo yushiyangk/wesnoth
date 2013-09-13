@@ -25,7 +25,7 @@ private:
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 public:
-	server_mt(std::size_t pool_size, const boost::function<void(const socket_ptr&)> &request_handler);
+	server_mt(std::size_t pool_size);
 	void run();
 	std::size_t thread_pool_size() const;
 

@@ -12,8 +12,8 @@
 	See the COPYING file for more details.
 */
 
-#ifndef UMCD_CLIENT_CONNECTION_EVENT_HPP
-#define UMCD_CLIENT_CONNECTION_EVENT_HPP
+#ifndef UMCD_CLIENT_CONNECTION_EVENTS_HPP
+#define UMCD_CLIENT_CONNECTION_EVENTS_HPP
 
 #include "umcd/server/events.hpp"
 #include <boost/asio.hpp>
@@ -62,4 +62,4 @@ struct client_connection_events :
 {};
 
 } // namespace umcd
-#endif // UMCD_CLIENT_CONNECTION_EVENT_HPP
+#endif // UMCD_CLIENT_CONNECTION_EVENTS_HPP

@@ -17,10 +17,9 @@
 #include <boost/make_shared.hpp>
 #include <boost/current_function.hpp>
 
-basic_server::basic_server(const boost::function<void(const socket_ptr&)> &request_handler)
+basic_server::basic_server()
 : io_service_()
 , acceptor_(io_service_)
-, request_handler_(request_handler)
 , server_on_(false)
 {}
 
@@ -33,29 +32,33 @@ void basic_server::start(const std::string& service)
 	tcp::resolver::query query(service, tcp::resolver::query::address_configured);
 	tcp::resolver::iterator endpoint_iter = resolver.resolve(query);
 	tcp::resolver::iterator endpoint_end;
+	tcp::endpoint endpoint;
 
 	for(; endpoint_iter != endpoint_end; ++endpoint_iter)
 	{
 		try
 		{
-			tcp::endpoint endpoint(*endpoint_iter);
+			endpoint = tcp::endpoint(*endpoint_iter);
 			acceptor_.open(endpoint.protocol());
 			acceptor_.bind(endpoint);
 			acceptor_.listen();
-			UMCD_LOG(info) << "The server IP is " << endpoint;
 			break;
 		}
 		catch(std::exception &e)
 		{
-			UMCD_LOG(error) << e.what() << "\n";
+			events_.signal_event<endpoint_failure>(e.what());
 		}
 	}
 	if(endpoint_iter == endpoint_end)
 	{
-		throw std::runtime_error("No endpoints found - Check the status of your network interfaces.\n");
+		events_.signal_event<start_failure>();
 	}
-	server_on_ = true;
-	start_accept();
+	else
+	{
+		server_on_ = true;
+		start_accept();
+		events_.signal_event<start_success>(endpoint);
+	}
 }
 
 void basic_server::run()
@@ -68,11 +71,11 @@ void basic_server::run()
 		}
 		catch(std::exception& e)
 		{
-			UMCD_LOG(error) << "Exception in basic_server::run(): handler shouldn't launch exception! (" << e.what() << ").";
+			events_.signal_event<on_run_exception>(e);
 		}
 		catch(...)
 		{
-			UMCD_LOG(error) << "Exception in basic_server::run(): handler shouldn't launch exception! (this exception doesn't inherit from std::exception).";
+			events_.signal_event<on_run_unknown_exception>();
 		}
 	}
 }
@@ -87,10 +90,9 @@ void basic_server::start_accept()
 
 void basic_server::handle_accept(const socket_ptr& socket, const boost::system::error_code& e)
 {
-	UMCD_LOG_IP_FUNCTION_TRACER(socket);
 	if (!e)
 	{
-		request_handler_(socket);
+		events_.signal_event<on_new_client>(socket);
 	}
 	start_accept();
 }
@@ -101,7 +103,7 @@ void basic_server::handle_stop()
 	io_service_.stop();
 }
 
-boost::asio::io_service& basic_server::io_service()
+boost::asio::io_service& basic_server::get_io_service()
 {
 	return io_service_;
 }
