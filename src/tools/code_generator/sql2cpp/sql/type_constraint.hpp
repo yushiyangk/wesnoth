@@ -21,9 +21,6 @@ namespace sql{
 
 struct base_type_constraint{};
 
-struct unique : base_type_constraint
-{};
-
 struct not_null : base_type_constraint
 {};
 

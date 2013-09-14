@@ -57,6 +57,7 @@ private:
 	QI_RULE_LOC(ast::constraint_ptr(), std::string, constraint_definition);
 	QI_RULE(ast::constraint_ptr(std::string), primary_key_constraint);
 	QI_RULE(ast::constraint_ptr(std::string), foreign_key_constraint);
+	QI_RULE(ast::constraint_ptr(std::string), unique_constraint);
 	QI_RULE(ast::key_references(), reference_definition);
 
 	// Type rules.

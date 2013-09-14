@@ -15,6 +15,8 @@
 #ifndef SQL_PARSER_DEF_HPP
 #define SQL_PARSER_DEF_HPP
 
+// #define BOOST_SPIRIT_DEBUG
+// #define BOOST_SPIRIT_QI_DEBUG
 #include "tools/code_generator/sql2cpp/sql/parser.hpp"
 
 namespace sql{
@@ -68,6 +70,7 @@ grammar<Iterator>::grammar(TokenDef const& tok)
 		= tok.kw_constraint >> tok.identifier [qi::_a = qi::_1] >> 
 		(	primary_key_constraint(qi::_a) 
 		|	foreign_key_constraint(qi::_a)
+		| unique_constraint(qi::_a)
 		) [qi::_val = qi::_1]
 		);
 
@@ -87,6 +90,12 @@ grammar<Iterator>::grammar(TokenDef const& tok)
 				&sa_, qi::_val, qi::_r1, qi::_1, qi::_2)]
 		);
 
+	RULE_DEF(unique_constraint,
+		=	tok.kw_unique >> identifier_list 
+			[phx::bind(&semantic_actions::make_ptr<unique, base_constraint, std::string, ast::id_list>,
+		  &sa_, qi::_val, qi::_r1, qi::_1)]
+		);
+
 	RULE_DEF(reference_definition,
 		%=	tok.kw_references >> tok.identifier >> identifier_list
 		);
@@ -102,7 +111,6 @@ grammar<Iterator>::grammar(TokenDef const& tok)
 	RULE_DEF(type_constraint,
 		=   tok.kw_not_null					[phx::bind(&semantic_actions::make_ptr<not_null, base_type_constraint>, &sa_, qi::_val)]
 		|   tok.kw_auto_increment		[phx::bind(&semantic_actions::make_ptr<auto_increment, base_type_constraint>, &sa_, qi::_val)]
-		|   tok.kw_unique  					[phx::bind(&semantic_actions::make_ptr<unique, base_type_constraint>, &sa_, qi::_val)]
 		|   default_value_constraint[phx::bind(&semantic_actions::make_ptr<default_value, base_type_constraint, std::string>, 
 														&sa_, qi::_val, qi::_1)]
 		);

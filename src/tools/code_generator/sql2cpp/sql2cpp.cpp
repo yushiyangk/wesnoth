@@ -11,7 +11,6 @@
 
 	See the COPYING file for more details.
 */
-//#define BOOST_SPIRIT_QI_DEBUG
 
 #include "tools/code_generator/sql2cpp/sql/lexer.hpp"
 #include "tools/code_generator/sql2cpp/sql/parser.hpp"
@@ -62,12 +61,12 @@ int main(int argc, char* argv[])
 				}
 				else
 				{
-					std::cout << "Generation failed\n";
+					std::cout << "*************	Generation failed\n";
 				}
 			}
 			else
 			{
-				std::cout << "Parsing failed\n";
+				std::cout << "*************	Parsing failed (Enable the debugging by uncommenting BOOST_SPIRIT_QI_DEBUG in parser.tcc)\n";
 			}
 		}
 		catch(const std::exception& e)

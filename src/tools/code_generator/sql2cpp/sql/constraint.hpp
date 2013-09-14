@@ -72,12 +72,25 @@ struct foreign_key : base_constraint_crtp<foreign_key>
 	ast::key_references refs;
 };
 
+struct unique : base_constraint_crtp<unique>
+{
+	typedef base_constraint_crtp<unique> base;
+
+	unique(const std::string& name, const std::vector<std::string>& keys)
+	: base(name)
+	, keys(keys)
+	{}
+
+	std::vector<std::string> keys;
+};
+
 struct constraint_visitor
 {
 	virtual ~constraint_visitor() {}
 
 	virtual void visit(const primary_key&) = 0;
 	virtual void visit(const foreign_key&) = 0;
+	virtual void visit(const unique&) = 0;
 };
 
 template <class constraint_type>
