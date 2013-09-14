@@ -1083,6 +1083,7 @@ set(umcd_SRC
 	umcd/database/database.cpp
 	umcd/database/connection_instance.cpp
 	umcd/database/connection_pool.cpp
+	umcd/database/database_query.cpp
 	umcd/server/basic_server.cpp
 	umcd/server/multi_threaded/server_mt.cpp
 	umcd/logger/logger.cpp

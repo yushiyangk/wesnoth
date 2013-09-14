@@ -24,6 +24,7 @@ connection_instance::connection_instance(connection_pool& pool, std::size_t inst
 
 connection_instance::~connection_instance()
 {
+	get().commit();
 	pool_.notify_release(instance_no_);
 }
 

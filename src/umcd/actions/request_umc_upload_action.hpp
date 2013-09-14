@@ -63,7 +63,7 @@ private:
 	pod::addon_type retreive_addon_type_by_name(otl_connect& db, const std::string& addon_type_name);
 	pod::language retreive_language_by_name(otl_connect& db, const std::string& language_name);
 	boost::optional<pod::addon> retreive_addon_by_id(otl_connect& db, boost::uint32_t id);
-	void add_addon(otl_connect& db, const pod::addon& addon);
+	void add_addon(otl_connect& db, pod::addon& addon);
 };
 
 } // namespace umcd

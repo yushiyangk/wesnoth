@@ -17,6 +17,7 @@
 #include "umcd/protocol/server/error_sender.hpp"
 #include "umcd/logger/asio_logger.hpp"
 #include "umcd/database/database.hpp"
+#include "umcd/database/database_query.hpp"
 #include "umcd/database/connection_instance.hpp"
 #include "umcd/error.hpp"
 #include "umcd/otl/otl.hpp"
@@ -144,7 +145,7 @@ void request_umc_upload_action::update_umc(const boost::shared_ptr<connection_in
 	}
 }
 
-void request_umc_upload_action::add_addon(otl_connect& db, const pod::addon& addon)
+void request_umc_upload_action::add_addon(otl_connect& db, pod::addon& addon)
 {
 	UMCD_LOG_FUNCTION_TRACER();
 	std::string insert_addon_query = "insert into addon (type, email, password, native_language) values("
@@ -153,11 +154,24 @@ void request_umc_upload_action::add_addon(otl_connect& db, const pod::addon& add
 		":password<" + char_array_str(addon.password) + ">,"
 		":native_language<unsigned>)";
 
+	UMCD_LOG(debug) << insert_addon_query;
+
 	otl_stream insert_addon(100
 		, insert_addon_query.c_str()
 		, db);
 
 	insert_addon << addon.type << addon.email << addon.password << addon.native_language;
+
+	// Flush to retreive the last inserted ID.
+	insert_addon.flush();
+
+	otl_stream last_inserted_id(50,
+			database_query::get<query::last_inserted_id>().c_str()
+		, db);
+
+	last_inserted_id >> addon.id;
+
+	UMCD_LOG(debug) << "Last inserted ID: " << addon.id;
 }
 
 void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request)
@@ -172,7 +186,7 @@ void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_in
 		pod::addon addon;
 		addon.native_language = retreive_language_by_name(db, upload_lang["native_language"].str()).value;
 		addon.type = retreive_addon_type_by_name(db, upload_info["type"].str()).value;
-		addon.email = upload_info["email"].str();
+		addon.email = upload_info["email"].str(); 
 		addon.password = upload_info["password"].str();
 		add_addon(db, addon);
 	}
