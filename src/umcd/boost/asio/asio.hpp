@@ -56,7 +56,7 @@ inline std::size_t buffer_size(const BufferSequence& b)
 // #if BOOST_VERSION < 104800
 
 namespace boost{
-namespace asiop{
+namespace asio{
 
 // Workaround for the version where the async_connect free function didn't exist.
 template <class Iterator, class ConnectCondition, class ConnectHandler>
