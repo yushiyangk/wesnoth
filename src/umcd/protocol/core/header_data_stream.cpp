@@ -18,6 +18,8 @@
 #include "config.hpp"
 #include "serialization/parser.hpp"
 
+#include <sstream>
+
 namespace umcd{
 namespace core{
 
