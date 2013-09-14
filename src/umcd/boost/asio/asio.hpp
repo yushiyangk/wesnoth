@@ -53,10 +53,10 @@ inline std::size_t buffer_size(const BufferSequence& b)
 
 #endif
 
-#if BOOST_VERSION < 104800
+// #if BOOST_VERSION < 104800
 
 namespace boost{
-namespace asio{
+namespace asiop{
 
 // Workaround for the version where the async_connect free function didn't exist.
 template <class Iterator, class ConnectCondition, class ConnectHandler>
@@ -65,11 +65,11 @@ void async_connect(boost::asio::ip::tcp::socket& socket,
 				, ConnectCondition /* not_used */
 				, ConnectHandler connect_handler)
 {
-	socket.async_connect(*endpoint_iterator, connect_handler);
+	socket.async_connect(*endpoint_iterator, boost::bind(connect_handler, _1, endpoint_iterator));
 }
 
 }}
 
-#endif
+// #endif
 
 #endif // UMCD_BOOST_ASIO_HPP
