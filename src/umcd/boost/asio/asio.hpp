@@ -53,7 +53,7 @@ inline std::size_t buffer_size(const BufferSequence& b)
 
 #endif
 
-// #if BOOST_VERSION < 104800
+#if BOOST_VERSION < 104800
 
 namespace boost{
 namespace asio{
@@ -70,6 +70,6 @@ void async_connect(boost::asio::ip::tcp::socket& socket,
 
 }}
 
-// #endif
+#endif
 
 #endif // UMCD_BOOST_ASIO_HPP
