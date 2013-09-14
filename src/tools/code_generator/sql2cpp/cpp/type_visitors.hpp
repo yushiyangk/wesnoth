@@ -30,6 +30,7 @@ public:
 	virtual void visit(const sql::type::integer& i);
 	virtual void visit(const sql::type::text&);
 	virtual void visit(const sql::type::date&);
+	virtual void visit(const sql::type::datetime&);
 	virtual void visit(const sql::type::varchar& v);
 
 private:
@@ -44,6 +45,7 @@ struct type2header_visitor : sql::type::type_visitor
 	virtual void visit(const sql::type::integer&);
 	virtual void visit(const sql::type::text&);
 	virtual void visit(const sql::type::date&);
+	virtual void visit(const sql::type::datetime&);
 	virtual void visit(const sql::type::varchar&);
 
 private:

@@ -31,6 +31,7 @@ tokens<Lexer>::tokens()
 	type_varchar = "(?i:varchar)";
 	type_text = "(?i:text)";
 	type_date = "(?i:date)";
+	type_datetime = "(?i:datetime)";
 
 	// Keywords.
 	kw_not_null = "(?i:not +null)";
@@ -69,7 +70,7 @@ tokens<Lexer>::tokens()
 	// The token must be added in priority order.
 	this->self += comma | semi_colon | paren_open | paren_close;
 	this->self += type_smallint | type_int | type_varchar | type_text |
-								type_date;
+								type_date | type_datetime;
 	this->self += kw_not_null | kw_auto_increment | kw_unique | kw_default |
 								kw_create | kw_table | kw_constraint | kw_primary_key | kw_alter |
 								kw_add | kw_unsigned | kw_foreign_key | kw_references;

@@ -28,7 +28,7 @@ struct tokens : lex::lexer<Lexer>
 {
 public:
 	// Tokens with no attributes.
-	lex::token_def<lex::omit> type_smallint, type_int, type_varchar, type_text, type_date;
+	lex::token_def<lex::omit> type_smallint, type_int, type_varchar, type_text, type_date, type_datetime;
 	lex::token_def<lex::omit> kw_not_null, kw_auto_increment, kw_unique, kw_default, kw_create,
 		kw_table, kw_constraint, kw_primary_key, kw_alter, kw_add, kw_unsigned, kw_foreign_key,
 		kw_references;

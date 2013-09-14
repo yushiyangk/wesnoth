@@ -46,6 +46,11 @@ void type2string_visitor::visit(const sql::type::text&)
 
 void type2string_visitor::visit(const sql::type::date&)
 {
+	res_ = "boost::gregorian::date";
+}
+
+void type2string_visitor::visit(const sql::type::datetime&)
+{
 	res_ = "boost::posix_time::ptime";
 }
 
@@ -76,6 +81,11 @@ void type2header_visitor::visit(const sql::type::text&)
 }
 
 void type2header_visitor::visit(const sql::type::date&)
+{
+	res_ = "#include <boost/date_time/gregorian/gregorian.hpp>";
+}
+
+void type2header_visitor::visit(const sql::type::datetime&)
 {
 	res_ = "#include <boost/date_time/posix_time/posix_time.hpp>";
 }

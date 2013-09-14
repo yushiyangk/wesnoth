@@ -117,6 +117,7 @@ grammar<Iterator>::grammar(TokenDef const& tok)
 														[phx::bind(&semantic_actions::make_ptr<type::varchar, type::base_type, std::size_t>, &sa_, qi::_val, qi::_1)]
 		|   tok.type_text 			[phx::bind(&semantic_actions::make_ptr<type::text, type::base_type>, &sa_, qi::_val)]
 		|   tok.type_date			  [phx::bind(&semantic_actions::make_ptr<type::date, type::base_type>, &sa_, qi::_val)]
+		|		tok.type_datetime		[phx::bind(&semantic_actions::make_ptr<type::datetime, type::base_type>, &sa_, qi::_val)]
 		);
 
 	RULE_DEF(numeric_type,

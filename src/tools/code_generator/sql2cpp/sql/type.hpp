@@ -62,6 +62,9 @@ struct text : base_type_crtp<text>
 struct date : base_type_crtp<date>
 {};
 
+struct datetime : base_type_crtp<datetime>
+{};
+
 struct varchar : base_type_crtp<varchar>
 {
 	std::size_t length;
@@ -78,6 +81,7 @@ struct type_visitor
 	virtual void visit(const integer&) = 0;
 	virtual void visit(const text&) = 0;
 	virtual void visit(const date&) = 0;
+	virtual void visit(const datetime&) = 0;
 	virtual void visit(const varchar&) = 0;
 };
 
