@@ -26,6 +26,7 @@
 #include "umcd/pod/addon_type.hpp"
 #include "umcd/pod/language.hpp"
 #include "umcd/pod/addon.hpp"
+#include "umcd/pod/addon_version.hpp"
 
 namespace umcd{
 
@@ -174,6 +175,48 @@ void request_umc_upload_action::add_addon(otl_connect& db, pod::addon& addon)
 	UMCD_LOG(debug) << "Last inserted ID: " << addon.id;
 }
 
+void request_umc_upload_action::add_addon_version(otl_connect& db, pod::addon_version& addon_version)
+{
+	UMCD_LOG_FUNCTION_TRACER();
+	std::string insert_addon_version_query = 
+		"insert into addon_version (name, description, version, translatable, path_to_addon_data, "
+											 "upload_date, uploader_ip, downloads) "
+		"values(:name<" + char_array_str(addon_version.name) + ">,"
+					 ":description<" + char_array_str(addon_version.description) + ">,"
+					 ":version<" + char_array_str(addon_version.version) + ">,"
+					 ":translatable<unsigned>,"
+					 ":path_to_addon_data<" + char_array_str(addon_version.path_to_addon_data) + ">,"
+					 ":upload_date<timestamp>,"
+					 ":uploader_ip<" + char_array_str(addon_version.uploader_ip) + ">,"
+					 ":downloads<unsigned>)";
+
+	UMCD_LOG(debug) << insert_addon_version_query;
+
+	otl_stream insert_addon_version(100
+		, insert_addon_version_query.c_str()
+		, db);
+
+	insert_addon_version << addon_version.name
+			<< addon_version.description
+			<< addon_version.version
+			<< addon_version.translatable
+			<< addon_version.path_to_addon_data
+			<< addon_version.upload_date
+			<< addon_version.uploader_ip
+			<< addon_version.downloads;
+
+	// Flush to retreive the last inserted ID.
+	insert_addon_version.flush();
+
+	otl_stream last_inserted_id(50,
+			database_query::get<query::last_inserted_id>().c_str()
+		, db);
+
+	last_inserted_id >> addon_version.id;
+
+	UMCD_LOG(debug) << "Last inserted ID: " << addon_version.id;
+}
+
 void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_instance>& db_connection, const socket_ptr& socket, const config& request)
 {
 	UMCD_LOG_IP_FUNCTION_TRACER(socket);
@@ -189,6 +232,16 @@ void request_umc_upload_action::create_umc(const boost::shared_ptr<connection_in
 		addon.email = upload_info["email"].str(); 
 		addon.password = upload_info["password"].str();
 		add_addon(db, addon);
+		pod::addon_version addon_version;
+		addon_version.name = upload_info["name"].str();
+		addon_version.description = upload_info["description"].str();
+		addon_version.version = upload_info["version"].str();
+		addon_version.translatable = upload_info["translatable"].to_unsigned();
+		addon_version.path_to_addon_data = "not implemented yet";
+		addon_version.upload_date = boost::posix_time::second_clock::universal_time();
+		addon_version.uploader_ip = socket->remote_endpoint().address().to_string();
+		addon_version.downloads = 0;
+		add_addon_version(db, addon_version); 
 	}
 	catch(const std::exception& e)
 	{

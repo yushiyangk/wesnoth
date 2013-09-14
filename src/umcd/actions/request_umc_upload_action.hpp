@@ -27,6 +27,7 @@ class otl_connect;
 namespace pod{
 	struct addon;
 	struct addon_type;
+	struct addon_version;
 	struct language;
 }
 namespace umcd{
@@ -64,6 +65,7 @@ private:
 	pod::language retreive_language_by_name(otl_connect& db, const std::string& language_name);
 	boost::optional<pod::addon> retreive_addon_by_id(otl_connect& db, boost::uint32_t id);
 	void add_addon(otl_connect& db, pod::addon& addon);
+	void add_addon_version(otl_connect& db, pod::addon_version& addon_version);
 };
 
 } // namespace umcd
