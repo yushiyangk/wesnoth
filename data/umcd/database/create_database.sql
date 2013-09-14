@@ -30,8 +30,9 @@ CREATE TABLE addon (
     
 CREATE TABLE addon_type (
   value int unsigned NOT NULL AUTO_INCREMENT,
-  name varchar(50) NOT NULL UNIQUE,
-  CONSTRAINT pk_AddonType PRIMARY KEY (value)
+  name varchar(50) NOT NULL,
+  CONSTRAINT pk_AddonType PRIMARY KEY (value),
+  CONSTRAINT unique_AddonType_Name UNIQUE (name) 
 );
 
 -- ---
@@ -41,8 +42,9 @@ CREATE TABLE addon_type (
 
 CREATE TABLE author (
   id int unsigned NOT NULL AUTO_INCREMENT,
-  name varchar(100) NOT NULL UNIQUE,
-  CONSTRAINT pk_Author PRIMARY KEY (id)
+  name varchar(100) NOT NULL,
+  CONSTRAINT pk_Author PRIMARY KEY (id),
+  CONSTRAINT unique_Author_Name UNIQUE (name) 
 );
 
 -- ---
@@ -71,7 +73,8 @@ CREATE TABLE addon_version (
   upload_date datetime NOT NULL,
   uploader_ip varchar(50) NOT NULL,
   downloads int unsigned NOT NULL,
-  CONSTRAINT pk_AddonVersion PRIMARY KEY (id)
+  CONSTRAINT pk_AddonVersion PRIMARY KEY (id),
+  CONSTRAINT unique_AddonVersion_NameVersion UNIQUE(name, version)
 );
 
 -- ---
@@ -81,7 +84,7 @@ CREATE TABLE addon_version (
     
 CREATE TABLE historic (
   main_addon int unsigned NOT NULL AUTO_INCREMENT,
-  addon_version varchar(50) NOT NULL,
+  addon_version int unsigned NOT NULL,
   CONSTRAINT pk_Historic PRIMARY KEY (main_addon, addon_version)
 );
 
@@ -104,8 +107,9 @@ CREATE TABLE dependencies (
     
 CREATE TABLE language (
   value int unsigned NOT NULL AUTO_INCREMENT,
-  name varchar(50) NOT NULL UNIQUE,
-  CONSTRAINT pk_Language PRIMARY KEY (value)
+  name varchar(50) NOT NULL,
+  CONSTRAINT pk_Language PRIMARY KEY (value),
+  CONSTRAINT unique_Language_Name UNIQUE(name)
 );
 
 -- ---
@@ -117,12 +121,13 @@ CREATE TABLE translation (
   id int unsigned NOT NULL AUTO_INCREMENT,
   language int unsigned NOT NULL,
   translated_addon int unsigned NOT NULL,
-  path_to_po_file varchar(512) NOT NULL UNIQUE,
+  path_to_po_file varchar(512) NOT NULL,
   fuzzy int unsigned NOT NULL,
   translated int unsigned NOT NULL,
   untranslated int unsigned NOT NULL,
   upload_date datetime NOT NULL,
-  CONSTRAINT pk_Translation PRIMARY KEY (id)
+  CONSTRAINT pk_Translation PRIMARY KEY (id),
+  CONSTRAINT unique_Translation_path_to_po_file UNIQUE (path_to_po_file) 
 );
 
 -- Foreign keys
