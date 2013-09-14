@@ -15,6 +15,7 @@
 #ifndef UMCD_CLIENT_HPP
 #define UMCD_CLIENT_HPP
 
+#include "umcd/boost/asio/asio.hpp"
 #include "umcd/client/client_connection_events.hpp"
 #include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
@@ -49,6 +50,9 @@ public:
 				boost::asio::placeholders::iterator));
 	}
 
+	/** The event try_connecting_with_ip will only be trigerred if the Boost version is 
+	* greater or equal than 1.48.
+	*/
 	template <class Event, class F>
 	boost::signals2::connection on_event(F f)
 	{
@@ -96,7 +100,7 @@ private:
 	}
 
 	void handle_connect(const boost::system::error_code& error,
-			resolver_type::iterator)
+			resolver_type::iterator /* do not use with Boost < 1.48 */)
 	{
 		if (!error)
 		{
