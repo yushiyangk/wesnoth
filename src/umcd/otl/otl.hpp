@@ -67,4 +67,22 @@ otl_stream& operator<<(otl_stream& s, boost::array<char, N>& a)
 	return s << a.elems;
 }
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+// Add specialization for the boost::posix_time::ptime to otl_datetime struct.
+template <class OTLStream>
+OTLStream& operator<<(OTLStream& stream, const boost::posix_time::ptime& time)
+{
+	otl_datetime tm;
+
+  tm.year = time.date().year();
+  tm.month = time.date().month();
+  tm.day = time.date().day();
+  tm.hour = time.time_of_day().hours();
+  tm.minute = time.time_of_day().minutes();
+  tm.second = time.time_of_day().seconds();
+
+  stream << tm;
+  return stream;
+}
+
 #endif // UMCD_OTL_HPP
