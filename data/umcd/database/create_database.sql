@@ -66,12 +66,11 @@ CREATE TABLE addon_version (
   name varchar(256) NOT NULL,
   description text NOT NULL,
   version varchar(50) NOT NULL,
-  translation int unsigned NOT NULL,
+  translatable int unsigned NOT NULL,
   path_to_addon_data varchar(512) NOT NULL,
-  upload_date date NOT NULL,
+  upload_date datetime NOT NULL,
   uploader_ip varchar(50) NOT NULL,
   downloads int unsigned NOT NULL,
-  uploads int unsigned NOT NULL,
   CONSTRAINT pk_AddonVersion PRIMARY KEY (id)
 );
 
@@ -122,7 +121,7 @@ CREATE TABLE translation (
   fuzzy int unsigned NOT NULL,
   translated int unsigned NOT NULL,
   untranslated int unsigned NOT NULL,
-  upload_date date NOT NULL,
+  upload_date datetime NOT NULL,
   CONSTRAINT pk_Translation PRIMARY KEY (id)
 );
 
