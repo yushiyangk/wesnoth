@@ -45,7 +45,7 @@ boost::shared_ptr<header_mutable_buffer::receiver_type> header_mutable_buffer::m
 	return receiver;
 }
 
-void header_mutable_buffer::make_metadata_buffer(events_subscriber_view<transfer_events>)
+void header_mutable_buffer::make_metadata_buffer(events_subscriber_view<transfer_events>&)
 {
 	on_chunk_event_.disconnect();
 	// Retreive the size and check if it's good.
