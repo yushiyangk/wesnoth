@@ -40,6 +40,11 @@ public:
 		base_type::async_transfer();
 	}
 
+	void async_send(const boost::posix_time::time_duration &timeout)
+	{
+		base_type::async_transfer(timeout);
+	}
+
 	/**
 	* @param socket Send data to this socket.
 	* @param buffer_provider Provide buffer to send data from.

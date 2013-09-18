@@ -44,8 +44,7 @@ public:
 	* The data sent will be the header passed to the constructor.
 	*/
 	boost::shared_ptr<sender_type> make_sender(const socket_ptr& socket);
-
-	const header_data& data() const;
+	
 private:
 	header_data header_;
 };

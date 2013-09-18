@@ -40,6 +40,12 @@ public:
 		base_type::async_transfer();
 	}
 
+	void async_receive(const boost::posix_time::time_duration &timeout)
+	{
+		base_type::async_transfer(timeout);
+	}
+
+
 	/**
 	* @param socket Receive data from this socket.
 	* @param buffer_provider Provide buffer to receive data in.

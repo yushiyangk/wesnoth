@@ -34,9 +34,4 @@ boost::shared_ptr<header_const_buffer::sender_type> header_const_buffer::make_se
 	return boost::make_shared<sender_type>(boost::cref(socket), boost::cref(this->shared_from_this()));
 }
 
-const header_data& header_const_buffer::data() const
-{
-	return header_;
-}
-
 }} // namespace umcd::core

@@ -16,6 +16,7 @@
 #define UMCD_TRANSFER_EVENTS_HPP
 
 #include "umcd/server/events.hpp"
+#include "umcd/server/events_subscriber_view.hpp"
 #include <boost/system/error_code.hpp>
 
 struct transfer_complete{};
@@ -55,7 +56,7 @@ struct transfer_events;
 template <>
 struct event_slot<chunk_complete>
 {
-	typedef void type(transfer_events&);
+	typedef void type(events_subscriber_view<transfer_events>);
 };
 
 struct transfer_events

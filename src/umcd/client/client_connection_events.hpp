@@ -31,7 +31,7 @@ struct connection_failure{};
 template <>
 struct event_slot<umcd::try_connecting_with_ip>
 {
-	/** Notify the fact that the client is trying to connect the server with a specific ip.
+	/** Notify that the client is trying to connect the server with a specific ip.
 	*/
 	typedef void type(const std::string&);
 };
@@ -39,7 +39,7 @@ struct event_slot<umcd::try_connecting_with_ip>
 template <>
 struct event_slot<umcd::connection_success>
 {
-	/** Notify the fact that the client is connected to the server with the ip passed in the arguments.
+	/** Notify that the client is connected to the server with the socket passed in the arguments.
 	*/
 	typedef void type(const boost::shared_ptr<boost::asio::ip::tcp::socket>&);
 };
@@ -47,7 +47,7 @@ struct event_slot<umcd::connection_success>
 template <>
 struct event_slot<umcd::connection_failure>
 {
-	/** Notify the fact that an error occured and thus the client cannot connect to this server.
+	/** Notify that an error occurred and thus the client cannot connect to this server.
 	*/
 	typedef void type(const boost::system::error_code&);
 };

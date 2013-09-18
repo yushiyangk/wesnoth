@@ -55,7 +55,7 @@ private:
 	* We can read the metadata before we get the payload and thus know how much
 	* data there are to read.
 	*/
-	void make_metadata_buffer(transfer_events& ev);
+	void make_metadata_buffer(events_subscriber_view<transfer_events>);
 
 	boost::signals2::connection on_chunk_event_;
 	header_data header_;

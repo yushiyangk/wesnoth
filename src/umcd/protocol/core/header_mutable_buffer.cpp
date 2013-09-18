@@ -45,14 +45,14 @@ boost::shared_ptr<header_mutable_buffer::receiver_type> header_mutable_buffer::m
 	return receiver;
 }
 
-void header_mutable_buffer::make_metadata_buffer(transfer_events& ev)
+void header_mutable_buffer::make_metadata_buffer(events_subscriber_view<transfer_events>)
 {
 	on_chunk_event_.disconnect();
 	// Retreive the size and check if it's good.
 	header_.payload_size = ntohl(header_.payload_size);
 	if(header_.payload_size > header_max_size_)
 	{
-		ev.signal_event<transfer_error>(make_error_code(request_header_too_large));
+		throw boost::system::system_error(make_error_code(request_header_too_large));
 	}
 	else
 	{
