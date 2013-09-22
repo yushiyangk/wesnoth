@@ -45,6 +45,9 @@ public:
 	*/
 	virtual void execute(const socket_ptr& socket, const config& request) = 0;
 
+	/** Validate the request with a WML schema. If the request is not valid, we send an error.
+	* @return true if the request is valid, otherwise false.
+	*/
 	virtual bool validate(const socket_ptr& socket, const config& request, const std::string& validation_filename);
 
 	/** Create an action of the current sub-type.

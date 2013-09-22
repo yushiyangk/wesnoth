@@ -25,10 +25,18 @@ class database_info;
 class database
 {
 public:
+	/** Asynchronous wait for an available connection if none are available.
+	* If one is available the dispatch method is called on io_service.
+	* @param query is the function to call with the connection when it will be available.
+	* @param on_timeout is the function to call when a timeout will be triggered.
+	* @note We call query or on_timeout but not both.
+	*/
 	void dispatch_query(boost::asio::io_service &io_service
 		, connection_pool::query_function_type query
 		, connection_pool::timeout_function_type on_timeout);
 
+	/** Initialized the static member in the database.
+	*/
 	static void init_db(const database_info& db_info);
 
 private:
@@ -40,6 +48,12 @@ private:
 	static boost::shared_ptr<connection_pool> connection_pool_;
 };
 
+/** Asynchronous wait for an available connection if none are available.
+* If one is available the dispatch method is called on io_service.
+* @param query is the function to call with the connection when it will be available.
+* @param on_timeout is the function to call when a timeout will be triggered.
+* @note We call query or on_timeout but not both.
+*/
 void dispatch_query(boost::asio::io_service &io_service
 	, connection_pool::query_function_type query
 	, connection_pool::timeout_function_type on_timeout);

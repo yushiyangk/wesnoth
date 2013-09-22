@@ -20,6 +20,7 @@
 
 /** Provide an access to buffer and the *known* size to transfer.
 * Meaning that this size can rise.
+* You must inherit from this class.
 */
 template <class Buffer>
 class buffer_provider : public boost::enable_shared_from_this<buffer_provider<Buffer> >

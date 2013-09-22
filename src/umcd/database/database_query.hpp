@@ -27,6 +27,9 @@ enum db_query_type
 };
 }
 
+/** Record each query that are specific to a database.
+* These queries are accessed with the db_query_type enumeration.
+*/
 class database_query
 {
 public:

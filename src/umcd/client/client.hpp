@@ -33,12 +33,16 @@ public:
 	typedef boost::asio::ip::tcp::socket socket_type;
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
+	/** Build the client with a io_service, it doesn't launch anything.
+	*/
 	client(boost::asio::io_service &io_service)
 	: io_service_(io_service)
 	, socket_(boost::make_shared<socket_type>(boost::ref(io_service_)))
 	, resolver_(io_service_)
 	{}
 
+	/** Asynchronous connection to the specified (host, service) couple.
+	*/
 	void async_connect(const std::string& host, const std::string& service)
 	{
 		// Start an asynchronous resolve to translate the server and service names
@@ -50,7 +54,9 @@ public:
 				boost::asio::placeholders::iterator));
 	}
 
-	/** The event try_connecting_with_ip will only be trigerred if the Boost version is 
+	/** Add an event to the current object.
+  * @pre Event must be an event of the client_connection_events class.
+	* @note The event try_connecting_with_ip will only be trigerred if the Boost version is 
 	* greater or equal than 1.48.
 	*/
 	template <class Event, class F>
@@ -59,12 +65,18 @@ public:
 		return events_.on_event<Event>(f);
 	}
 
+	/**
+	* @return the current socket.
+	*/
 	socket_ptr socket()
 	{
 		return socket_;
 	}
 
 private:
+	/**
+	* @return the ip address of the endpoint endpoint.
+	*/
 	std::string ip_address(const boost::asio::ip::tcp::endpoint &endpoint)
 	{
 		return endpoint.address().to_string()
@@ -72,6 +84,10 @@ private:
 				+ boost::lexical_cast<std::string>(endpoint.port());
 	}
 
+	/** If (!error), then we signal that we are trying to connect with a specific IP.
+	* (try_connecting_with_ip event).
+	* @return the same endpoint_iterator passed in paramater.
+	*/
 	resolver_type::iterator before_connect(
     const boost::system::error_code& error,
     resolver_type::iterator endpoint_iterator)
@@ -83,6 +99,9 @@ private:
 		return endpoint_iterator;
 	}
 
+	/** If we found a good endpoint, we asynchronously try to connect to it.
+	* @note If an error occurred, we signal the event connection_failure.
+	*/
 	void handle_resolve(const boost::system::error_code& error,
 			resolver_type::iterator endpoint_iterator)
 	{
@@ -99,6 +118,9 @@ private:
 		}
 	}
 
+	/** If we successfully connect to the endpoint, we signal the event
+	*	connection_success. Otherwise we signal the event connection_failure.
+	*/
 	void handle_connect(const boost::system::error_code& error,
 			resolver_type::iterator /* do not use with Boost < 1.48 */)
 	{

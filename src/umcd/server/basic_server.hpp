@@ -28,11 +28,29 @@ public:
 	typedef boost::shared_ptr<socket_type> socket_ptr;
 
 public:
+	/** Initialize the server.
+	* @post The server is not launched.
+	*/
 	basic_server();
+
+	/** We asynchronously start the server by trying to connect the specified service.
+	* @note Nothing is done until run is called.
+	*/
 	void start(const std::string& service);
+
+	/** The main boucle of the server is launched.
+	* @note run doesn't return.
+	*/
 	void run();
+
+	/**
+	* @return the io_service associated with this server.
+	*/
 	boost::asio::io_service& get_io_service();
 
+	/** Add an event to the current object.
+  * @pre Event must be an event of the server_events class.
+	*/
 	template <class Event, class F>
 	boost::signals2::connection on_event(F f)
 	{

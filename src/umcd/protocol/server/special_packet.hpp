@@ -20,8 +20,15 @@
 class config;
 
 namespace umcd{
-	
+
+/**
+* @return a ready-to-send packet containing the error described in message.
+*/
 config make_error_packet(const std::string& message);
+
+/**
+* @return a ready-to-send packet containing the warning described in message.
+*/
 config make_warning_packet(const std::string& message);
 
 } // namespace umcd

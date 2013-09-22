@@ -47,17 +47,26 @@ private:
 		, const boost::system::error_code& error);
 
 public:
+	/** Create a pool of size pool_size.
+	* @param wait_connection_timeout is the timeout to wait for a connection.
+	* @connect_str is the string describing the connection, look at the doc of OTL for the exact format.
+	*/
 	connection_pool(std::size_t pool_size
 		, boost::posix_time::time_duration wait_connection_timeout
 		, const std::string& connect_str);
 
 	/** Asynchronous wait for an available connection if none are available.
 	* If one is available the dispatch method is called on io_service.
+	* @param query is the function to call with the connection when it will be available.
+	* @param on_timeout is the function to call when a timeout will be triggered.
+	* @note We call query or on_timeout but not both.
 	*/
 	void dispatch_query(boost::asio::io_service &io_service
 		, query_function_type query
 		, timeout_function_type on_timeout);
 
+	/** Disconnect every connection to the database.
+	*/
 	~connection_pool();
 
 private:

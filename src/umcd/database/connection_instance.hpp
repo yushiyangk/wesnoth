@@ -28,8 +28,17 @@ private:
 	friend class connection_pool;
 
 public:
+	/** Create a connection instance that manage the connection number instance_no.
+	*/
 	connection_instance(connection_pool& pool, std::size_t instance_no);
+
+	/** Commit all changes done and release the connection.
+	*/
 	~connection_instance();
+	
+	/**
+	* @return the OTL connection.
+	*/
 	otl_connect& get();
 	
 private:

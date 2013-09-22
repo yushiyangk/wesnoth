@@ -56,7 +56,7 @@ struct transfer_events;
 template <>
 struct event_slot<chunk_complete>
 {
-	typedef void type(events_subscriber_view<transfer_events>&);
+	typedef void type(events_subscriber_view<transfer_events>);
 };
 
 struct transfer_events
