@@ -116,7 +116,13 @@ bool show_debug_clock_button = false;
 static bool hotkey(twindow& window, const ttitle_screen::tresult result)
 {
 	window.set_retval(static_cast<twindow::tretval>(result));
+	return true;
+}
 
+// Alessandro Pira: Android hotkey SEGFAULT fix
+static bool hotkey_ttip(ttitle_screen *obj, twindow& window, const bool previous)
+{
+	obj->update_tip(window, previous);
 	return true;
 }
 
@@ -212,6 +218,8 @@ void ttitle_screen::post_build(CVideo& video, twindow& window)
 					, boost::ref(window)
 					, EDIT_PREFERENCES));
 
+// Alessandro Pira: Android hotkey SEGFAULT fix
+/*
 	static const boost::function<void()> next_tip_wrapper = boost::bind(
 			  &ttitle_screen::update_tip
 			, this
@@ -233,6 +241,9 @@ void ttitle_screen::post_build(CVideo& video, twindow& window)
 			, boost::bind(function_wrapper<bool, boost::function<void()> >
 				, true
 				, boost::cref(previous_tip_wrapper)));
+*/
+	window.register_hotkey(hotkey::TITLE_SCREEN__PREVIOUS_TIP , boost::bind(&hotkey_ttip, this, boost::ref(window), true));
+	window.register_hotkey(hotkey::TITLE_SCREEN__NEXT_TIP , boost::bind(&hotkey_ttip, this, boost::ref(window), false));
 
 	window.register_hotkey(hotkey::TITLE_SCREEN__TUTORIAL
 				, boost::bind(

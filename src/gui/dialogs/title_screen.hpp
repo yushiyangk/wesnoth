@@ -71,6 +71,16 @@ public:
 			                       */
 			};
 
+	// Alessandro Pira: Android hotkey SEGFAULT fix
+	/**
+	 * Updates the tip of day widget.
+	 *
+	 * @param window              The window being shown.
+	 * @param previous            Show the previous tip, else shows the next
+	 *                            one.
+	 */
+	void update_tip(twindow& window, const bool previous);
+
 private:
 
 	/** Inherited from tdialog, implemented by REGISTER_DIALOG. */
@@ -87,15 +97,6 @@ private:
 
 	/** Holds the debug clock dialog. */
 	tpopup* debug_clock_;
-
-	/**
-	 * Updates the tip of day widget.
-	 *
-	 * @param window              The window being shown.
-	 * @param previous            Show the previous tip, else shows the next
-	 *                            one.
-	 */
-	void update_tip(twindow& window, const bool previous);
 
 	/** Shows the debug clock. */
 	void show_debug_clock_window(CVideo& video);
