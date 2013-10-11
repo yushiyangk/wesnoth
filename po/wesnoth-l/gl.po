@@ -4,13 +4,13 @@
 # Proxecto Trasno http://trasno.net
 #
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2007, 2008.
-# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2010, 2012.
+# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2010, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Wesnoth\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-05-05 11:23+0200\n"
-"PO-Revision-Date: 2012-07-08 03:41+0200\n"
+"POT-Creation-Date: 2013-07-28 18:25+0200\n"
+"PO-Revision-Date: 2013-08-17 00:35+0200\n"
 "Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -25,7 +25,7 @@ msgstr ""
 "com>\n"
 "com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
 #. [campaign]: id=Liberty
 #. Yes, that is "marchlanders", not "marshlanders".
@@ -102,7 +102,7 @@ msgstr ""
 "Coa sombra da guerra civil estendéndose polo Reino do Noroeste, un grupo de "
 "habitantes da fronteira decide rebelarse contra a tiranía da raíña Axevier. "
 "Para conseguir a súa liberdade, deberán enfrontarse non só a soldados "
-"adestrados de Wesnoth, senón tamén a orcos ou non mortos.\n"
+"adestrados do Reino do Noroeste, senón tamén a orcos e non mortos.\n"
 "\n"
 
 #. [about]
@@ -146,7 +146,7 @@ msgstr ""
 "As xentes das poboacións fronteirizas de Dilgüin e Deilben, na provincia de "
 "Anubin, estaban cada días máis descontentas con Gárar II, o seu rei. O reino "
 "vivía tempos difíciles, e a súa maxestade, preocupada polas grandes guerras, "
-"non enviaba homes abondo para protexer a fronteira."
+"non enviaba homes dabondo para protexer a fronteira."
 
 #. [part]
 #: data/campaigns/Liberty/scenarios/01_The_Raid.cfg:27
@@ -181,7 +181,7 @@ msgid ""
 msgstr ""
 "Despois de conseguir que asasinaran ao seu marido, a raíña Axevier enseguida "
 "se preocupou de facer todo canto estivese nas súas mans para consolidar o "
-"seu poder. Os seus exércitos marcharon por todo o reino, itimidando aos "
+"seu poder. Os seus exércitos marcharon por todo o reino, intimidando aos "
 "gobernantes provinciais, para así asegurar a continuidade do seu reinado."
 
 #. [part]
@@ -459,7 +459,7 @@ msgstr "Iasquen"
 #. [message]: speaker=Wolmas
 #: data/campaigns/Liberty/scenarios/01_The_Raid.cfg:378
 msgid "What’s happening here? Why are you running like mad, $unit.name|?"
-msgstr "Que foi, a que veñen esas prisas, $unit.name|?"
+msgstr "Que foi, a que veñen esas présas, $unit.name|?"
 
 #. [message]: speaker=unit
 #: data/campaigns/Liberty/scenarios/01_The_Raid.cfg:382
@@ -500,14 +500,14 @@ msgstr ""
 msgid "Civil Disobedience"
 msgstr "Desobediencia civil"
 
-#. [side]: type=Highwayman, id=Baldras
 #. [side]: type=Bandit, id=Baldras
-#. [side]: type=Highwayman_Peasant, id=Relana
 #. [side]: type=Rogue, id=Hans
-#. [side]: type=Bandit_Peasant, id=Baldras
-#. [side]
-#. [side]: type=General, id=Lord Maddock
+#. [side]: type=Highwayman, id=Baldras
 #. [side]: type=Shadow Lord, id=Helicrom
+#. [side]
+#. [side]: type=Bandit_Peasant, id=Baldras
+#. [side]: type=General, id=Lord Maddock
+#. [side]: type=Highwayman_Peasant, id=Relana
 #: data/campaigns/Liberty/scenarios/02_Civil_Disobedience.cfg:36
 #: data/campaigns/Liberty/scenarios/02_Civil_Disobedience.cfg:68
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:32
@@ -530,13 +530,13 @@ msgstr "Rebeldes"
 msgid "Tarwen"
 msgstr "Targüen"
 
-#. [side]: type=Royal Guard, id=Archarel
-#. [side]: type=Iron Mauler, id=Linneus
 #. [side]: type=Master Bowman, id=Quentin
 #. [side]
+#. [side]: type=General, id=Dommel
 #. [side]: type=Cavalier, id=Tarwen
 #. [side]: type=General, id=Kestrel
-#. [side]: type=General, id=Dommel
+#. [side]: type=Royal Guard, id=Archarel
+#. [side]: type=Iron Mauler, id=Linneus
 #: data/campaigns/Liberty/scenarios/02_Civil_Disobedience.cfg:50
 #: data/campaigns/Liberty/scenarios/04_Unlawful_Orders.cfg:86
 #: data/campaigns/Liberty/scenarios/05_Hide_and_Seek.cfg:55
@@ -693,11 +693,11 @@ msgstr "Relana"
 msgid "Urk Delek"
 msgstr "Urdeleque"
 
-#. [side]: type=Orcish Warrior, id=Urk Delek
-#. [side]: type=Saurian Oracle, id=Thhsthss
 #. [side]: type=Necromancer, id=Mal-Jarrof
 #. [side]: type=Necromancer, id=Mal-Jerod
 #. [side]: type=Lich, id=Sel-Mana
+#. [side]: type=Orcish Warrior, id=Urk Delek
+#. [side]: type=Saurian Oracle, id=Thhsthss
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:92
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:114
 #: data/campaigns/Liberty/scenarios/06_The_Grey_Woods.cfg:107
@@ -746,9 +746,9 @@ msgid ""
 "leader was no man I had ever seen in Annuvin province before. Never has one "
 "been sent out here as a patrol captain who was so ruthless and cruel."
 msgstr ""
-"Creo que non comprendes a gravedade da situación. Atacamos a unha patrulla "
+"Creo que non comprendes a gravidade da situación. Atacamos a unha patrulla "
 "do exército do Noroeste. E o home que enviaron liderando a patrulla… xamais "
-"enviara o reino a unha persoa tan cruel e despiadada a estar terras."
+"enviara o reino a unha persoa tan cruel e desapiadada a estar terras."
 
 #. [message]: speaker=Harper
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:190
@@ -823,7 +823,7 @@ msgstr ""
 #. [message]: speaker=Thhsthss
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:228
 msgid "Fal Khag is nothing to usss, orc. You promissed uss gold. Bright gold."
-msgstr "Falcago non noss importa, orco. Prometéchesnoss ouro."
+msgstr "Falcago non nos importa, orco. Prometíchesnos ouro."
 
 #. [message]: speaker=Urk Delek
 #: data/campaigns/Liberty/scenarios/03_A_Strategy_Of_Hope.cfg:232
@@ -848,7 +848,7 @@ msgid ""
 "Can the darkest rumors be true, then? Does the Kingdom— Does Queen "
 "Asheviere... send orcs against her own people?"
 msgstr ""
-"Serán entón certos os rumores sobre a raína? Que Axevier envía orcos contra "
+"Serán entón certos os rumores sobre a raíña? Que Axevier envía orcos contra "
 "o seu propio pobo?"
 
 #. [message]: speaker=Relana
@@ -1036,7 +1036,7 @@ msgid ""
 "adversaries of Baldras and his allies..."
 msgstr ""
 "Coa posta de sol, a aparencia humana dos adversarios de Baldrás e os seus "
-"aliados foi desaparecendo, e cobraron novas e horribles formas…"
+"aliados foi desaparecendo, e cobraron novas e horríbeis formas…"
 
 #. [message]: speaker=Harper
 #: data/campaigns/Liberty/scenarios/04_Unlawful_Orders.cfg:569
@@ -1170,7 +1170,7 @@ msgid ""
 "his men traveled unseen along the swampy banks of the Great River to the "
 "city of Carcyn."
 msgstr ""
-"Perseguidos implacablemente por xinetes que patrullaban o camiño a "
+"Perseguidos implacabelmente por xinetes que patrullaban o camiño a "
 "Elensefar, Baldrás e os seus homes viaxaron sen ser vistos polas brañas do "
 "Gran Río cara a cidade de Corsin."
 
@@ -1189,7 +1189,7 @@ msgid ""
 "I’m not sure where we’re supposed to go now. If we go into town we can start "
 "asking around for information."
 msgstr ""
-"Non teño claro onde ir agora. Se fosemos á vila poderiamos recabar "
+"Non teño claro onde ir agora. Se fósemos á vila poderiamos recompilar "
 "información."
 
 # Un nome caralludo :)
@@ -1239,7 +1239,7 @@ msgid ""
 "Looks like these guards hold stationary posts, so if we’re careful enough we "
 "should be able to slip our way around them unnoticed."
 msgstr ""
-"Parece que estes gardas manteñen posicións, se vamos con coidado abondo "
+"Parece que estes gardas manteñen posicións, se vamos con coidado dabondo "
 "deberiamos poder rodealos sen que se decaten."
 
 #. [message]: speaker=Baldras
@@ -1249,7 +1249,7 @@ msgid ""
 "and try to find a way for us to get past the guards, but make sure to not "
 "stay where they can see you or we’re all in big trouble..."
 msgstr ""
-"Arpeiro, agora vós os mozos tedes que ser os nosos ollos. Adiátate e busca "
+"Arpeiro, agora vós os mozos tedes que ser os nosos ollos. Adiántate e busca "
 "un camiño para pasar dos gardas, pero asegúrate de non deixar que te vexan "
 "ou teremos problemas…"
 
@@ -1396,7 +1396,7 @@ msgstr ""
 #. [message]: speaker=Baldras
 #: data/campaigns/Liberty/scenarios/06_The_Grey_Woods.cfg:241
 msgid "I have heard of you. Necromancers. Barely-human scum, I say."
-msgstr "Escoitei falar de vós. “Nigromantes”. Escoura inhumana, máis ben."
+msgstr "Escoitei falar de vós. «Nigromantes». Escoura inhumana, máis ben."
 
 #. [message]: speaker=Helicrom
 #: data/campaigns/Liberty/scenarios/06_The_Grey_Woods.cfg:245
@@ -1427,7 +1427,7 @@ msgid ""
 "occupied by King or Queen, aids us."
 msgstr ""
 "Non queremos, buscástesnos vós. En calquera caso, estou ao tanto da vosa "
-"situación e estou disposto a axudar. Calquera debilitamento da Coroa do "
+"situación e estou disposto a axudar. Calquera debilitación da Coroa do "
 "Noroeste, pórtea un rei ou unha raíña, serviranos de axuda."
 
 #. [message]: speaker=Helicrom
@@ -1483,7 +1483,7 @@ msgid ""
 "would have to be enough for the coming conflict."
 msgstr ""
 "Os membros restantes estaban moi agradecidos e ofrecéronlle a Baldrás unha "
-"suma considerable de ouro pola súa axuda. Non era a axuda que agardaba, pero "
+"suma importante de ouro pola súa axuda. Non era a axuda que agardaba, pero "
 "sabía que tería que conformarse con iso tería para o vindeiro conflito."
 
 #. [message]: speaker=Helicrom
@@ -1683,7 +1683,7 @@ msgid ""
 "the Queen, how should I ever expect to?"
 msgstr ""
 "Desde hai uns días estouvos preocupado polas palabras do cabaleiro Fortunio. "
-"Decateime de que non hai xeito de que venzamos. Nunca derrotaremos a todo o "
+"Decateime de que non hai xeito de que venzamos. Nunca derrotaremos todo o "
 "exército do Noroeste. É unha estupidez! Se o nobre señor de Elensefar non é "
 "capaz de opoñerse á raíña, como imos facelo nós?"
 
@@ -1696,7 +1696,7 @@ msgid ""
 msgstr ""
 "O peor é que parece que ela tamén se decatou. Van xa cinco pelotóns de "
 "infantería pesada que pasan en dirección á gornición tan só nas últimas "
-"dúashoras."
+"dúas horas."
 
 #. [message]: speaker=Baldras
 #: data/campaigns/Liberty/scenarios/07_The_Hunters.cfg:162
@@ -2109,7 +2109,7 @@ msgstr "Eh. Iso sorprenderá ao exército do Noroeste, podemos aproveitalo."
 #. [message]: role=farseer
 #: data/campaigns/Liberty/scenarios/08_Glory.cfg:525
 msgid "Look in the distance... riders approach!"
-msgstr "Mirade ao lonxe… aproxímanse xinetes!"
+msgstr "Mirade, no horizonte… aproxímanse xinetes!"
 
 #. [message]: speaker=Baldras
 #: data/campaigns/Liberty/scenarios/08_Glory.cfg:534
@@ -2153,7 +2153,8 @@ msgid ""
 "Amazing. Lord Maddock sent his house guards... his finest troops! Elensefar "
 "must be defenseless now. More hinges on this battle than I thought."
 msgstr ""
-"Abraiante. O cabaleiro Fortunio enviou a súa garda persoal… os seus mellores "
+"Impresionante. O cabaleiro Fortunio enviou a súa garda persoal… os seus "
+"mellores "
 "soldados! Elensefar debeu quedar indefensa. Desta batalla depende máis do "
 "que imaxinara."
 
@@ -2385,9 +2386,9 @@ msgid ""
 "it."
 msgstr ""
 "Os xinetes de Elensefar perseguiron ao exército dos orcos, cuxo número "
-"quedara xa reducido considerabelmente, e enviárono de volta ao outro lado do "
+"era xa bastante reducido, e enviárono de volta ao outro lado do "
 "Gran Río. Entón dispersáronse polo campo e non se volveu saber máis deles. "
-"Algo que extrañou a Baldrás."
+"Algo que estrañou a Baldrás."
 
 #. [part]
 #: data/campaigns/Liberty/scenarios/09_Epilogue.cfg:23
@@ -2469,7 +2470,7 @@ msgid ""
 "<i>“If you wish to find us, head southwest. When you reach the land’s end, "
 "just keep going. See you in the Three Sisters, old friend. ― Relana”</i>"
 msgstr ""
-"«<i>Se queres atoparnos, vai cara o sudoeste. Cando chegues á fin da terra, "
+"«<i>Se queres atoparnos, vai cara o suroeste. Cando chegues á fin da terra, "
 "continúa. Verémonos nas Tres Irmás, vello amigo. — Relana</i>»"
 
 # cabaleiro osudo FIXADO

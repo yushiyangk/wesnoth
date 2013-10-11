@@ -1,11 +1,27 @@
-Version 1.10.6+dev:
+Version 1.10.7+dev:
+ * Add-ons server:
+   * Implemented read-only mode option (read_only boolean attribute in
+     server config WML, defaults to "no").
+ * Campaigns:
+   * The Rise of Wesnoth:
+     * Fix bug #19427: Spawned units rise in cave wall in Temple of the Deep
+ * Language and i18n:
+   * Updated translations: British English, German, Greek, Indonesian,
+     Japanese, Vietnamese
+ * Miscellaneous and bug fixes:
+   * Fixed pofix.py to function with python-3.2
+
+Version 1.10.7:
  * Add-ons server:
    * Restricted names (not titles) for newly uploaded add-ons to ASCII hyphens,
      underlines, and alphanumerical characters. Previously uploaded add-ons
      are exempt from this change.
+ * Graphics:
+   * New portraits for HttT
  * Language and i18n:
-   * Updated translations: Chinese (Traditional), French, Indonesian,
-     Old English, Polish, Portuguese, Portuguese (Brazil), Russian, Vietnamese
+   * Updated translations: Chinese (Traditional), French, Galician, Indonesian,
+     Japanese, Old English, Polish, Portuguese, Portuguese (Brazil), Russian,
+     Scottish Gaelic, Vietnamese
  * Networking:
    * Handle an exception in the SDL_net-based network code (bug #20205)
  * User interface:
@@ -22,6 +38,10 @@ Version 1.10.6+dev:
    * Improved: Autorevision based revision numbers in CMake.
    * Fixed the recall list sometimes getting confused when dismissing a recall.
    * Prevent unchecked memory access in cut_surface()
+   * Fixed bug #20853 ("WML child missing yet untested for" when loading some
+     replays).
+   * Backported several bugfixes for wmllint (Windows-unfriendliness on the
+     command line, unusual crashers, underscores stripped from keys).
 
 Version 1.10.6:
  * Campaigns:

@@ -9,15 +9,14 @@
 # Fran Diéguez <fran dot dieguez at glug dot es>, 2008.
 # Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2010.
 # Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail.com>, 2011.
-# Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>, 2011, 2012.
+# Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Wesnoth\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-05-05 11:23+0200\n"
-"PO-Revision-Date: 2012-05-22 07:15+0200\n"
-"Last-Translator: Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail."
-"com>\n"
+"POT-Creation-Date: 2013-08-17 11:34+0200\n"
+"PO-Revision-Date: 2013-08-17 00:35+0200\n"
+"Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
@@ -29,8 +28,9 @@ msgstr ""
 "com>\n"
 "com>\n"
 "com>\n"
+"com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
 #. [generic_multiplayer]: id=user_map
 #: data/multiplayer/_main.cfg:8
@@ -86,8 +86,8 @@ msgstr "Draconiáns"
 msgid "Knalgan Alliance"
 msgstr "Alianza de Neilga"
 
-#. [multiplayer_side]: id=Loyalists, type=random
 #. [multiplayer_side]: id=Loyalists, type=Lieutenant
+#. [multiplayer_side]: id=Loyalists, type=random
 #: data/multiplayer/factions/loyalists-aoh.cfg:4
 #: data/multiplayer/factions/loyalists-default.cfg:4
 msgid "Loyalists"
@@ -100,8 +100,8 @@ msgstr "Leais"
 msgid "Northerners"
 msgstr "Nórdicos"
 
-#. [multiplayer_side]: id=Rebels, type=random
 #. [multiplayer_side]: id=Rebels, type=Elvish Captain
+#. [multiplayer_side]: id=Rebels, type=random
 #: data/multiplayer/factions/rebels-aoh.cfg:4
 #: data/multiplayer/factions/rebels-default.cfg:4
 msgid "Rebels"
@@ -280,18 +280,18 @@ msgid ""
 "granite and obsidian walls of Arcanclave Citadel. Designed by Doc Paterson."
 msgstr ""
 "Hai moito tempo, séculos antes do reinado de Haldric, alén do límite polo "
-"leste do bosque Lintanir, loitáronse grandes e terríbeis guerras. Os libros "
-"de historia falan dun poderoso mago guerreiro, xenio da estratexia e "
+"leste do Bosque de Lintanir, loitáronse grandes e terríbeis guerras. Os "
+"libros de historia falan dun poderoso mago guerreiro, xenio da estratexia e "
 "practicante das artes arcanas, ao que os seus seguidores chamaban “O "
-"Afouto”. Na batalla de Arcanclave, “O Afouto” e os seus exércitos "
+"afouto”. Na batalla de Arcanclave, “O afouto” e os seus exércitos "
 "enfrontáronse cunha especie salvaxe de demos feiticeiros, coñecidos como "
-"«Kah Ruuk». Rodeado por decenas de miles destes demos, “O Afouto” empregou a "
-"súa maxia para invocar a un poderoso elemental da terra —que por razóns que "
-"se descoñecen estaba en débeda con el—. O elemental fixo que enormes rochas "
-"das profundidades da terra erguesen, e con elas levantou a fortaleza máis "
-"grande que xamais viu o mundo. Foron miles os Kah Ruuk que pereceron "
+"«carúns». Rodeado por decenas de miles destes demos, “O afouto” empregou a "
+"súa maxia para invocar a un poderoso elemental da terra, que por razóns que "
+"se descoñecen estaba en débeda con el. O elemental fixo que enormes rochas "
+"das profundidades da terra se erguesen, e con elas levantou a fortaleza máis "
+"grande que xamais viu o mundo. Foron miles os carúns que pereceron "
 "intentando atravesar as súas murallas, e “O Afouto” e os seus homes lograron "
-"aquel día a vitoria. Máis de mil anos despois, a raíña guerreira Cynsaun I "
+"aquel día a vitoria. Máis de mil anos despois, a raíña guerreira Cinsaun I "
 "partiu cun clan de nigromantes das ruínas da cidadela de Arcanclave, e nos "
 "anos sucesivos converteron a rexión nun forte de resistencia militar. "
 "Rumoréase que poden quedar escondidos, perdidos entre os muros da cidadela, "
@@ -504,20 +504,20 @@ msgstr ""
 "Oxsrrsk foi un poderoso oráculo saurio que, nunha incursión contra o clan "
 "rival Xraxss, adquiriu —dos arquivos do defunto oráculo Hesx-Rzzak— un "
 "fascinante manuscrito. Levaba por título «Neis o da mirada de granito», e "
-"falaba dunha criatura coñecida coma “Chak'kso Ney’yks”, un nome que na "
-"antiga lingua sauria significaba «O fillo maior de Chak'kso». Criase que "
+"falaba dunha criatura coñecida coma «Chak'kso Ney’yks», un nome que na "
+"antiga lingua sauria significaba «O fillo maior de Chak'kso». Críase que "
 "Chak'kso fora un poderoso semideus das profundidades, descrito coma «un gran "
 "demo da terra» nas historias dos elfos. Segundo estas historias, Chak'kso "
 "intentara unha vez transformar toda a vida do planeta en pedra, tal era o "
 "odio que sentía polas criaturas corpóreas. Ao final foi derrotado e atado "
 "mediante unha poderosa maxia, pero nos séculos posteriores ao seu desterro —"
-"a un lugar das profundidades—, un novo tipo de criatura comezou a aparecer "
+"a un lugar das profundidades— un novo tipo de criatura comezou a aparecer "
 "nas historias, unha criatura coa capacidade de converter calquera ser "
-"corpóreo en pedra. Houbo un período no que estes basiliscos —como se "
-"comezaron a coñecer— causaron estragos no mundo dos vivos, convertendo a "
+"corpóreo en pedra. Houbo un período no que estes «basiliscos» —como se "
+"comezaron a coñecer— causaron estragos no mundo dos vivos, convertendo "
 "milleiros de criaturas en pedra. Un a un, e non sen dificultade, os "
 "basiliscos foron derrotados. Todos menos un: o basilisco coñecido coma «O "
-"Ney'yks» —«O fillo maior», na lingua moderna—. Convencido de que podería "
+"Ney'yks», ou «O fillo maior» na lingua moderna. Convencido de que podería "
 "atopar a esta criatura e poñela ao seu servizo, Oxsrrsk partiu na súa busca…"
 
 # Adaptación, non tradución.
@@ -620,8 +620,8 @@ msgstr ""
 "Durante anos e anos habitou as profundidades destas augas, alimentándose dos "
 "moitos peixes, ras e sirénidos que entraban nos seus dominios. Era a súa "
 "lagoa, de ninguén máis, e o seu tamaño non era un obstáculo. Pero un día "
-"chegou o basilisco, e mirou á serpe aos ollos. E a serpe non morreu, pero xa "
-"non volveu vivir. Así foi como chegou o novo señor da lagoa."
+"chegou o basilisco, e cruzou a mirada coa serpe. E a serpe non morreu, pero "
+"xa non volveu vivir. Así foi como chegou o novo señor da lagoa."
 
 #. [unit]
 #: data/multiplayer/scenarios/2p_Caves_of_the_Basilisk.cfg:160
@@ -790,7 +790,7 @@ msgstr ""
 "A través de ondas e as canles rochosas,\n"
 "azul e branca,\n"
 "empuxou e tirou das augas\n"
-"e amosoulle aos peixes as estrelas fermosas.\n"
+"e mostroulle aos peixes as estrelas fermosas.\n"
 "Verde prata,\n"
 "con maxia\n"
 "que saía do seu espírito en forma de algas e croios,\n"
@@ -965,8 +965,8 @@ msgstr ""
 "Os embates de atacantes xéranse ao chou e serán diferentes cada vez que se "
 "xogue o escenario.\n"
 "\n"
-"Aparecen desde os extremos norte, sur e oeste do mapa —pensa que é máis "
-"probábel que aparezan desde o extremo oeste—. Os embates de atacantes "
+"Aparecen desde os extremos norte, sur e oeste do mapa; pensa que é máis "
+"probábel que aparezan desde o extremo oeste. Os embates de atacantes "
 "aparecerán a intervalos máis ou menos regulares.\n"
 "\n"
 "O clima tamén cambiará ao chou, afectando ao terreo.\n"
@@ -1051,13 +1051,13 @@ msgid ""
 "the Den of Onis, hoping to unlock the strange and mysterious magics of its "
 "creators."
 msgstr ""
-"Estas peculiares covas foron outrora coñecidas coma “A cámara dos demos”, "
-"que foi a cidadela subterránea dos demos Kah Ruuk. Os Kah Ruuk eran unha "
-"clase de demos malvados e astutos que se alimentaban de persoas, e que "
-"aterraron ás xentes das terras orientais durante case catro séculos, antes "
-"de desaparecer completamente de Irïdia. Desde entón, moitas foron as "
-"faccións que competiron polo dominio da guarida dos demos, coa esperanza de "
-"descubrir a estraña e misteriosa maxia dos seus creadores."
+"Estas peculiares covas foron outrora coñecidas coma «A cámara dos demos», "
+"que foi a cidadela subterránea dos demos «carúns». Os carúns eran unha clase "
+"de demos malvados e astutos que se alimentaban de persoas, e que aterraron "
+"ás xentes das terras orientais durante case catro séculos, antes de "
+"desaparecer completamente de Irïdia. Desde entón, moitas foron as faccións "
+"que competiron polo dominio da guarida dos demos, coa esperanza de descubrir "
+"a estraña e misteriosa maxia dos seus creadores."
 
 #. [multiplayer]: id=multiplayer_elensefar_courtyard
 #: data/multiplayer/scenarios/2p_Elensefar_Courtyard.cfg:5
@@ -1259,7 +1259,7 @@ msgid ""
 "Players must traverse all manner of terrain in pursuit of victory on this "
 "multi-fronted duel map."
 msgstr ""
-"Os xogadores deben atravesar todo tipo de terreos para conseguir a victoria "
+"Os xogadores deben atravesar todo tipo de terreos para conseguir a vitoria "
 "neste mapa de duelo de varias frontes."
 
 #. [effect]: type=arcane
@@ -1469,19 +1469,19 @@ msgstr ""
 msgid "3p — Alirok Marsh"
 msgstr "3 xog. — A xunqueira de Alirok"
 
-#. [multiplayer]: id=multiplayer_4p_Morituri
+#. [multiplayer]: id=multiplayer_3p_Morituri
 #. [multiplayer]: id=multiplayer_Blue_Water_Province
 #. [multiplayer]: id=multiplayer_8p_Morituri
 #. [multiplayer]: id=multiplayer_4p_Hamlets
-#. [multiplayer]: id=multiplayer_Ruins_of_Terra-Dwelve
 #. [multiplayer]: id=multiplayer_Clash
-#. [multiplayer]: id=multiplayer_Island_of_the_Horatii
-#. [multiplayer]: id=multiplayer_Loris_River
+#. [multiplayer]: id=multiplayer_4p_Underworld
+#. [multiplayer]: id=multiplayer_4p_Morituri
+#. [multiplayer]: id=multiplayer_8p_Mokena_Prairie
 #. [multiplayer]: id=multiplayer_Castle_Hopping_Isle
 #. [multiplayer]: id=multiplayer_Alirok_Marsh
-#. [multiplayer]: id=multiplayer_3p_Morituri
-#. [multiplayer]: id=multiplayer_8p_Mokena_Prairie
-#. [multiplayer]: id=multiplayer_4p_Underworld
+#. [multiplayer]: id=multiplayer_Ruins_of_Terra-Dwelve
+#. [multiplayer]: id=multiplayer_Island_of_the_Horatii
+#. [multiplayer]: id=multiplayer_Loris_River
 #: data/multiplayer/scenarios/3p_Alirok_Marsh.cfg:6
 #: data/multiplayer/scenarios/3p_Island_of_the_Horatii.cfg:6
 #: data/multiplayer/scenarios/3p_Morituri.cfg:6
@@ -1662,8 +1662,8 @@ msgstr "Nordeste"
 msgid "4p — King of the Hill"
 msgstr "4 xog. — O rei do outeiro"
 
-#. [multiplayer]: id=multiplayer_Siege_Castles
 #. [multiplayer]: id=multiplayer_King_of_the_Hill
+#. [multiplayer]: id=multiplayer_Siege_Castles
 #: data/multiplayer/scenarios/4p_King_of_the_Hill.cfg:9
 #: data/multiplayer/scenarios/4p_Siege_Castles.cfg:9
 msgid " Recommended setting of 2 gold per village and 150 starting gold."
@@ -1709,8 +1709,8 @@ msgstr "Noroeste"
 msgid "4p — Lagoon"
 msgstr "4 xog. — A lagoa"
 
-#. [multiplayer]: id=multiplayer_Crusaders_Field
 #. [multiplayer]: id=multiplayer_The_Wilderlands
+#. [multiplayer]: id=multiplayer_Crusaders_Field
 #. [multiplayer]: id=multiplayer_Lagoon
 #: data/multiplayer/scenarios/4p_Lagoon.cfg:6
 #: data/multiplayer/scenarios/5p_The_Wilderlands.cfg:38

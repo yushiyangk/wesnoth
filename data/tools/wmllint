@@ -60,7 +60,7 @@
 #
 # You can also prevent description insertions with "wmllint: no-icon".
 #
-# You can force otherwise undeclared characters to be recogized with
+# You can force otherwise undeclared characters to be recognized with
 # a magic comment containing the string "wmllint: recognize".
 # The rest of the line is stripped and treated as the name of a character
 # who should be recognized in descriptions.  This will be useful,
@@ -82,7 +82,7 @@
 # You can prevent filename conversions with a comment containing
 # "wmllint: noconvert" on the same line as the filename.
 #
-# You can suppress complaints about files without an initial textdoman line
+# You can suppress complaints about files without an initial textdomain line
 # by embedding the magic comment "# wmllint: no translatables" in the file.
 # of course, it's a good idea to be sure this assertion is actually true.
 #
@@ -108,7 +108,7 @@
 # A magic comment of the form "wmllint: general spellings word1
 # word2..."  will declare the tokens word1, word2, etc. to be
 # acceptable spellings for anywhere in the Wesnoth tree that the
-# spellchecker should rever flag.  If the keyword "general" is
+# spellchecker should never flag.  If the keyword "general" is
 # replaced by "local", the spelling exceptions apply only in the
 # current file. If the keyword "general" is replaced by "directory",
 # the spelling exceptions apply to all files below the parent
@@ -530,7 +530,7 @@ def validate_on_pop(tagstack, closer, filename, lineno):
         print '"%s", line %d: closing %s I see %s with %s' % (filename, lineno, closer, tag, attributes)
     # Detect a malformation that will cause the game to barf while attempting
     # to deserialize an empty unit.  The final "and attributes" is a blatant
-    # hack; some compaigns like to generate entire side declarations with
+    # hack; some campaigns like to generate entire side declarations with
     # macros.
     if "scenario" in ancestors and closer == "side" and "type" not in attributes and ("no_leader" not in attributes or attributes["no_leader"] != "yes") and "multiplayer" not in ancestors and attributes:
         print '"%s", line %d: [side] without type attribute' % (filename, lineno)
@@ -750,7 +750,7 @@ pango_conversions = (("~", "<b>", "</b>"),
                      )
 
 def pangostrip(message):
-    "Strip Pango margup out of a string."
+    "Strip Pango markup out of a string."
     # This is all known Pango convenience tags
     for tag in ("b", "big", "i", "s", "sub", "sup", "small", "tt", "u"):
         message = message.replace("<%s>" % tag, "").replace("</%s>" % tag, "")
@@ -797,7 +797,7 @@ def pangoize(message, filename, line):
                 if message[here:here+4] != "&gt;":
                     message = message[:here] + "&gt;" + message[here+1:]
             else:
-                print '"%s", line %d: < or > in pango string requires manual fix.' % (filename, line, oldstyle)
+                print '"%s", line %d: < or > in pango string requires manual fix.' % (filename, line)
     return message
 
 class WmllintIterator(WmlIterator):
@@ -854,7 +854,7 @@ def local_sanity_check(filename, nav, key, prefix, value, comment):
     if parent in ("[allow_recruit]", "[disallow_recruit]") and key == "recruit":
         print errlead + "recruit= should be type="
     # Accumulate data to check for missing next scenarios
-    if parent == '[scenario] or parent == None':
+    if parent == '[scenario]' or parent == None:
         if key == "next_scenario" and value != "null":
             nextrefs.append((filename, nav.lineno, value))
         if key == 'id':
@@ -1008,7 +1008,7 @@ def global_sanity_check(filename, lines):
                 if fields:
                     (key, prefix, value, comment) = fields
                     if key in ("id", "speaker"):
-                        if deathcheck and (value == filter_subject) or (value == "unit"):
+                        if deathcheck and ((value == filter_subject) or (value == "unit")):
                             print '"%s", line %d: %s speaks in his/her death event' % (filename, nav.lineno+1, value)
     # Collect information on defined movement types and races
     for nav in WmllintIterator(lines, filename):
@@ -1035,20 +1035,21 @@ def global_sanity_check(filename, lines):
     recruitment_pattern = {}
     ifdef_stack = [None]
     for i in range(len(lines)):
-        if lines[i].startswith("#ifdef") or lines[i].startswith("#ifhave") or lines[i].startswith("#ifver"):
-            ifdef_stack.append(lines[i].strip().split()[1])
+    	line = lines[i].strip()
+        if line.startswith("#ifdef") or line.startswith("#ifhave") or line.startswith("#ifver"):
+            ifdef_stack.append(line.split()[1])
             continue
-        if lines[i].startswith("#ifndef") or lines[i].startswith("#ifnhave") or lines[i].startswith("#ifnver"):
-            ifdef_stack.append("!" + lines[i].strip().split()[1])
+        if line.startswith("#ifndef") or line.startswith("#ifnhave") or line.startswith("#ifnver"):
+            ifdef_stack.append("!" + line.split()[1])
             continue
-        if lines[i].startswith("#else"):
+        if line.startswith("#else"):
             if ifdef_stack[-1].startswith("!"):
                 ifdef_stack.append(ifdef_stack[-1][1:])
             else:
                 ifdef_stack.append("!" + ifdef_stack[-1])
             continue
-        if lines[i].startswith("#endif"):
-            ifdef_stack.pop()
+        if line.startswith("#endif"):
+            ifdef_stack = [None]
             continue
         if "[generator]" in lines[i]:
             in_generator = True
@@ -1314,7 +1315,7 @@ def global_sanity_check(filename, lines):
                 if markcheck and has_tr_mark and not ("wmllint: ignore" in comment or "wmllint: noconvert" in comment):
                     print '"%s", line %d: %s should not have a translation mark' \
                               % (filename, i+1, key)
-                    lines[i] = lines[i].replace("_", "", 1)
+                    lines[i] = prefix + value.replace("_", "", 1) + comment + '\n'
     # Now that we know who's present, register all these names as spellings
     declared_spellings[filename] = map(lambda x: x.lower(), present)
     # Check for textdomain strings; should be exactly one, on line 1
@@ -1381,7 +1382,7 @@ def consistency_check():
                               (filename, rl, rtype)
                         continue
                 if not base in usage:
-                    print '"%s", line %d: %s has unkown base %s' % \
+                    print '"%s", line %d: %s has unknown base %s' % \
                               (filename, rl, rtype, base)
                 else:
                     utype = usage[base]
@@ -1396,7 +1397,7 @@ def consistency_check():
                             if pdifficulty is not None:
                                 pshow = ' ' + pdifficulty
                             print '"%s", line %d: %s%s (%s) doesn\'t match the%s recruitment pattern (%s) for its side' % (filename, rl, rshow, rtype, utype, pshow, ", ".join(recruit_pattern))
-            # We have a list of all the usage types recruited at this sifficulty
+            # We have a list of all the usage types recruited at this difficulty
             # in utypes.  Use it to check the matching pattern, if any. Suppress
             # this check if the recruit line is a macroexpansion.
             if recruit and not recruit[0].startswith("{"):
@@ -1758,8 +1759,9 @@ def translator(filename, mapxforms, textxform):
         # refer to map files which will be checked separately.
         if map_only or (("map_data=" in line or "mask=" in line)
                         and line.count('"') in (1, 2)
+                        and line.count('""') == 0
                         and line.count("{") == 0
-                        and  line.count("}") == 0
+                        and line.count("}") == 0
                         and not within('time')):
             outmap = []
             add_border = True
@@ -1948,7 +1950,7 @@ def translator(filename, mapxforms, textxform):
         print '"%s", line %d: tag stack nonempty (%s) at end of file.' % (filename, lineno, tagstack)
     tagstack = []
     if iswml(filename):
-        # Perform checks that are purel local.  This is an
+        # Perform checks that are purely local.  This is an
         # optimization hack to reduce parsing overhead.
         for nav in WmllintIterator(newdata, filename):
             try:
@@ -2069,7 +2071,7 @@ def inner_spellcheck(nav, value, spelldict):
         lowered = string_strip(lowered)
         if lowered and spelldict.check(lowered):
             continue
-        # No match? Strip posessive suffixes and try again.
+        # No match? Strip possessive suffixes and try again.
         elif lowered.endswith("'s") and spelldict.check(lowered[:-2]):
             continue
         # Hyphenated compounds need all their parts good
@@ -2341,14 +2343,98 @@ if __name__ == '__main__':
         return line
 
     try:
+        # If a backslash comes before a quote, it will be interpreted as an
+        # escape to a literal quote rather than a Windows directory delimiter,
+        # causing Windows to find "no such file or directory". This block deals
+        # with this issue, but it is impossible to handle all cases if multiple
+        # (intended) arguments are involved. We also activate globbing on
+        # Windows, if there is a wildcard.
+        if arguments and sys.platform == 'win32':
+            wildcard = False
+            ugly = False
+            newargs = []
+            for i,arg in enumerate(arguments):
+                if not wildcard and '*' in arg:
+                    wildcard = True
+                    from glob import glob
+                if '"' in arg:
+                    if len(arguments)-i > 1:
+                        ugly = True
+                        break
+                    test = arg.split('"', 1)
+                    if " " in test[1].lstrip():
+                        ugly = True
+                        break
+                    sys.stderr.write('\n\nWARNING!! A backslash followed by a quote (\\") is interpreted not as a directory separator and an argument delimiter, but as an escape to a literal quote. Two quotes together ("") will also be interpreted as including a literal quote. Your system sees the file/directory you are targeting as:\n\n%s\n\nAlthough wmllint believes it can resolve this particular instance, please do not repeat this in the future. (If you are using a final backslash at the end of your argument, it is not necessary; also, frontslashes will also be recognized as directory separators.)\n\n\n'%arg)
+                    arguments.remove(arg)
+                    arg = re.sub(r'([^ ])"([^ ])', r'\1\\\2', arg)
+                    for new in arg.rstrip('"').split('"'):
+                        arguments.insert(i, new.strip())
+                        i += 1
+                        sys.stderr.write('wmllint: resolving address as: %s\n' % new.strip())
+            if ugly:
+                print >>sys.stderr, """
+    WARNING!! A backslash followed by a quote (\\"), or two quotes (""), is misinterpreted by your system to mean you want a literal quote character, not a path encloser:
+
+    %s
+
+    After exiting this message: hit the up arrow key, edit your command, and press Enter.
+""" % re.sub(r'"', '-->>"<<--', arg)
+
+                moreugly = raw_input('Press "H" if you need more help, or Enter to exit: ')
+                if moreugly.startswith(('h', 'H')):
+                    print >>sys.stderr, """
+        Explanation:
+
+Windows' use of the backslash as a directory separator is clashing with the use of the backslash as an escape. As an escape, the backslash tells your system that you want a normally special character to be its literal self (or sometimes, that you want a normally ordinary character to have a special meaning). Your system interprets '\\"' as an escape for a literal quote character. Two quotes together are also interpreted as a literal quote.
+
+'"Campaign\\"' is interpreted as 'Campaign"' instead of 'Campaign\\'.
+'"My Folder\\"Campaign' is interpreted as 'My Folder"Campaign' (not 'My Folder\Campaign').
+'"My Folder\Campaign\\" "My Folder\Another_Campaign"' is interpreted as 'My Folder\Campaign" My' and 'Folder\Another_Campaign'.
+
+In your case, your system interprets your arguments as:
+
+    %s
+
+        Solutions:
+
+(1) If your problem is adjoining quotes, delete (or move) one of them
+(  "folder\Campaign"" -> "folder\Campaign"  )
+
+(2) If you are using a final backslash at the end of a directory address, it is not necessary
+(  "folder\Campaign\\" -> "folder\Campaign" -- but NOT "folder\Campaign\\"file.cfg -> "folder\Campaign"file.cfg  )
+
+(3) If you add a second backslash, your system will then escape the backslash instead of the quote
+(  "folder\Campaign\\" -> "folder\Campaign\\\\"  )
+
+(4) Frontslashes will also be recognized as directory separators
+(  "folder\Campaign\\" -> "folder/Campaign"  )
+
+(5) If there are no spaces in your address, it is not necessary to use quotes
+(  "folder\Campaign\\" -> folder\Campaign -- but NOT "My Folder\Campaign\\" -> My Folder\Campaign  )
+
+(6) You can move the affected quote
+(  M"y Folder\\"Campaign -> M"y Fold"er\Campaign -- but NOT Fil"es and Folders\My Folder\\"Campaign -> Fil"es and Folders\M"y Folder\Campaign  )
+
+        Reminder:
+
+(a) Hit the up arrow key. The up and down arrows move through your command history; one press of the up arrow will take you to your last command.
+(b) Edit your command. Use any of the solutions described above.
+(c) Press Enter
+""" % repr(arguments)[1:-1]
+                sys.exit(2)
+            if wildcard:
+                for arg in arguments:
+                    for wild in glob(arg):
+                        newargs.append(wild)
+                if newargs:
+                    arguments = newargs
+                else:
+                    sys.stderr.write('wmllint: wildcard did not match any files or directories (%s)\n'%arguments)
+                    sys.exit(2)
+
         if not arguments:
             arguments = ["."]
-
-        # in certain situations, Windows' command prompt appends a double quote
-        # to the command line parameters. This block takes care of this issue.
-        for i,arg in enumerate(arguments):
-            if arg.endswith('"'):
-                arguments[i] = arg[:-1]
 
         for dir in arguments:
             ofp = None
@@ -2368,6 +2454,8 @@ if __name__ == '__main__':
                         elif revert:
                             print "wmllint: reverting %s" % backup
                             if not dryrun:
+                                if sys.platform == 'win32':
+                                    os.remove(fn)
                                 os.rename(backup, fn)
                 elif diffs:
                     # Display diffs
@@ -2389,6 +2477,8 @@ if __name__ == '__main__':
                         if changed:
                             print "wmllint: converting", fn
                             if not dryrun:
+                                if sys.platform == 'win32' and os.path.exists(backup):
+                                    os.remove(backup)
                                 os.rename(fn, backup)
                                 if fn.endswith(".gz"):
                                     ofp = gzip.open(fn, "w")

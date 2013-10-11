@@ -4,23 +4,23 @@
 # Proxecto Trasno <http://trasno.net>
 #
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2007, 2008.
-# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2010, 2012.
+# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2010, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Wesnoth\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-05-05 11:23+0200\n"
-"PO-Revision-Date: 2012-05-22 09:18+0200\n"
-"Last-Translator: Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail."
-"com>\n"
+"POT-Creation-Date: 2013-08-17 11:34+0200\n"
+"PO-Revision-Date: 2013-08-17 00:36+0200\n"
+"Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"com>\n"
 "adriyetichaves@gmail.com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
 #. [campaign]: id=Son_of_the_Black-Eye
 #: data/campaigns/Son_Of_The_Black_Eye/_main.cfg:9
@@ -148,9 +148,9 @@ msgstr "Morte de Quipui."
 
 #. [side]: type=Orcish Leader, id=Kapou'e
 #. [side]
+#. [side]: type=Orcish Slayer, id=Rugh
 #. [side]: id=gruu_recall_enabling_hack_leader, type=Great Troll
 #. [side]: type=General, id=Howgarth III
-#. [side]: type=Orcish Slayer, id=Rugh
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/01_End_of_Peace.cfg:58
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/01_End_of_Peace.cfg:65
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/02_The_Human_Army.cfg:42
@@ -204,11 +204,11 @@ msgstr "Quipui"
 msgid "Alber"
 msgstr "Alber"
 
-#. [side]: type=General, id=Lanbec'h
 #. [side]: type=Lieutenant, id=Alber
 #. [side]: type=General, id=Slowhand
 #. [side]
 #. [side]: type=General, id=Harman
+#. [side]: type=General, id=Lanbec'h
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/01_End_of_Peace.cfg:79
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/02_The_Human_Army.cfg:68
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/06_Black_Flag.cfg:60
@@ -887,7 +887,7 @@ msgid ""
 "The trolls are done. We will desperately need their help in the coming "
 "battles. Without them there is no hope."
 msgstr ""
-"Os trolles marchan. Íamolos necesitar para as batallas futuras. Sen eles, xa "
+"Os trolles marchan. Iámolos necesitar para as batallas futuras. Sen eles, xa "
 "non queda esperanza para a nosa causa."
 
 #. [message]: speaker=unit
@@ -1336,7 +1336,7 @@ msgid ""
 "their vanguard but in the end we were forced to retreat."
 msgstr ""
 "Eses insolentes dos humanos reuniron un gran exército e atacáronnos. "
-"Derrotamos á primeira liña de ataque, pero logo vímonos obrigados a "
+"Derrotamos a primeira liña de ataque, pero logo vímonos obrigados a "
 "retroceder."
 
 #. [message]: speaker=Pirk
@@ -1777,20 +1777,20 @@ msgstr "Chega ao oasis."
 msgid "Ar-Dant"
 msgstr "Ardán"
 
-#. [side]: type=General, id=Telthys
 #. [side]: type=Elvish Champion, id=Thelarion
-#. [side]: type=General, id=Fredor
-#. [side]: type=General, id=Georan
-#. [side]: type=Grand Marshal, id=Earl Lanbec'h
-#. [side]: type=Orcish Warlord, id=Shan Taum
 #. [side]: type=Dwarvish Steelclad, id=Darstang
 #. [side]: type=General, id=Earl Lanbec'h
 #. [side]
-#. [side]: type=Assassin, type=Rogue, id=Ar-Dant
-#. [side]: type=Giant Scorpion
+#. [side]: type=Bandit, id=Sagmar
 #. [side]: type=General, id=Arthain
 #. [side]: type=Lieutenant, id=Hanak
-#. [side]: type=Bandit, id=Sagmar
+#. [side]: type=General, id=Telthys
+#. [side]: type=General, id=Fredor
+#. [side]: type=General, id=Georan
+#. [side]: type=Grand Marshal, id=Earl Lanbec'h
+#. [side]: type=Assassin, type=Rogue, id=Ar-Dant
+#. [side]: type=Giant Scorpion
+#. [side]: type=Orcish Warlord, id=Shan Taum
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/07_The_Desert_of_Death.cfg:70
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/07_The_Desert_of_Death.cfg:96
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/10_Saving_Inarix.cfg:106
@@ -1884,9 +1884,9 @@ msgid ""
 "sharp blades, set them afire, or pierce them with arrows. But I hope too we "
 "won’t meet them."
 msgstr ""
-"Disque a mellor forma de derrotalos é atacándolles aos ollos con follas "
-"afiadas, queimalos ou atravesalos con frechas. Pero espero coma ti que non "
-"nos atopemos ningún."
+"Disque a mellor forma de derrotalos é atinarlles nos ollos con armas de fío, "
+"queimalos ou atravesalos con frechas. Pero espero coma ti que non atopemos "
+"ningún."
 
 #. [message]: speaker=Pirk
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/07_The_Desert_of_Death.cfg:169
@@ -2135,7 +2135,7 @@ msgid ""
 "we meet any, we’ll cut them to pieces."
 msgstr ""
 "¿Elfos vivindo no territorio dos orcos? Non acabo de velo. De todos xeitos, "
-"necesitamos un descanso. Se aparece algún elfo xa nos engargaremos del, "
+"necesitamos un descanso. Se aparece algún elfo xa nos encargaremos del, "
 "estamos preparados."
 
 #. [message]: speaker=unit
@@ -2327,8 +2327,8 @@ msgstr ""
 "Por fin, velaquí as Montañas Salaiadas! Agora máis nos vale rezar o que "
 "saibamos."
 
-#. [message]: role=cannonfodder
 #. [message]: speaker=Grüü
+#. [message]: role=cannonfodder
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/09_Shan_Taum_the_Smug.cfg:118
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/11_Clash_of_Armies.cfg:280
 msgid "Why?"
@@ -2754,8 +2754,8 @@ msgstr ""
 msgid "It won’t be said that Elves were braver than us, everyone attack!"
 msgstr "Non se dirá que os elfos foron máis bravos ca nós, todos ao ataque!"
 
-#. [side]: type=Grand Marshal, id=Earl Lanbec'h
 #. [side]: type=General, id=Earl Lanbec'h
+#. [side]: type=Grand Marshal, id=Earl Lanbec'h
 #. [unit]: type=General, id=Earl Lanbec'h
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/10_Saving_Inarix.cfg:663
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/11_Clash_of_Armies.cfg:122
@@ -2834,7 +2834,7 @@ msgid ""
 "than that."
 msgstr ""
 "Non estou eu tan seguro. Toda fortaleza ten as súas debilidades. Os muros de "
-"prestin son fortes, pero longos e difíciles de defender de todas as "
+"Prestin son fortes, pero longos e difíciles de defender de todas as "
 "direccións ao mesmo tempo. O Eral Lamben este debe saber que non dará "
 "entrado se se limitan a cruzar o río por onde antes estaba a ponte, así que "
 "terá un plan mellor."
@@ -2878,7 +2878,7 @@ msgid ""
 msgstr ""
 "Porque se non podemos manter a raia a estes humanos, o resto das tribos "
 "verano como un sinal de debilidade, e non nos considerarán fortes abondos "
-"para lideralas. Todo xebe intentará reclamar o liderado da horda para si "
+"para lideralas. Todo xefe intentará reclamar o liderado da horda para si "
 "mesmo, e os humanos conseguirán atravesar as nosas defensas."
 
 #. [message]: role=cannonfodder
@@ -2939,7 +2939,7 @@ msgid ""
 "What’s this? This weakling has let humans enter Prestim? I will lead the "
 "horde and push them to the river!"
 msgstr ""
-"Que é isto? Esa micoña deixou que os humanos entrasen en Prestin? Deixádeme "
+"Que é isto? Esa miñoca deixou que os humanos entrasen en Prestin? Deixádeme "
 "a min liderar a horda e botareinos de volta ao río!"
 
 #. [message]: role=greathordewarlord2
@@ -2974,7 +2974,7 @@ msgstr "Son demasiados, <b>retirada</b>!"
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/11_Clash_of_Armies.cfg:1199
 msgid ""
 "The Great Horde at last! I was beginning to think they would never come."
-msgstr "A Gran Horda, por fin! Comezaba a pensar que nunca chegaríades."
+msgstr "A Gran Horda, por fin! Comezaba a pensar que nunca chegariades."
 
 #. [message]: speaker=Gork
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/11_Clash_of_Armies.cfg:1204
@@ -2993,7 +2993,7 @@ msgid ""
 "It is now time to show them who we are and to lead the Great Horde in "
 "pursuit. We will not rest until we destroy Earl Lanbec’h. Smite, stab, slay!"
 msgstr ""
-"Agora é hora de amosarlles quen somos e liderar a Gran Horda na súa "
+"Agora é hora de mostrarlles quen somos e liderar a Gran Horda na súa "
 "persecución. Non descansaremos ata que acabemos con Eral Lamen. Tinguide as "
 "coitelas de sangue!"
 
@@ -3319,7 +3319,7 @@ msgid ""
 msgstr ""
 "Serán covardes eses elfos. Ninghún anano aseptaría unha proposta coma esa. "
 "Pero aléghrome de que marchasen, non fan máis que meterse no medio. Veña, "
-"rapases, é hora de amosarlles a eses orcos o noso aseiro!"
+"rapases, é hora de mostrarlles a eses orcos o noso aseiro!"
 
 #. [message]: speaker=Grüü
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/13_The_Dwarvish_Stand.cfg:286
@@ -4017,7 +4017,7 @@ msgstr ""
 "convértese en nin máis nin menos que un lacaio que espía para os humanos. "
 "Logo enxéñase para dar morte á metade do gran consello e faise así "
 "responsábel directo da morte de centos de orcos. E o mellor de todo, é o "
-"detoador dunha sanguenta guerra civil que se produce xusto cando o seu pobo "
+"detonador dunha sanguenta guerra civil que se produce xusto cando o seu pobo "
 "se atopa a piques de enfrontarse á súa exterminación!"
 
 #. [message]: speaker=Kapou'e
@@ -4142,7 +4142,7 @@ msgid ""
 "Younger grunts especially worshiped him with such fervor that he found it "
 "almost frightening."
 msgstr ""
-"Pero a súa presencia non era necesaria. Tras un par de días, Quipui quedou "
+"Pero a súa presenza non era necesaria. Tras un par de días, Quipui quedou "
 "impresionado ao contemplar como lle respectaba o seu pobo. As novas sobre as "
 "súas aventuras esparexéranse rapidamente, desde o rescate dos xamáns en "
 "Báragor ata a súa marcha a través das terras xeadas. Os orcos máis novos "
@@ -4199,8 +4199,8 @@ msgstr "Chegamos, señor."
 msgid "Ahhh, perfect, more reinforcements."
 msgstr "Ah, perfecto, máis reforzos."
 
-#. [side]: type=General, id=Howgarth III
 #. [unit]: type=General, id=Howgarth III
+#. [side]: type=General, id=Howgarth III
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/17_The_Human_Attack.cfg:650
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/18_Northern_Alliance.cfg:145
 msgid "Howgarth III"
@@ -4477,9 +4477,9 @@ msgid ""
 "soon as my orc friend here gives the order. And then your men will "
 "automatically assume that Kapou’e tricked and killed you."
 msgstr ""
-"Ha ha! Moi gracioso, Ogar. Mira ao teu arredor. Estarás morto en canto o meu "
-"amigo orco dea a orde. E os teus soldados asumirán que Quipui te enganou e "
-"matou."
+"Ha ha! Moi gracioso, Ogar. Mira para o teu arredor. Estarás morto en canto o "
+"meu amigo orco dea a orde. E os teus soldados asumirán que Quipui te enganou "
+"e matou."
 
 #. [message]: speaker=Howgarth III
 #: data/campaigns/Son_Of_The_Black_Eye/scenarios/18_Northern_Alliance.cfg:452

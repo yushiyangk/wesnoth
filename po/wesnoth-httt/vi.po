@@ -1,19 +1,22 @@
-# Vietnamese translation for Wesnoth
-# Huỳnh Yên Lộc <nightgaunt13@gmail.com>, 2010.
-# Huynh Yen Loc <nightgaunt13@gmail.com>, 2010, 2011, 2013.
+# Vietnamese translations for Battle for Wesnoth package
+# Copyright (C) 2009 Wesnoth Development Team
+# This file is distributed under the same license as the Battle for Wesnoth package.
+#
+# Huynh Yen Loc <nightgaunt13@gmail.com>, 2010, 2011.
+# Phạm Thành Nam <phamthanhnam.ptn@gmail.com>, 2009, 2010, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Battle for Wesnoth 1.10\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-05-05 11:23+0200\n"
-"PO-Revision-Date: 2013-03-16 09:09+0800\n"
-"Last-Translator: Phạm Thành Nam\n"
-"Language-Team: Vietnamese <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2013-08-17 11:34+0200\n"
+"PO-Revision-Date: 2013-08-25 20:42+0700\n"
+"Last-Translator: Pham Thanh Nam <phamthanhnam.ptn@gmail.com>\n"
+"Language-Team: Vietnamese <>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. [campaign]: id=Heir_To_The_Throne
@@ -199,15 +202,15 @@ msgid "Konrad"
 msgstr "Konrad"
 
 #. [side]: type=Commander, id=Konrad
+#. [side]: id=Geldar, type=Dwarvish Lord
+#. [side]: type=Ancient Wose, id=Haralamdum
+#. [side]: type=Elvish Sylph, id=Bona-Melodia
 #. [side]
-#. [side]: type=Grand Knight, id=Kaylan
 #. [side]: type=Fighter, id=Konrad
 #. [side]: type=Elvish Champion, id=Galdrad
 #. [side]: type=Elvish Shyde, id=Chantal
-#. [side]: id=Geldar, type=Dwarvish Lord
+#. [side]: type=Grand Knight, id=Kaylan
 #. [side]: id=Relgorn, type=Dwarvish Lord
-#. [side]: type=Ancient Wose, id=Haralamdum
-#. [side]: type=Elvish Sylph, id=Bona-Melodia
 #: data/campaigns/Heir_To_The_Throne/scenarios/01_The_Elves_Besieged.cfg:75
 #: data/campaigns/Heir_To_The_Throne/scenarios/01_The_Elves_Besieged.cfg:229
 #: data/campaigns/Heir_To_The_Throne/scenarios/01_The_Elves_Besieged.cfg:248
@@ -256,25 +259,25 @@ msgstr "Delfador"
 msgid "Urug-Telfar"
 msgstr "Urug-Telfar"
 
+#. [side]: type=Orcish Warlord, id=Kior-Dal
+#. [side]: type=Goblin Rouser
+#. [side]: type=Orcish Warlord
+#. [side]: type=Troll Warrior
+#. [side]: type=Orcish Warrior, id=Dwaba-Kukai
+#. [side]: type=Orcish Warrior, id=Managa'Gwin
 #. [side]: type=Orcish Warrior, id=Halgar Du'nar
 #. [side]: type=Orcish Warrior, id=Gorlak
+#. [side]: type=Orcish Warlord, id=Gaga-Breuk
+#. [side]: type=Orcish Warrior, id=Usadar Q'kai
+#. [side]: type=Orcish Warlord, id=Kojun Herolm
+#. [side]: type=Orcish Warrior, id=Mokho Kimer
+#. [side]: type=Orcish Warlord, id=Urug-Telfar
+#. [side]: type=Orcish Warlord, id=Knafa-Tan
+#. [side]: type=Orcish Warlord, id=Maga-Knafa
 #. [side]: type=Orcish Slurbow, id=Knafa-Telfar
 #. [side]: type=Orcish Warlord, id=Urug-Tan
 #. [side]: type=Orcish Sovereign, id=Shuuga-Mool
 #. [side]: type=Orcish Warrior, id=Mokolo Qimur
-#. [side]: type=Orcish Warrior, id=Dwaba-Kukai
-#. [side]: type=Orcish Warrior, id=Managa'Gwin
-#. [side]: type=Orcish Warlord, id=Kojun Herolm
-#. [side]: type=Orcish Warrior, id=Mokho Kimer
-#. [side]: type=Orcish Warrior, id=Usadar Q'kai
-#. [side]: type=Orcish Warlord, id=Kior-Dal
-#. [side]: type=Orcish Warlord, id=Urug-Telfar
-#. [side]: type=Orcish Warlord, id=Knafa-Tan
-#. [side]: type=Orcish Warlord, id=Maga-Knafa
-#. [side]: type=Orcish Warlord, id=Gaga-Breuk
-#. [side]: type=Goblin Rouser
-#. [side]: type=Orcish Warlord
-#. [side]: type=Troll Warrior
 #. [side]: type=Orcish Warlord, id=Urag-Tifer
 #: data/campaigns/Heir_To_The_Throne/scenarios/01_The_Elves_Besieged.cfg:170
 #: data/campaigns/Heir_To_The_Throne/scenarios/01_The_Elves_Besieged.cfg:183
@@ -1574,7 +1577,8 @@ msgstr "Đánh bại Muff Malal"
 msgid "Muff Malal"
 msgstr "Muff Malal"
 
-#. [side]
+#. [side]: type=Dark Sorcerer, id=Muff Malal
+#. [side]: type=Ancient Lich, id=Muff Argulak
 #. [side]: id=Haf-Mal, type=Lich
 #. [side]: id=Jarmal-Gorg, type=Lich
 #. [side]: type=Death Knight, id=Clarustus
@@ -1582,11 +1586,10 @@ msgstr "Muff Malal"
 #. [side]: type=Lich, id=Aimucasur
 #. [side]: type=Death Knight, id=Secadius
 #. [side]: type=Death Knight, id=Dafeis
-#. [side]: type=Ancient Lich, id=Muff Argulak
 #. [side]: type=Lich, id=Galga
 #. [side]: type=Lich, id=Na-alga
 #. [side]: type=Lich, id=Selda-Mana
-#. [side]: type=Dark Sorcerer, id=Muff Malal
+#. [side]
 #: data/campaigns/Heir_To_The_Throne/scenarios/05a_Muff_Malal_Peninsula.cfg:81
 #: data/campaigns/Heir_To_The_Throne/scenarios/05b_Isle_of_the_Damned.cfg:82
 #: data/campaigns/Heir_To_The_Throne/scenarios/05b_Isle_of_the_Damned.cfg:99
@@ -1952,13 +1955,13 @@ msgstr "Elensefar"
 msgid "Agadla"
 msgstr "Agadla"
 
+#. [side]: type=Troll Warrior, id=Haaf-Garga
+#. [side]: type=Orcish Warlord, id=Agadla
+#. [side]: type=Dark Sorcerer, id=Muff Jaanal
 #. [side]: type=Orcish Warlord, id=Urug-Telfar
 #. [side]: type=Death Knight, id=Unan-Ka'tall
 #. [side]: id=Brugg, type=Troll Warrior
 #. [side]: id=Lionel, type=Death Knight
-#. [side]: type=Orcish Warlord, id=Agadla
-#. [side]: type=Dark Sorcerer, id=Muff Jaanal
-#. [side]: type=Troll Warrior, id=Haaf-Garga
 #: data/campaigns/Heir_To_The_Throne/scenarios/06_The_Siege_of_Elensefar.cfg:70
 #: data/campaigns/Heir_To_The_Throne/scenarios/06_The_Siege_of_Elensefar.cfg:112
 #: data/campaigns/Heir_To_The_Throne/scenarios/15_The_Lost_General.cfg:87
@@ -2559,9 +2562,9 @@ msgstr "Giao lộ Elmar"
 msgid "Elbridge"
 msgstr "Elbridge"
 
-#. [event]
 #. [side]: type=Princess, id=Li'sar
 #. [unit]: id=Li'sar, type=$stored_Lisar.type
+#. [event]
 #: data/campaigns/Heir_To_The_Throne/scenarios/08_The_Princess_of_Wesnoth.cfg:86
 #: data/campaigns/Heir_To_The_Throne/scenarios/11_The_Ford_of_Abez.cfg:64
 #: data/campaigns/Heir_To_The_Throne/scenarios/13_The_Dwarven_Doors.cfg:661
@@ -2570,16 +2573,16 @@ msgstr "Elbridge"
 msgid "Li’sar"
 msgstr "Li’sar"
 
+#. [side]: type=General, id=Honber
+#. [side]: type=General, id=Robryn
+#. [side]: type=Princess, id=Li'sar
 #. [side]: type=General, id=Josephus
 #. [side]: type=Orcish Warlord, id=Dwar-Ni
 #. [side]: type=General, id=Malatus
-#. [side]: type=General, id=Robryn
-#. [side]: type=General, id=Honber
 #. [side]: type=Orcish Warlord, id=Haliel-Maga
 #. [side]: type=General, id=Heford
 #. [side]: type=Cavalier, id=Sir Kalm
 #. [side]: type=Dark Queen, id=Asheviere
-#. [side]: type=Princess, id=Li'sar
 #: data/campaigns/Heir_To_The_Throne/scenarios/08_The_Princess_of_Wesnoth.cfg:126
 #: data/campaigns/Heir_To_The_Throne/scenarios/10_Gryphon_Mountain.cfg:84
 #: data/campaigns/Heir_To_The_Throne/scenarios/11_The_Ford_of_Abez.cfg:80
@@ -5909,8 +5912,8 @@ msgstr "Vách đá Thoria"
 msgid "Make it to the end of the river"
 msgstr "Đến được cuối dòng sông"
 
-#. [side]
 #. [side]: type=Saurian Oracle, id=Szerkz
+#. [side]
 #: data/campaigns/Heir_To_The_Throne/scenarios/19c_Cliffs_of_Thoria.cfg:139
 #: data/campaigns/Heir_To_The_Throne/scenarios/20b_Underground_Channels.cfg:91
 msgid "Drakes"
@@ -7117,10 +7120,6 @@ msgstr ""
 
 #. [message]: speaker=Parandra
 #: data/campaigns/Heir_To_The_Throne/scenarios/21_Elven_Council.cfg:155
-#, fuzzy
-#| msgid ""
-#| "Princess, when Delfador the Great speaks of the Queen Dowager, Asheviere, "
-#| "ordering the princes of Wesnoth to be put to death, he speaks the truth."
 msgid ""
 "Princess, when Delfador the Great speaks of the Queen Mother, Asheviere, "
 "ordering the princes of Wesnoth to be put to death, he speaks the truth."
@@ -7148,12 +7147,6 @@ msgstr ""
 
 #. [message]: speaker=Li'sar
 #: data/campaigns/Heir_To_The_Throne/scenarios/21_Elven_Council.cfg:173
-#, fuzzy
-#| msgid ""
-#| "Well, that is why I must take the Sceptre. I will return, and people will "
-#| "accept me as Queen. I will rule justly and fairly. My mother is only "
-#| "Queen Dowager. The throne is rightfully mine, and with the Sceptre I can "
-#| "prove it."
 msgid ""
 "Well, that is why I must take the Sceptre. I will return, and people will "
 "accept me as Queen. I will rule justly and fairly. My mother is only Queen "
@@ -7175,12 +7168,6 @@ msgstr ""
 
 #. [message]: speaker=Li'sar
 #: data/campaigns/Heir_To_The_Throne/scenarios/21_Elven_Council.cfg:183
-#, fuzzy
-#| msgid ""
-#| "Well, I have the Sceptre! I will return and the people will accept me as "
-#| "Queen! My mother is only Queen Dowager. The Throne is rightfully mine, "
-#| "and I will rule from it with justice and fairness. I may even accept you "
-#| "as my adviser and counselor, Delfador."
 msgid ""
 "Well, I have the Sceptre! I will return and the people will accept me as "
 "Queen! My mother is only Queen Mother. The Throne is rightfully mine, and I "
@@ -7620,29 +7607,29 @@ msgstr "Đánh bại $units_to_slay đơn vị của kẻ thù"
 msgid "Plainsmen"
 msgstr "Người đồng bằng"
 
-#. [then]
 #. [side]: type=Grand Knight, id=Sir Alric
+#. [then]
 #: data/campaigns/Heir_To_The_Throne/scenarios/23_Test_of_the_Clans.cfg:95
 #: data/campaigns/Heir_To_The_Throne/scenarios/24_Battle_for_Wesnoth.cfg:211
 msgid "Sir Alric"
 msgstr "Ngài Alric"
 
-#. [then]
 #. [side]: type=Grand Knight, id=Sir Ruga
+#. [then]
 #: data/campaigns/Heir_To_The_Throne/scenarios/23_Test_of_the_Clans.cfg:124
 #: data/campaigns/Heir_To_The_Throne/scenarios/24_Battle_for_Wesnoth.cfg:202
 msgid "Sir Ruga"
 msgstr "Ngài Ruga"
 
-#. [then]
 #. [side]: type=Grand Knight, id=Sir Daryn
+#. [then]
 #: data/campaigns/Heir_To_The_Throne/scenarios/23_Test_of_the_Clans.cfg:153
 #: data/campaigns/Heir_To_The_Throne/scenarios/24_Battle_for_Wesnoth.cfg:193
 msgid "Sir Daryn"
 msgstr "Ngài Daryn"
 
-#. [then]
 #. [side]: type=Grand Knight, id=Bayar
+#. [then]
 #: data/campaigns/Heir_To_The_Throne/scenarios/23_Test_of_the_Clans.cfg:182
 #: data/campaigns/Heir_To_The_Throne/scenarios/23_Test_of_the_Clans.cfg:521
 #: data/campaigns/Heir_To_The_Throne/scenarios/24_Battle_for_Wesnoth.cfg:184
@@ -8436,11 +8423,6 @@ msgstr "Nữ hoàng bóng tối"
 
 #. [unit_type]: id=Dark Queen, race=human
 #: data/campaigns/Heir_To_The_Throne/units/Dark_Queen.cfg:19
-#, fuzzy
-#| msgid ""
-#| "The evil queen Asheviere has terrorized Wesnoth for many years. Her "
-#| "knowledge of magic makes her a worthy foe in combat, although her power "
-#| "is mostly derived from those she commands."
 msgid ""
 "The evil queen mother Asheviere has terrorized Wesnoth for many years. Her "
 "knowledge of magic makes her a worthy foe in combat, although her power is "

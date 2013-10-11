@@ -8,28 +8,28 @@
 # Fran Diéguez <fran dot dieguez at glug dot es>, 2008.
 # Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2010.
 # Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail.com>, 2011.
-# Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>, 2011, 2012.
+# Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl_ES\n"
 "Report-Msgid-Bugs-To: http://bugs.wesnoth.org/\n"
-"POT-Creation-Date: 2013-05-05 11:23+0200\n"
-"PO-Revision-Date: 2012-05-22 08:53+0200\n"
-"Last-Translator: Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail."
-"com>\n"
+"POT-Creation-Date: 2013-08-17 11:34+0200\n"
+"PO-Revision-Date: 2013-08-17 00:33+0200\n"
+"Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"com>\n"
 "adriyetichaves@gmail.com>\n"
 "com>\n"
 "com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
-#. [scenario]: id=11_Descent_into_Darkness, id=Mal Keshar
 #. [campaign]: id=Descent_into_Darkness
+#. [scenario]: id=11_Descent_into_Darkness, id=Mal Keshar
 #: data/campaigns/Descent_Into_Darkness/_main.cfg:12
 #: data/campaigns/Descent_Into_Darkness/scenarios/11_Descent_into_Darkness.cfg:6
 msgid "Descent into Darkness"
@@ -203,11 +203,11 @@ msgstr ""
 "súa axuda, pero non precisamos alianzas con aqueles que tratan coa maxia "
 "escura</i>»."
 
-#. [side]: type=Frontier Baroness, id=Dela Keshar
-#. [side]: type=General, id=Taylor
+#. [side]
 #. [side]: type=Apprentice Mage, id=Malin Keshar
 #. [side]: type=Sergeant, id=Drogan
-#. [side]
+#. [side]: type=Frontier Baroness, id=Dela Keshar
+#. [side]: type=General, id=Taylor
 #: data/campaigns/Descent_Into_Darkness/scenarios/01_Saving_Parthyn.cfg:68
 #: data/campaigns/Descent_Into_Darkness/scenarios/01_Saving_Parthyn.cfg:106
 #: data/campaigns/Descent_Into_Darkness/scenarios/06_Return_to_Parthyn.cfg:97
@@ -235,11 +235,11 @@ msgid "Malin Keshar"
 msgstr "Malin Quesar"
 
 #. [side]: type=Orcish Warrior, id=Kreg'a'shar Trr
+#. [side]: type=Orcish Warlord, id=Gron'r Hronk
+#. [side]: type=Orcish Warlord, id=K'rrlar Oban
 #. [side]: type=Orcish Warlord, id=Borth
 #. [side]: type=Orcish Warlord, id=P'Gareth
 #. [side]: type=Orcish Warlord, id=K'Vark
-#. [side]: type=Orcish Warlord, id=Gron'r Hronk
-#. [side]: type=Orcish Warlord, id=K'rrlar Oban
 #: data/campaigns/Descent_Into_Darkness/scenarios/01_Saving_Parthyn.cfg:85
 #: data/campaigns/Descent_Into_Darkness/scenarios/04_Beginning_of_the_Revenge.cfg:59
 #: data/campaigns/Descent_Into_Darkness/scenarios/04_Beginning_of_the_Revenge.cfg:84
@@ -254,8 +254,8 @@ msgstr "Orcos"
 msgid "Kreg’a’shar Trr"
 msgstr "Kreg’a’shar Trr"
 
-#. [side]: type=Lieutenant, id=Drogan
 #. [side]: type=Sergeant, id=Drogan
+#. [side]: type=Lieutenant, id=Drogan
 #: data/campaigns/Descent_Into_Darkness/scenarios/01_Saving_Parthyn.cfg:109
 #: data/campaigns/Descent_Into_Darkness/scenarios/06_Return_to_Parthyn.cfg:79
 msgid "Drogan"
@@ -402,9 +402,9 @@ msgid ""
 "banished from Parthyn and all the Kingdom of Wesnoth."
 msgstr ""
 "Coa lei na man, debería executarte no acto, Malin. Non debín darlle ao "
-"nigromante a oportunidade de corromperte. Pero dado que lle amosei clemencia "
-"a el, dareiche a ti o mesmo trato. Quedas por tanto desterrado de Parcin e "
-"de todo o Reino do Noroeste."
+"nigromante a oportunidade de corromperte. Pero dado que lle mostrei "
+"clemencia a el, dareiche a ti o mesmo trato. Quedas por tanto desterrado de "
+"Parcin e de todo o Reino do Noroeste."
 
 #. [message]: speaker=Malin Keshar
 #: data/campaigns/Descent_Into_Darkness/scenarios/01_Saving_Parthyn.cfg:320
@@ -711,7 +711,7 @@ msgid ""
 msgstr ""
 "Na súa forma actual poden servir mellor a un ben maior. Como agora, "
 "axudándoche a derrotar a esta multitude de trasnos. Ademais, como xa che "
-"dixen, estes eran homes de gran maldade. Ningún castigo é duro abondo para "
+"dixen, estes eran homes de gran maldade. Ningún castigo é duro dabondo para "
 "os da súa casta."
 
 #. [message]: speaker=Malin Keshar
@@ -759,7 +759,7 @@ msgstr ""
 "Malin e Vol “O escuro” pasaron o verán e outono percorréndose de arriba a "
 "abaixo a parte sur das Terras Nórdicas. A medida que atopaban pequenas vilas "
 "de trasnos e campamentos de orcos, atacábanos. O poder de Malin foi "
-"aumentando considerabelmente baixo a tutela constante do nigromante."
+"aumentando progresivamente baixo a constante tutela do nigromante."
 
 #. [side]: type=Dwarvish Steelclad, id=Dap Horner
 #. [side]: type=Bandit, id=Gorak Cole
@@ -881,9 +881,9 @@ msgid ""
 "relentlessly."
 msgstr ""
 "Parvo! Máis che vale ser máis forte a próxima vez ou xamais serás capaz de "
-"controlar os soldados ben abondo como para plantarlle cara aos orcos. Moitos "
-"foron os nigromantes novos que morreron en canto os seus servos se volveron "
-"na súa contra. Vai intentar matarte se non acabas con el antes."
+"controlar os soldados ben dabondo como para plantarlle cara aos orcos. "
+"Moitos foron os nigromantes novos que morreron en canto os seus servos se "
+"volveron na súa contra. Vai intentar matarte se non acabas con el antes."
 
 #. [message]: speaker=Malin Keshar
 #: data/campaigns/Descent_Into_Darkness/scenarios/03_A_Haunting_in_Winter.cfg:257
@@ -1037,7 +1037,7 @@ msgid ""
 "<i>“but none of them have even a tenth of your potential power.”</i>"
 msgstr ""
 "As novas das numerosas batallas gañadas contra as tribos de orcos tamén "
-"chegaban ao sur, contáballe Vol “O escuro” a Malin. A medida que a primevera "
+"chegaban ao sur, contáballe Vol “O escuro” a Malin. A medida que a primavera "
 "se deixaba notar, un importante número de adeptos, ansiosos por axudar na "
 "loita, viaxaban ao norte para unirse a Vol e Malin. «<i>Son moi útiles no "
 "combate</i>», dicíalle o nigromante a Malin, «<i>pero ningún terá nunca nin "
@@ -1054,7 +1054,7 @@ msgstr ""
 "O dano inflixido por Malin e Vol “O escuro” durante os últimos anos forzou "
 "aos xefes orcos locais, que adoitaban ir cada un pola súa conta, a unir as "
 "súas forzas. Nun momento dado, nunha pequena zona canda o río que os humanos "
-"chaman Xacer e os elfos Arkan-thoria, os orcos apañáronse para rodear aos "
+"chaman Xacer e os elfos Arcan-doria, os orcos apañáronse para rodear aos "
 "humanos e forzar o enfrontamento."
 
 #. [scenario]: id=05_Orc_War
@@ -1547,7 +1547,7 @@ msgid ""
 "is brewed in a complicated and mysterious procedure only known to a few "
 "priests and often used to fight resurrected creatures."
 msgstr ""
-"Foi o impacto do que a xente de a pé chama “auga bendita”. Elabórase a "
+"Foi o impacto do que a xente de a pé chama «auga bendita». Elabórase a "
 "través dun complicado e misterioso proceso que só algúns sacerdotes coñecen, "
 "e adoita utilizarse contra as criaturas resucitadas."
 
@@ -1571,8 +1571,8 @@ msgstr "Atopa ao cabaleiro mago Carres."
 msgid "Lord Karres"
 msgstr "Cabaleiro Carres"
 
-#. [do]
 #. [event]
+#. [do]
 #: data/campaigns/Descent_Into_Darkness/scenarios/08_A_Small_Favor2.cfg:131
 #: data/campaigns/Descent_Into_Darkness/scenarios/08_A_Small_Favor2.cfg:189
 #: data/campaigns/Descent_Into_Darkness/scenarios/09_A_Small_Favor3.cfg:126
@@ -1666,7 +1666,7 @@ msgid ""
 "There’s a small tunnel in the cellar to the northeast. It will lead us far "
 "enough out of the city that we can escape pursuit."
 msgstr ""
-"Hai un pequeno túnel no soto do nordeste. Levaranos lonxe abondo da cidade "
+"Hai un pequeno túnel no soto do nordeste. Levaranos lonxe dabondo da cidade "
 "para escapar."
 
 #. [objective]: condition=win
@@ -1998,8 +1998,8 @@ msgstr ""
 "nun liche, o mago debe realizar os encantamentos necesarios co seu último "
 "alento. Entón liga a súa propia alma dun modo similar ao modo en que o "
 "nigromante liga as almas doutros. Porén, dado que aínda pode pensar por si "
-"mesmo sen obedecer a ninguén, o liche ten as portas abertas aos abraiantes "
-"poderes do mundo das almas</i>»."
+"mesmo sen obedecer a ninguén, o liche ten as portas abertas aos "
+"impresionantes poderes do mundo das almas</i>»."
 
 #. [part]
 #: data/campaigns/Descent_Into_Darkness/scenarios/11_Descent_into_Darkness.cfg:28
@@ -2054,7 +2054,7 @@ msgid ""
 "I won’t go down like this, felled by an orc’s blade. I won’t see them defeat "
 "me!"
 msgstr ""
-"Non acabarei así, derrotado pola folla dun orco. Non deixarei que me "
+"Non acabarei así, derrotado pola coitela dun orco. Non deixarei que me "
 "derroten!"
 
 # «Non ten por que» acáelle mellor ao contexto.
@@ -2096,7 +2096,7 @@ msgstr ""
 #. [message]: speaker=Malin Keshar
 #: data/campaigns/Descent_Into_Darkness/scenarios/11_Descent_into_Darkness.cfg:310
 msgid "I pray that I am strong enough to complete the spell."
-msgstr "Rogo ter a forza abondo para completar o encantamento."
+msgstr "Rogo ter a forza dabondo para completar o encantamento."
 
 #. [message]: speaker=Malin Keshar
 #: data/campaigns/Descent_Into_Darkness/scenarios/11_Descent_into_Darkness.cfg:314
@@ -2492,7 +2492,7 @@ msgstr ""
 "preparados para defender a vila cando sexa preciso. Mentres que os homes se "
 "adestran no manexo da espada e o arco, as mulleres aprenden o manexo do "
 "bastón e o tirafonda. Os máis competentes están á altura de calquera orco "
-"noxento, abondo para enfrontarse a eles en combate."
+"noxento, dabondo para enfrontarse a eles en combate."
 
 #. [attack]: type=impact
 #: data/campaigns/Descent_Into_Darkness/units/frontier-baroness.cfg:92
@@ -2530,7 +2530,7 @@ msgid ""
 "strong enough to be of use to me."
 msgstr ""
 "A túa incompetencia nesta sinxela empresa foi atroz. Nunca chegarás ser "
-"forte abondo para serme de utilidade."
+"forte dabondo para serme de utilidade."
 
 #. [message]: speaker=unit
 #: data/campaigns/Descent_Into_Darkness/utils/deaths.cfg:73
