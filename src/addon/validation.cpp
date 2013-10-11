@@ -29,7 +29,38 @@ static bool two_dots(char a, char b)
 	return a == '.' && b == '.';
 }
 
+namespace {
+	struct addon_name_char_illegal
+	{
+		/**
+		 * Returns whether the given add-on name char is not whitelisted.
+		 */
+		inline bool operator()(char c)
+		{
+			switch(c)
+			{
+				case '-':		// hyphen-minus
+				case '_':		// low line
+				return false;
+				default:
+					return !isalnum(c);
+			}
+		}
+	};
+}
+
 bool addon_name_legal(const std::string& name)
+{
+	if(name.empty() || name == "." ||
+	   std::find_if(name.begin(), name.end(), addon_name_char_illegal()) != name.end() ||
+	   name.find("..") != std::string::npos) {
+		return false;
+	} else {
+	   return true;
+	}
+}
+
+bool addon_filename_legal(const std::string& name)
 {
 	if(name == "" || strlen(name.c_str()) == 0 || name == "." ||
 	   std::find(name.begin(),name.end(),'/') != name.end() ||
@@ -46,10 +77,10 @@ bool addon_name_legal(const std::string& name)
 bool check_names_legal(const config& dir)
 {
 	BOOST_FOREACH(const config &path, dir.child_range("file")) {
-		if (!addon_name_legal(path["name"])) return false;
+		if (!addon_filename_legal(path["name"])) return false;
 	}
 	BOOST_FOREACH(const config &path, dir.child_range("dir")) {
-		if (!addon_name_legal(path["name"])) return false;
+		if (!addon_filename_legal(path["name"])) return false;
 		if (!check_names_legal(path)) return false;
 	}
 	return true;

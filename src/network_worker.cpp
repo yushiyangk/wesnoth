@@ -33,6 +33,9 @@
 #include "serialization/parser.hpp"
 #include "wesconfig.h"
 
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/exception/info.hpp>
+
 #include <cerrno>
 #include <deque>
 #include <sstream>
@@ -160,7 +163,6 @@ threading::condition* cond[NUM_SHARDS];
 
 std::map<Uint32,threading::thread*> threads[NUM_SHARDS];
 std::vector<Uint32> to_clear[NUM_SHARDS];
-int system_send_buffer_size = 0;
 bool network_use_system_sendfile = false;
 
 int receive_bytes(TCPsocket s, char* buf, size_t nbytes)
@@ -177,22 +179,6 @@ int receive_bytes(TCPsocket s, char* buf, size_t nbytes)
 #else
 	return SDLNet_TCP_Recv(s, buf, nbytes);
 #endif
-}
-
-
-void check_send_buffer_size(TCPsocket& s)
-{
-	if (system_send_buffer_size)
-		return;
-	_TCPsocket* sock = reinterpret_cast<_TCPsocket*>(s);
-	socklen_t len = sizeof(system_send_buffer_size);
-#ifdef _WIN32
-	getsockopt(sock->channel, SOL_SOCKET, SO_RCVBUF,reinterpret_cast<char*>(&system_send_buffer_size), &len);
-#else
-	getsockopt(sock->channel, SOL_SOCKET, SO_RCVBUF,&system_send_buffer_size, &len);
-#endif
-	--system_send_buffer_size;
-	DBG_NW << "send buffer size: " << system_send_buffer_size << "\n";
 }
 
 bool receive_with_timeout(TCPsocket s, char* buf, size_t nbytes,
@@ -353,7 +339,6 @@ static SOCKET_STATE send_buffer(TCPsocket sock, std::vector<char>& buf, int in_s
 #ifdef __BEOS__
 	int timeout = 60000;
 #endif
-//	check_send_buffer_size(sock);
 	size_t upto = 0;
 	size_t size = buf.size();
 	if (in_size != -1)
@@ -761,8 +746,9 @@ static int process_queue(void* shard_num)
 			std::istringstream stream(buffer);
 			try {
 				read_gz(received_data->config_buf, stream);
-			} catch(config::error &e)
-			{
+			} catch(boost::iostreams::gzip_error&) {
+				received_data->config_error = "Malformed compressed data";
+			} catch(config::error &e) {
 				received_data->config_error = e.message;
 			}
 		}
@@ -913,9 +899,10 @@ TCPsocket get_received_data(TCPsocket sock, config& cfg, network::bandwidth_in_p
 		// throw the error in parent thread
 		std::string error = (*itor)->config_error;
 		buffer* buf = *itor;
+		TCPsocket err_sock = (*itor)->sock;
 		received_data_queue.erase(itor);
 		delete buf;
-		throw config::error(error);
+		throw config::error(error) << network::tcpsocket_info(err_sock);
 	} else {
 		cfg.swap((*itor)->config_buf);
 		const TCPsocket res = (*itor)->sock;
