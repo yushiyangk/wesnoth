@@ -119,13 +119,6 @@ static bool hotkey(twindow& window, const ttitle_screen::tresult result)
 	return true;
 }
 
-// Alessandro Pira: Android hotkey SEGFAULT fix
-static bool hotkey_ttip(ttitle_screen *obj, twindow& window, const bool previous)
-{
-	obj->update_tip(window, previous);
-	return true;
-}
-
 ttitle_screen::ttitle_screen()
 	: logo_timer_id_(0)
 	, debug_clock_(NULL)
@@ -242,8 +235,8 @@ void ttitle_screen::post_build(CVideo& video, twindow& window)
 				, true
 				, boost::cref(previous_tip_wrapper)));
 */
-	window.register_hotkey(hotkey::TITLE_SCREEN__PREVIOUS_TIP , boost::bind(&hotkey_ttip, this, boost::ref(window), true));
-	window.register_hotkey(hotkey::TITLE_SCREEN__NEXT_TIP , boost::bind(&hotkey_ttip, this, boost::ref(window), false));
+	window.register_hotkey(hotkey::TITLE_SCREEN__PREVIOUS_TIP , boost::bind(&ttitle_screen::hotkey_ttip, this, boost::ref(window), true));
+	window.register_hotkey(hotkey::TITLE_SCREEN__NEXT_TIP , boost::bind(&ttitle_screen::hotkey_ttip, this, boost::ref(window), false));
 
 	window.register_hotkey(hotkey::TITLE_SCREEN__TUTORIAL
 				, boost::bind(
@@ -398,6 +391,13 @@ void ttitle_screen::pre_show(CVideo& video, twindow& window)
 				  &ttitle_screen::show_debug_clock_window
 				, this
 				, boost::ref(video)));
+}
+
+// Alessandro Pira: Android hotkey SEGFAULT fix
+bool ttitle_screen::hotkey_ttip(twindow& window, const bool previous)
+{
+	update_tip(window, previous);
+	return true;
 }
 
 void ttitle_screen::update_tip(twindow& window, const bool previous)
