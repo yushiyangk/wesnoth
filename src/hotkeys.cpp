@@ -806,6 +806,15 @@ hotkey_item& get_hotkey(const SDL_JoyHatEvent& event)
 
 hotkey_item& get_hotkey(const SDL_KeyboardEvent& event)
 {
+#ifdef ANDROID
+	// Alessandro Pira: Android custom action management
+	if (event.keysym.sym == SDLK_LAST + 1) {
+		return get_hotkey(HOTKEY_ZOOM_IN);
+	} 
+	if (event.keysym.sym == SDLK_LAST + 2) {
+		return get_hotkey(HOTKEY_ZOOM_OUT);
+	} 
+#endif
 	return get_hotkey(event.keysym.unicode, event.keysym.sym,
 			(event.keysym.mod & KMOD_SHIFT) != 0,
 			(event.keysym.mod & KMOD_CTRL) != 0,
