@@ -808,11 +808,27 @@ hotkey_item& get_hotkey(const SDL_KeyboardEvent& event)
 {
 #ifdef ANDROID
 	// Alessandro Pira: Android custom action management
-	if (event.keysym.sym == SDLK_LAST + 1) {
+	switch(event.keysym.sym) {
+	case SDLK_CUSTOM1:
 		return get_hotkey(HOTKEY_ZOOM_IN);
-	} 
-	if (event.keysym.sym == SDLK_LAST + 2) {
+	case SDLK_CUSTOM2:
 		return get_hotkey(HOTKEY_ZOOM_OUT);
+	case SDLK_CUSTOM3:
+		return get_hotkey(HOTKEY_CYCLE_UNITS);
+	case SDLK_CUSTOM4:
+		return get_hotkey(HOTKEY_UNDO);
+	case SDLK_CUSTOM5:
+		return get_hotkey(HOTKEY_SHOW_ENEMY_MOVES);
+	case SDLK_CUSTOM6:
+		return get_hotkey(HOTKEY_BEST_ENEMY_MOVES);
+	case SDLK_CUSTOM7:
+		return get_hotkey(HOTKEY_RECRUIT);
+	case SDLK_CUSTOM8:
+		return get_hotkey(HOTKEY_RECALL);
+	case SDLK_CUSTOM9:
+		break;
+	default:
+		break;
 	} 
 #endif
 	return get_hotkey(event.keysym.unicode, event.keysym.sym,
