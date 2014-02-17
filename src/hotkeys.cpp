@@ -822,11 +822,19 @@ hotkey_item& get_hotkey(const SDL_KeyboardEvent& event)
 	case SDLK_CUSTOM6:
 		return get_hotkey(HOTKEY_BEST_ENEMY_MOVES);
 	case SDLK_CUSTOM7:
-		return get_hotkey(HOTKEY_RECRUIT);
+		return get_hotkey(HOTKEY_UPDATE_SHROUD);
 	case SDLK_CUSTOM8:
-		return get_hotkey(HOTKEY_RECALL);
+		return get_hotkey(HOTKEY_RECRUIT);
 	case SDLK_CUSTOM9:
-		break;
+		return get_hotkey(HOTKEY_RECALL);
+	case SDLK_CUSTOM10:
+		return get_hotkey(HOTKEY_SAVE_GAME);
+	case SDLK_CUSTOM11:
+		return get_hotkey(HOTKEY_LOAD_GAME);
+	case SDLK_CUSTOM12:
+		return get_hotkey(HOTKEY_END_UNIT_TURN);
+	case SDLK_CUSTOM13:
+		return get_hotkey(HOTKEY_ENDTURN);
 	default:
 		break;
 	} 
