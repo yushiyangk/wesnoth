@@ -824,9 +824,9 @@ hotkey_item& get_hotkey(const SDL_KeyboardEvent& event)
 	case SDLK_CUSTOM7:
 		return get_hotkey(HOTKEY_UPDATE_SHROUD);
 	case SDLK_CUSTOM8:
-		return get_hotkey(HOTKEY_RECRUIT);
+		return get_hotkey(HOTKEY_WB_EXECUTE_ACTION);
 	case SDLK_CUSTOM9:
-		return get_hotkey(HOTKEY_RECALL);
+		return get_hotkey(HOTKEY_WB_DELETE_ACTION);
 	case SDLK_CUSTOM10:
 		return get_hotkey(HOTKEY_SAVE_GAME);
 	case SDLK_CUSTOM11:
