@@ -814,26 +814,42 @@ hotkey_item& get_hotkey(const SDL_KeyboardEvent& event)
 	case SDLK_CUSTOM2:
 		return get_hotkey(HOTKEY_ZOOM_OUT);
 	case SDLK_CUSTOM3:
-		return get_hotkey(HOTKEY_CYCLE_UNITS);
+		return get_hotkey(HOTKEY_ZOOM_DEFAULT);
 	case SDLK_CUSTOM4:
-		return get_hotkey(HOTKEY_UNDO);
+		return get_hotkey(HOTKEY_CYCLE_BACK_UNITS);
 	case SDLK_CUSTOM5:
-		return get_hotkey(HOTKEY_SHOW_ENEMY_MOVES);
+		return get_hotkey(HOTKEY_CYCLE_UNITS);
 	case SDLK_CUSTOM6:
-		return get_hotkey(HOTKEY_BEST_ENEMY_MOVES);
-	case SDLK_CUSTOM7:
-		return get_hotkey(HOTKEY_UPDATE_SHROUD);
-	case SDLK_CUSTOM8:
-		return get_hotkey(HOTKEY_WB_EXECUTE_ACTION);
-	case SDLK_CUSTOM9:
-		return get_hotkey(HOTKEY_WB_DELETE_ACTION);
-	case SDLK_CUSTOM10:
-		return get_hotkey(HOTKEY_SAVE_GAME);
-	case SDLK_CUSTOM11:
-		return get_hotkey(HOTKEY_LOAD_GAME);
-	case SDLK_CUSTOM12:
 		return get_hotkey(HOTKEY_END_UNIT_TURN);
+	case SDLK_CUSTOM7:
+		return get_hotkey(HOTKEY_UNDO);
+	case SDLK_CUSTOM8:
+		return get_hotkey(HOTKEY_REDO);
+	case SDLK_CUSTOM9:
+		return get_hotkey(HOTKEY_SHOW_ENEMY_MOVES);
+	case SDLK_CUSTOM10:
+		return get_hotkey(HOTKEY_BEST_ENEMY_MOVES);
+	case SDLK_CUSTOM11:
+		return get_hotkey(HOTKEY_UPDATE_SHROUD);
+	case SDLK_CUSTOM12:
+		return get_hotkey(HOTKEY_RECRUIT);
 	case SDLK_CUSTOM13:
+		return get_hotkey(HOTKEY_REPEAT_RECRUIT);
+	case SDLK_CUSTOM14:
+		return get_hotkey(HOTKEY_RECALL);
+	case SDLK_CUSTOM15:
+		return get_hotkey(HOTKEY_WB_DELETE_ACTION);
+	case SDLK_CUSTOM16:
+		return get_hotkey(HOTKEY_WB_EXECUTE_ACTION);
+	case SDLK_CUSTOM17:
+		return get_hotkey(HOTKEY_SAVE_GAME);
+	case SDLK_CUSTOM18:
+		return get_hotkey(HOTKEY_LOAD_GAME);
+	case SDLK_CUSTOM19:
+		return get_hotkey(HOTKEY_SPEAK_ALL);
+	case SDLK_CUSTOM20:
+		return get_hotkey(HOTKEY_SPEAK_ALLY);
+	case SDLK_CUSTOM21:
 		return get_hotkey(HOTKEY_ENDTURN);
 	default:
 		break;
