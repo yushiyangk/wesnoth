@@ -23,6 +23,7 @@
 #include "variable.hpp"
 #include "resources.hpp"
 #include "play_controller.hpp"
+#include "spritesheet.hpp"
 
 #include <boost/foreach.hpp>
 
@@ -54,6 +55,7 @@ struct tag_name_manager {
 		names.push_back("sheath_weapon_anim");
 		names.push_back("victory_anim");
 		names.push_back("_transparent"); // Used for WB
+		names.push_back("spritelocations");
 	}
 	std::vector<std::string> names;
 };
@@ -591,6 +593,56 @@ void unit_animation::fill_initial_animations( std::vector<unit_animation> & anim
 
 }
 
+// a function to get each sprite's location and place it in a struct for use.
+void unit_animation::fill_spritesheet_locations( std::vector<sprite_data> & sprites, const config & cfg)
+{
+	const std::string spritesheet_image = cfg["spritesheet"];
+	std::vector<sprite_data>  sprites_base;
+	std::vector<unit_animation>::const_iterator itor;
+/*	add_sprites(sprites,cfg);
+	for(itor = sprites.begin(); itor != sprites.end() ; ++itor) 
+	{
+		if (std::find(itor->event_.begin(),itor->event_.end(),std::string("default"))!= itor->event_.end()) 
+		{
+			sprites_base.push_back(*itor);
+			sprites_base.back().event_.clear();
+		}
+	}
+*/
+	/* 
+	 * a loop to get each sprite's data into the structure for it.
+	 * not sure on how to set this loop to to stop when the last
+	 * sprite's data has been found and loaded.
+	 */
+	while()
+	{
+		if (std::find(itor->event_.begin(),itor->event_.end(),std::string("default"))!= itor->event_.end()) 
+		{
+			sprite_data::sprite_data(const config& cfg);
+		}
+	}
+}
+/*
+void unit_animation::add_sprites( std::vector<unit_animation> & spritesheet, const config & cfg)
+{
+	BOOST_FOREACH(const animation_branch &ab, prepare_animation(cfg, "location")) 
+	{
+		animations.push_back(unit_animation(ab.merge()));
+	}
+
+	add_simple_anim(spritesheet, cfg);
+
+	BOOST_FOREACH(const animation_branch &ab, prepare_animation(cfg, "standing_anim"))
+	{
+		config anim = ab.merge();
+		anim["apply_to"] = "standing";
+		anim["cycles"] = "true";
+		if (anim["layer"].empty()) anim["layer"] = default_layer;
+		if (anim["offscreen"].empty()) anim["offscreen"] = false;
+		animations.push_back(unit_spritesheet(anim));
+	}
+}
+*/
 static void add_simple_anim(std::vector<unit_animation> &animations,
 	const config &cfg, char const *tag_name, char const *apply_to,
 	display::tdrawing_layer layer = display::LAYER_UNIT_DEFAULT,
