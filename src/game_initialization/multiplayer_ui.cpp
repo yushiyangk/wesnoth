@@ -376,10 +376,12 @@ void ui::handle_key_event(const SDL_KeyboardEvent& event)
 	// nick tab-completion
 	} else if(event.keysym.sym == SDLK_TAB ) {
 		std::string text = entry_textbox_.text();
-		std::vector<std::string> matches = user_list_;
+		std::set<std::string> candidates(user_list_.begin(), user_list_.end());
+		std::map<std::string, std::string> friends = preferences::get_acquaintances_nice("friend");
+		for (std::map<std::string, std::string>::iterator i = friends.begin(); i != friends.end(); i++) candidates.insert(i->first);
 		// Exclude own nick from tab-completion.
-		matches.erase(std::remove(matches.begin(), matches.end(),
-				preferences::login()), matches.end());
+		candidates.erase(preferences::login());
+		std::vector<std::string> matches(candidates.begin(), candidates.end());
 		const bool line_start = utils::word_completion(text, matches);
 
 		if (matches.empty()) return;
